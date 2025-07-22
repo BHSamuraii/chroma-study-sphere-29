@@ -1,0 +1,284 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 260 30% 15%;
+    --foreground: 48 100% 88%;
+
+    --card: 260 25% 20%;
+    --card-foreground: 48 100% 92%;
+
+    --popover: 260 25% 20%;
+    --popover-foreground: 48 100% 92%;
+
+    --primary: 48 100% 70%;
+    --primary-foreground: 260 30% 15%;
+
+    --secondary: 260 20% 25%;
+    --secondary-foreground: 48 100% 92%;
+
+    --muted: 260 15% 30%;
+    --muted-foreground: 48 25% 75%;
+
+    --accent: 48 100% 70%;
+    --accent-foreground: 260 30% 15%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 260 20% 25%;
+    --input: 260 20% 25%;
+    --ring: 48 100% 70%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 260 30% 15%;
+    --sidebar-foreground: 48 100% 88%;
+    --sidebar-primary: 48 100% 70%;
+    --sidebar-primary-foreground: 260 30% 15%;
+    --sidebar-accent: 260 20% 25%;
+    --sidebar-accent-foreground: 48 100% 92%;
+    --sidebar-border: 260 20% 25%;
+    --sidebar-ring: 48 100% 70%;
+  }
+
+  .dark {
+    --background: 260 30% 15%;
+    --foreground: 48 100% 88%;
+
+    --card: 260 25% 20%;
+    --card-foreground: 48 100% 92%;
+
+    --popover: 260 25% 20%;
+    --popover-foreground: 48 100% 92%;
+
+    --primary: 48 100% 70%;
+    --primary-foreground: 260 30% 15%;
+
+    --secondary: 260 20% 25%;
+    --secondary-foreground: 48 100% 92%;
+
+    --muted: 260 15% 30%;
+    --muted-foreground: 48 25% 75%;
+
+    --accent: 48 100% 70%;
+    --accent-foreground: 260 30% 15%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 260 20% 25%;
+    --input: 260 20% 25%;
+    --ring: 48 100% 70%;
+    --sidebar-background: 260 30% 15%;
+    --sidebar-foreground: 48 100% 88%;
+    --sidebar-primary: 48 100% 70%;
+    --sidebar-primary-foreground: 260 30% 15%;
+    --sidebar-accent: 260 20% 25%;
+    --sidebar-accent-foreground: 48 100% 92%;
+    --sidebar-border: 260 20% 25%;
+    --sidebar-ring: 48 100% 70%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply text-foreground;
+    position: relative;
+    overflow-x: hidden;
+    background: linear-gradient(135deg, 
+      hsl(260, 35%, 8%) 0%, 
+      hsl(260, 30%, 12%) 25%, 
+      hsl(280, 25%, 10%) 50%, 
+      hsl(260, 30%, 8%) 75%, 
+      hsl(270, 35%, 12%) 100%
+    );
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 20%, hsl(260, 35%, 12%) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, hsl(260, 30%, 10%) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, hsl(260, 25%, 8%) 0%, transparent 50%);
+    z-index: -3;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 10% 10%, hsl(48, 100%, 70%, 0.02) 0%, transparent 25%),
+      radial-gradient(circle at 90% 20%, hsl(48, 100%, 70%, 0.015) 0%, transparent 25%),
+      radial-gradient(circle at 30% 80%, hsl(48, 100%, 70%, 0.02) 0%, transparent 25%),
+      radial-gradient(circle at 70% 90%, hsl(48, 100%, 70%, 0.015) 0%, transparent 25%);
+    z-index: -2;
+  }
+
+  /* Studying logos background pattern */
+  html::before {
+    content: '📚 ✏️ 🎓 📖 🔬 ⚗️ 📐 🧮 🏆 💡 🎯 📊 📝 🔍 💻 🌟 📚 ✏️ 🎓 📖 🔬 ⚗️ 📐 🧮 🏆 💡 🎯 📊 📝 🔍 💻 🌟';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 24px;
+    opacity: 0.03;
+    line-height: 60px;
+    letter-spacing: 40px;
+    word-spacing: 40px;
+    white-space: pre-wrap;
+    z-index: -1;
+    animation: float-logos 120s linear infinite;
+    pointer-events: none;
+  }
+
+  @keyframes float-logos {
+    0% { transform: translateY(100vh) rotate(0deg); }
+    100% { transform: translateY(-100vh) rotate(360deg); }
+  }
+}
+
+/* Custom gradient classes for sections */
+.gradient-purple-yellow {
+  background: linear-gradient(135deg, 
+    hsl(260, 40%, 15%) 0%, 
+    hsl(280, 35%, 18%) 25%, 
+    hsl(260, 30%, 12%) 50%, 
+    hsl(270, 35%, 15%) 75%, 
+    hsl(260, 40%, 18%) 100%
+  );
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, hsl(48, 100%, 70%) 0%, hsl(45, 100%, 82%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* EdTech themed patterns */
+.pattern-dots {
+  background-image: radial-gradient(circle, hsl(260, 25%, 20%, 0.4) 1px, transparent 1px);
+  background-size: 30px 30px;
+}
+
+.pattern-grid {
+  background-image: 
+    linear-gradient(hsl(260, 20%, 18%, 0.2) 1px, transparent 1px),
+    linear-gradient(90deg, hsl(260, 20%, 18%, 0.2) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px hsl(48, 100%, 70%, 0.3); }
+  50% { box-shadow: 0 0 40px hsl(48, 100%, 70%, 0.6); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes gentle-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 0.8; }
+}
+
+.animate-gentle-pulse {
+  animation: gentle-pulse 4s ease-in-out infinite;
+}
+
+/* Header scroll animation */
+@keyframes slideUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}
+
+@keyframes slideDown {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(0); }
+}
+
+.header-hide {
+  animation: slideUp 0.3s ease-in-out forwards;
+}
+
+.header-show {
+  animation: slideDown 0.3s ease-in-out forwards;
+}
+
+/* EdTech specific elements */
+.edtech-card {
+  background: linear-gradient(135deg, 
+    hsl(260, 25%, 18%, 0.8) 0%, 
+    hsl(260, 20%, 15%, 0.9) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(260, 20%, 25%, 0.3);
+}
+
+.edtech-highlight {
+  background: linear-gradient(135deg, 
+    hsl(48, 100%, 70%, 0.1) 0%, 
+    hsl(48, 100%, 70%, 0.05) 100%
+  );
+  border-left: 3px solid hsl(48, 100%, 70%);
+}
+
+/* Carousel dots */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 24px;
+}
+
+.carousel-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: hsl(260, 20%, 40%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.carousel-dot.active {
+  background-color: hsl(48, 100%, 70%);
+  transform: scale(1.2);
+}
+
+.carousel-dot:hover {
+  background-color: hsl(48, 100%, 70%, 0.7);
+}
