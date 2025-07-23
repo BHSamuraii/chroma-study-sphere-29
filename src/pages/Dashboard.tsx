@@ -58,8 +58,14 @@ const Dashboard = () => {
         </div>
         
         <div className="grid grid-cols-1 gap-8">
-          <EnrolledCourses />
-          <AvailableCourses />
+          <div>
+            <h2 className="text-2xl font-bold mb-6 text-gradient">My Courses</h2>
+            <EnrolledCourses />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold mb-6 text-gradient">Other Courses</h2>
+            <AvailableCourses />
+          </div>
         </div>
       </main>
       <Toaster />
