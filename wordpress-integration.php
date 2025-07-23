@@ -1,88 +1,134 @@
 
 <?php
 /**
- * WordPress Integration Helper for GCSEwala
+ * WordPress Integration Code Snippet for GCSEwala
  * 
- * This file contains the PHP code needed to integrate the GCSEwala
- * homepage and dashboard into WordPress pages.
+ * Add this to your WordPress Code Snippets plugin
+ * Set it to run on specific page IDs where you want the apps to appear
  */
 
-// Enqueue scripts and styles for homepage
+// Configuration - Update these paths according to your setup
+define('GCSEWALA_HOME_PATH', get_site_url() . '/home/');
+define('GCSEWALA_DASHBOARD_PATH', get_site_url() . '/dashboard/');
+
+// Function to get asset files from a directory
+function get_gcsewala_assets($directory) {
+    $assets = array('css' => array(), 'js' => array());
+    
+    if (is_dir($directory)) {
+        $files = scandir($directory);
+        foreach ($files as $file) {
+            if (pathinfo($file, PATHINFO_EXTENSION) === 'css') {
+                $assets['css'][] = $file;
+            } elseif (pathinfo($file, PATHINFO_EXTENSION) === 'js') {
+                $assets['js'][] = $file;
+            }
+        }
+    }
+    
+    return $assets;
+}
+
+// Enqueue homepage assets
 function enqueue_gcsewala_home_assets() {
-    $build_dir = get_template_directory_uri() . '/home/';
+    $assets_dir = ABSPATH . 'home/assets/';
+    $assets_url = GCSEWALA_HOME_PATH . 'assets/';
     
-    // Find the main CSS file
-    $css_files = glob(get_template_directory() . '/home/assets/index-*.css');
-    if (!empty($css_files)) {
-        $css_file = basename($css_files[0]);
-        wp_enqueue_style('gcsewala-home-css', $build_dir . 'assets/' . $css_file);
+    $assets = get_gcsewala_assets($assets_dir);
+    
+    // Enqueue CSS files
+    foreach ($assets['css'] as $css_file) {
+        wp_enqueue_style('gcsewala-home-' . sanitize_title($css_file), $assets_url . $css_file);
     }
     
-    // Find the main JS file
-    $js_files = glob(get_template_directory() . '/home/assets/index-*.js');
-    if (!empty($js_files)) {
-        $js_file = basename($js_files[0]);
-        wp_enqueue_script('gcsewala-home-js', $build_dir . 'assets/' . $js_file, array(), null, true);
+    // Enqueue JS files
+    foreach ($assets['js'] as $js_file) {
+        wp_enqueue_script('gcsewala-home-' . sanitize_title($js_file), $assets_url . $js_file, array(), null, true);
     }
 }
 
-// Enqueue scripts and styles for dashboard
+// Enqueue dashboard assets
 function enqueue_gcsewala_dashboard_assets() {
-    $build_dir = get_template_directory_uri() . '/dashboard/';
+    $assets_dir = ABSPATH . 'dashboard/assets/';
+    $assets_url = GCSEWALA_DASHBOARD_PATH . 'assets/';
     
-    // Find the main CSS file
-    $css_files = glob(get_template_directory() . '/dashboard/assets/dashboard-*.css');
-    if (!empty($css_files)) {
-        $css_file = basename($css_files[0]);
-        wp_enqueue_style('gcsewala-dashboard-css', $build_dir . 'assets/' . $css_file);
+    $assets = get_gcsewala_assets($assets_dir);
+    
+    // Enqueue CSS files
+    foreach ($assets['css'] as $css_file) {
+        wp_enqueue_style('gcsewala-dashboard-' . sanitize_title($css_file), $assets_url . $css_file);
     }
     
-    // Find the main JS file
-    $js_files = glob(get_template_directory() . '/dashboard/assets/dashboard-*.js');
-    if (!empty($js_files)) {
-        $js_file = basename($js_files[0]);
-        wp_enqueue_script('gcsewala-dashboard-js', $build_dir . 'assets/' . $js_file, array(), null, true);
+    // Enqueue JS files
+    foreach ($assets['js'] as $js_file) {
+        wp_enqueue_script('gcsewala-dashboard-' . sanitize_title($js_file), $assets_url . $js_file, array(), null, true);
     }
 }
 
-// Shortcode for homepage
-function gcsewala_home_shortcode($atts) {
-    // Enqueue assets
-    enqueue_gcsewala_home_assets();
+// Main function to run on specific pages
+function gcsewala_page_integration() {
+    // Get current page ID
+    $page_id = get_the_ID();
     
-    // Return the container div where React will mount
-    return '<div id="root" style="width: 100%; min-height: 100vh;"></div>';
-}
-add_shortcode('gcsewala_home', 'gcsewala_home_shortcode');
-
-// Shortcode for dashboard
-function gcsewala_dashboard_shortcode($atts) {
-    // Enqueue assets
-    enqueue_gcsewala_dashboard_assets();
+    // Define your page IDs here
+    $home_page_id = 123; // Replace with your actual home page ID
+    $dashboard_page_id = 456; // Replace with your actual dashboard page ID
     
-    // Return the container div where React will mount
-    return '<div id="dashboard-root" style="width: 100%; min-height: 100vh;"></div>';
+    if ($page_id == $home_page_id) {
+        // Homepage integration
+        enqueue_gcsewala_home_assets();
+        add_action('wp_footer', function() {
+            echo '<div id="root" style="width: 100%; min-height: 100vh;"></div>';
+        });
+    } elseif ($page_id == $dashboard_page_id) {
+        // Dashboard integration
+        enqueue_gcsewala_dashboard_assets();
+        add_action('wp_footer', function() {
+            echo '<div id="dashboard-root" style="width: 100%; min-height: 100vh;"></div>';
+        });
+    }
 }
-add_shortcode('gcsewala_dashboard', 'gcsewala_dashboard_shortcode');
 
-// Add custom CSS to hide WordPress elements that might interfere
-function gcsewala_custom_css() {
-    ?>
-    <style>
-    .gcsewala-page {
-        margin: 0 !important;
-        padding: 0 !important;
+// Hook into WordPress
+add_action('wp_enqueue_scripts', 'gcsewala_page_integration');
+
+// Add custom CSS to hide WordPress elements
+function gcsewala_custom_styles() {
+    $page_id = get_the_ID();
+    $home_page_id = 123; // Replace with your actual home page ID
+    $dashboard_page_id = 456; // Replace with your actual dashboard page ID
+    
+    if ($page_id == $home_page_id || $page_id == $dashboard_page_id) {
+        ?>
+        <style>
+        body {
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow-x: hidden;
+        }
+        .site-header,
+        .site-footer,
+        .entry-header,
+        .entry-footer,
+        .comments-area,
+        .sidebar,
+        .widget-area {
+            display: none !important;
+        }
+        .entry-content {
+            padding: 0 !important;
+            margin: 0 !important;
+            max-width: 100% !important;
+        }
+        .container,
+        .content-area {
+            max-width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+        </style>
+        <?php
     }
-    .gcsewala-page .site-header,
-    .gcsewala-page .site-footer {
-        display: none !important;
-    }
-    .gcsewala-page .entry-content {
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-    </style>
-    <?php
 }
-add_action('wp_head', 'gcsewala_custom_css');
+add_action('wp_head', 'gcsewala_custom_styles');
 ?>
