@@ -1,23 +1,30 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { DashboardHeader } from '@/components/DashboardHeader';
 import { EnrolledCourses } from '@/components/EnrolledCourses';
 import { AvailableCourses } from '@/components/AvailableCourses';
-import { ProfileSection } from '@/components/ProfileSection';
 import { Toaster } from '@/components/ui/toaster';
 
 const Dashboard = () => {
   const { user, loading } = useAuth();
+  const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
-    // If user is not authenticated and not loading, redirect to home page
-    if (!loading && !user) {
+    // Only set initialized after loading is complete
+    if (!loading) {
+      setIsInitialized(true);
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    // If user is not authenticated and initialization is complete, redirect to home page
+    if (isInitialized && !user) {
       window.location.href = '/';
     }
-  }, [user, loading]);
+  }, [user, isInitialized]);
 
-  if (loading) {
+  if (loading || !isInitialized) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center">
         <div className="text-center">
@@ -46,14 +53,9 @@ const Dashboard = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="lg:col-span-2 space-y-8">
-            <EnrolledCourses />
-            <AvailableCourses />
-          </div>
-          <div className="lg:col-span-1">
-            <ProfileSection />
-          </div>
+        <div className="grid grid-cols-1 gap-8">
+          <EnrolledCourses />
+          <AvailableCourses />
         </div>
       </main>
       <Toaster />
