@@ -31,16 +31,22 @@ const getCookie = (name: string): string | null => {
 // Function to sync token with WordPress via the edge function
 const syncTokenWithWordPress = async (session: Session | null) => {
   try {
+    // Only attempt to sync if we have a session with an access token
+    if (!session || !session.access_token) {
+      console.log('No session or access token, skipping WordPress sync');
+      return;
+    }
+
     const response = await fetch('https://xcibkpxhyivgfvrojrbw.supabase.co/functions/v1/wordpress-auth-bridge', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': session ? `Bearer ${session.access_token}` : '',
+        'Authorization': `Bearer ${session.access_token}`,
       },
       body: JSON.stringify({
-        action: session ? 'set_token' : 'clear_token',
-        token: session?.access_token || null,
-        user: session?.user || null,
+        action: 'set_token',
+        token: session.access_token,
+        user: session.user,
       }),
     });
 
@@ -49,6 +55,27 @@ const syncTokenWithWordPress = async (session: Session | null) => {
     }
   } catch (error) {
     console.warn('Error syncing token with WordPress:', error);
+  }
+};
+
+// Function to clear WordPress token
+const clearWordPressToken = async () => {
+  try {
+    const response = await fetch('https://xcibkpxhyivgfvrojrbw.supabase.co/functions/v1/wordpress-auth-bridge', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        action: 'clear_token',
+      }),
+    });
+
+    if (!response.ok) {
+      console.warn('Failed to clear WordPress token:', response.statusText);
+    }
+  } catch (error) {
+    console.warn('Error clearing WordPress token:', error);
   }
 };
 
@@ -120,13 +147,18 @@ export const useAuth = () => {
             email: session.user.email,
             name: session.user.user_metadata?.full_name || session.user.email
           }), 7);
+          
+          // Sync with WordPress via edge function only if we have a valid session
+          await syncTokenWithWordPress(session);
         } else {
           deleteCookie('supabase_token');
           deleteCookie('supabase_user');
+          
+          // Clear WordPress token when signing out
+          if (event === 'SIGNED_OUT') {
+            await clearWordPressToken();
+          }
         }
-
-        // Sync with WordPress via edge function
-        await syncTokenWithWordPress(session);
 
         // Handle first-time login redirect
         if (event === 'SIGNED_IN' && session) {
