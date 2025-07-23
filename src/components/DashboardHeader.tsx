@@ -31,13 +31,10 @@ export const DashboardHeader = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div 
-              className="flex items-center space-x-3 cursor-pointer hover:opacity-80 transition-opacity"
+              className="cursor-pointer hover:opacity-80 transition-opacity"
               onClick={handleLogoClick}
             >
-              <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">G</span>
-              </div>
-              <h1 className="text-2xl font-bold text-gradient">GCSEwala</h1>
+              <h1 className="text-2xl font-bold text-gradient">gcsewala</h1>
             </div>
             
             <div className="flex items-center space-x-3">

@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -18,39 +19,6 @@ interface Course {
   created_at: string;
   updated_at: string;
 }
-
-// Course data with updated names and descriptions
-const courseData = {
-  'AQA Triple Science': {
-    displayName: 'AQA Triple Science',
-    description: 'Comprehensive flashcards covering Biology, Chemistry, and Physics for AQA Triple Science GCSE'
-  },
-  'AQA Combined Science': {
-    displayName: 'AQA Combined Science',
-    description: 'Essential flashcards for AQA Combined Science covering all key topics and exam requirements'
-  },
-  'Edexcel Combined Science': {
-    displayName: 'Edexcel Combined Science',
-    description: 'Complete flashcard collection for Edexcel Combined Science GCSE specifications'
-  },
-  'Edexcel Triple Science': {
-    displayName: 'Edexcel Triple Science',
-    description: 'In-depth flashcards for Edexcel Triple Science covering advanced topics and practical skills'
-  },
-  'Mathematics (Higher)': {
-    displayName: 'Mathematics (Higher)',
-    description: 'Advanced mathematics flashcards designed for Higher tier GCSE students and exam success'
-  }
-};
-
-const getCourseInfo = (title: string) => {
-  // Find matching course data
-  const courseKey = Object.keys(courseData).find(key => title.includes(key.replace(' (Higher)', ''))) || title;
-  return courseData[courseKey as keyof typeof courseData] || {
-    displayName: title,
-    description: 'Comprehensive GCSE flashcard collection designed for exam success'
-  };
-};
 
 export const AvailableCourses = () => {
   const { toast } = useToast();
@@ -128,9 +96,9 @@ export const AvailableCourses = () => {
 
   if (isLoading) {
     return (
-      <Card>
+      <Card className="bg-black/20 border-white/10 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
+          <CardTitle className="flex items-center space-x-2 text-yellow-400">
             <GraduationCap className="w-5 h-5" />
             <span>Available Courses</span>
           </CardTitle>
@@ -139,7 +107,7 @@ export const AvailableCourses = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className="animate-pulse">
-                <div className="h-48 bg-gray-200 rounded-lg"></div>
+                <div className="h-48 bg-white/10 rounded-lg"></div>
               </div>
             ))}
           </div>
@@ -151,28 +119,28 @@ export const AvailableCourses = () => {
   if (error) {
     console.error('Error loading courses:', error);
     return (
-      <Card>
+      <Card className="bg-black/20 border-white/10 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
+          <CardTitle className="flex items-center space-x-2 text-yellow-400">
             <GraduationCap className="w-5 h-5" />
             <span>Available Courses</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-red-600">Error loading courses. Please try again.</p>
+          <p className="text-red-400">Error loading courses. Please try again.</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
+    <Card className="bg-black/20 border-white/10 backdrop-blur-sm">
       <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
+        <CardTitle className="flex items-center space-x-2 text-yellow-400">
           <GraduationCap className="w-5 h-5" />
           <span>Available Courses</span>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-white/60">
           {courses?.length || 0} course{courses?.length !== 1 ? 's' : ''} available
         </CardDescription>
       </CardHeader>
@@ -180,10 +148,9 @@ export const AvailableCourses = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {courses?.map((course) => {
             const isEnrolled = enrolledCourseIds?.includes(course.id);
-            const courseInfo = getCourseInfo(course.title);
             
             return (
-              <div key={course.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+              <div key={course.id} className="border border-white/10 rounded-lg p-4 hover:shadow-md transition-shadow bg-black/10 backdrop-blur-sm">
                 <img 
                   src={course.image_url} 
                   alt={course.title}
@@ -193,26 +160,26 @@ export const AvailableCourses = () => {
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-2">
-                      <h3 className="font-semibold text-gray-900">{courseInfo.displayName}</h3>
-                      <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs">
+                      <h3 className="font-semibold text-yellow-400">{course.title}</h3>
+                      <Badge variant="secondary" className="bg-yellow-400/20 text-yellow-400 border-yellow-400/30 text-xs">
                         GCSE
                       </Badge>
                     </div>
                     {course.is_free ? (
-                      <Badge variant="secondary">Free</Badge>
+                      <Badge variant="secondary" className="bg-green-400/20 text-green-400 border-green-400/30">Free</Badge>
                     ) : (
-                      <Badge variant="outline">£{course.price}</Badge>
+                      <Badge variant="outline" className="border-white/20 text-white">£{course.price}</Badge>
                     )}
                   </div>
                   
-                  <p className="text-sm text-gray-600 line-clamp-2">{courseInfo.description}</p>
+                  <p className="text-sm text-white/70 line-clamp-2">{course.description}</p>
                   
                   <div className="pt-2">
                     {isEnrolled ? (
                       <Button 
                         disabled 
                         variant="outline" 
-                        className="w-full"
+                        className="w-full border-white/20 text-white/60"
                       >
                         <Users className="w-4 h-4 mr-2" />
                         Enrolled
@@ -221,7 +188,7 @@ export const AvailableCourses = () => {
                       <Button 
                         onClick={() => handleEnroll(course.id)}
                         disabled={enrollMutation.isPending || !user}
-                        className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                        className="w-full bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-medium"
                       >
                         {enrollMutation.isPending ? 'Enrolling...' : 'Enroll Now'}
                       </Button>
