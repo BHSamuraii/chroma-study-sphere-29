@@ -24,6 +24,10 @@ const Dashboard = () => {
     }
   }, [user, isInitialized]);
 
+  const getUsername = () => {
+    return user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'User';
+  };
+
   if (loading || !isInitialized) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
@@ -46,7 +50,7 @@ const Dashboard = () => {
       <main className="container mx-auto px-4 py-8 space-y-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">
-            Your Learning Dashboard
+            Welcome Back, {getUsername()}
           </h1>
           <p className="text-xl text-foreground/80 max-w-2xl mx-auto">
             Track your progress, access your courses, and continue your journey to academic excellence.

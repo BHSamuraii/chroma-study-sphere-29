@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
@@ -19,6 +18,39 @@ interface Course {
   created_at: string;
   updated_at: string;
 }
+
+// Course data with updated names and descriptions
+const courseData = {
+  'AQA Triple Science': {
+    displayName: 'AQA Triple Science',
+    description: 'Comprehensive flashcards covering Biology, Chemistry, and Physics for AQA Triple Science GCSE'
+  },
+  'AQA Combined Science': {
+    displayName: 'AQA Combined Science',
+    description: 'Essential flashcards for AQA Combined Science covering all key topics and exam requirements'
+  },
+  'Edexcel Combined Science': {
+    displayName: 'Edexcel Combined Science',
+    description: 'Complete flashcard collection for Edexcel Combined Science GCSE specifications'
+  },
+  'Edexcel Triple Science': {
+    displayName: 'Edexcel Triple Science',
+    description: 'In-depth flashcards for Edexcel Triple Science covering advanced topics and practical skills'
+  },
+  'Mathematics (Higher)': {
+    displayName: 'Mathematics (Higher)',
+    description: 'Advanced mathematics flashcards designed for Higher tier GCSE students and exam success'
+  }
+};
+
+const getCourseInfo = (title: string) => {
+  // Find matching course data
+  const courseKey = Object.keys(courseData).find(key => title.includes(key.replace(' (Higher)', ''))) || title;
+  return courseData[courseKey as keyof typeof courseData] || {
+    displayName: title,
+    description: 'Comprehensive GCSE flashcard collection designed for exam success'
+  };
+};
 
 export const AvailableCourses = () => {
   const { toast } = useToast();
@@ -148,6 +180,7 @@ export const AvailableCourses = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {courses?.map((course) => {
             const isEnrolled = enrolledCourseIds?.includes(course.id);
+            const courseInfo = getCourseInfo(course.title);
             
             return (
               <div key={course.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
@@ -159,7 +192,12 @@ export const AvailableCourses = () => {
                 
                 <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-900">{course.title}</h3>
+                    <div className="flex items-center space-x-2">
+                      <h3 className="font-semibold text-gray-900">{courseInfo.displayName}</h3>
+                      <Badge variant="secondary" className="bg-blue-100 text-blue-800 text-xs">
+                        GCSE
+                      </Badge>
+                    </div>
                     {course.is_free ? (
                       <Badge variant="secondary">Free</Badge>
                     ) : (
@@ -167,7 +205,7 @@ export const AvailableCourses = () => {
                     )}
                   </div>
                   
-                  <p className="text-sm text-gray-600 line-clamp-2">{course.description}</p>
+                  <p className="text-sm text-gray-600 line-clamp-2">{courseInfo.description}</p>
                   
                   <div className="pt-2">
                     {isEnrolled ? (
