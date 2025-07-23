@@ -6,7 +6,6 @@ import FlashcardCounter from './FlashcardCounter';
 import SubjectCarousel from './SubjectCarousel';
 import SignInDialog from './SignInDialog';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
 import { 
   Users, 
   Star, 
@@ -25,7 +24,6 @@ const EdTechHomepage = () => {
   const [signInMode, setSignInMode] = useState<'signin' | 'signup'>('signin');
 
   const { user, signOut, loading } = useAuth();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -58,7 +56,7 @@ const EdTechHomepage = () => {
   const handleEnrolClick = () => {
     if (user) {
       // User is already logged in, navigate to dashboard
-      navigate('/dashboard');
+      window.location.href = '/test-dashboard';
       return;
     }
     setSignInMode('signup');
@@ -66,7 +64,7 @@ const EdTechHomepage = () => {
   };
 
   const handleDashboardClick = () => {
-    navigate('/dashboard');
+    window.location.href = '/test-dashboard';
   };
 
   const handleSignOut = async () => {
