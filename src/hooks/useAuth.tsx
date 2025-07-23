@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
@@ -269,9 +268,57 @@ export const useAuth = () => {
   const signOut = async () => {
     try {
       setLoading(true);
+      
+      // Check if there's an active session before attempting to sign out
+      const { data: { session: currentSession } } = await supabase.auth.getSession();
+      
+      if (!currentSession) {
+        // No active session, just clear local state and cookies
+        setSession(null);
+        setUser(null);
+        
+        // Clear cookies
+        deleteCookie('supabase_token');
+        deleteCookie('supabase_user');
+        
+        // Clear visit tracking cookies
+        if (user) {
+          deleteCookie(`user_visited_${user.id}`);
+        }
+        
+        toast({
+          title: "Already Signed Out",
+          description: "You were already signed out.",
+        });
+        
+        return { error: null };
+      }
+
       const { error } = await supabase.auth.signOut();
       
       if (error) {
+        // Handle specific auth session missing error
+        if (error.message.includes('Auth session missing') || error.message.includes('session_not_found')) {
+          // Session was already cleared, just update local state
+          setSession(null);
+          setUser(null);
+          
+          // Clear cookies
+          deleteCookie('supabase_token');
+          deleteCookie('supabase_user');
+          
+          if (user) {
+            deleteCookie(`user_visited_${user.id}`);
+          }
+          
+          toast({
+            title: "Signed Out",
+            description: "You have been signed out successfully.",
+          });
+          
+          return { error: null };
+        }
+        
         console.error('Sign out error:', error);
         toast({
           title: "Sign Out Error",
@@ -281,7 +328,7 @@ export const useAuth = () => {
         return { error };
       }
 
-      // Clear cookies
+      // Clear cookies on successful sign out
       deleteCookie('supabase_token');
       deleteCookie('supabase_user');
 
@@ -298,12 +345,23 @@ export const useAuth = () => {
       return { error: null };
     } catch (error) {
       console.error('Sign out error:', error);
+      
+      // Even if there's an error, clear local state
+      setSession(null);
+      setUser(null);
+      deleteCookie('supabase_token');
+      deleteCookie('supabase_user');
+      
+      if (user) {
+        deleteCookie(`user_visited_${user.id}`);
+      }
+      
       toast({
-        title: "Sign Out Error",
-        description: "An unexpected error occurred. Please try again.",
-        variant: "destructive",
+        title: "Signed Out",
+        description: "You have been signed out (with local cleanup).",
       });
-      return { error };
+      
+      return { error: null }; // Return success since we cleaned up locally
     } finally {
       setLoading(false);
     }
