@@ -77,20 +77,26 @@ function gcsewala_page_integration() {
     if ($page_id == $home_page_id) {
         // Homepage integration
         enqueue_gcsewala_home_assets();
-        add_action('wp_footer', function() {
-            echo '<div id="root" style="width: 100%; min-height: 100vh;"></div>';
-        });
     } elseif ($page_id == $dashboard_page_id) {
         // Dashboard integration
         enqueue_gcsewala_dashboard_assets();
-        add_action('wp_footer', function() {
-            echo '<div id="dashboard-root" style="width: 100%; min-height: 100vh;"></div>';
-        });
     }
 }
 
 // Hook into WordPress
 add_action('wp_enqueue_scripts', 'gcsewala_page_integration');
+
+// Shortcode for homepage
+function gcsewala_home_shortcode() {
+    return '<div id="root" style="width: 100%; min-height: 100vh;"></div>';
+}
+add_shortcode('gcsewala_home', 'gcsewala_home_shortcode');
+
+// Shortcode for dashboard
+function gcsewala_dashboard_shortcode() {
+    return '<div id="dashboard-root" style="width: 100%; min-height: 100vh;"></div>';
+}
+add_shortcode('gcsewala_dashboard', 'gcsewala_dashboard_shortcode');
 
 // Add custom CSS to hide WordPress elements
 function gcsewala_custom_styles() {
