@@ -33,31 +33,31 @@ export const DashboardHeader = () => {
 
   return (
     <>
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-background/80 backdrop-blur-md border-b border-border/50">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">G</span>
+              <div className="w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg flex items-center justify-center">
+                <span className="text-primary-foreground font-bold text-sm">G</span>
               </div>
-              <h1 className="text-2xl font-bold text-gray-900">GCSE Anki Dashboard</h1>
+              <h1 className="text-2xl font-bold text-gradient">GCSE Anki Dashboard</h1>
             </div>
             
             <div className="flex items-center space-x-4">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="flex items-center space-x-2">
+                  <Button variant="outline" className="flex items-center space-x-2 bg-card/80 border-border/50 hover:bg-card text-foreground">
                     <User className="w-4 h-4" />
                     <span className="text-sm">{getUsername()}</span>
                     <ChevronDown className="w-4 h-4" />
                   </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem onClick={() => setShowAccountSettings(true)}>
+                <DropdownMenuContent align="end" className="w-48 bg-card/90 backdrop-blur-md border-border/50">
+                  <DropdownMenuItem onClick={() => setShowAccountSettings(true)} className="text-foreground hover:bg-accent/20">
                     <Settings className="w-4 h-4 mr-2" />
                     Account Settings
                   </DropdownMenuItem>
-                  <DropdownMenuItem onClick={handleSignOut}>
+                  <DropdownMenuItem onClick={handleSignOut} className="text-foreground hover:bg-accent/20">
                     <LogOut className="w-4 h-4 mr-2" />
                     Logout
                   </DropdownMenuItem>
