@@ -66,17 +66,17 @@ class GCSEwalaEnqueue {
             );
         }
         
-        // Enqueue JS files
-        foreach ($assets['js'] as $index => $js_file) {
-            wp_enqueue_script(
-                'gcsewala-' . $app_name . '-js-' . $index,
-                $assets_url . $js_file,
-                array(),
-                filemtime(ABSPATH . $app_path . 'assets/' . $js_file),
-                true
+        // Store JS files for manual loading (since we need type="module")
+        if (!empty($assets['js'])) {
+            $this->js_files[$app_name] = array(
+                'files' => $assets['js'],
+                'url' => $assets_url,
+                'path' => $app_path
             );
         }
     }
+    
+    private $js_files = array();
     
     /**
      * Conditionally enqueue assets based on shortcode presence
@@ -90,12 +90,14 @@ class GCSEwalaEnqueue {
         if (has_shortcode($post->post_content, 'gcsewala_home')) {
             $this->enqueue_app_assets('home', 'home/');
             add_action('wp_head', array($this, 'add_home_styles'));
+            add_action('wp_footer', array($this, 'add_home_scripts'));
         }
         
         // Check if dashboard shortcode is present
         if (has_shortcode($post->post_content, 'gcsewala_dashboard')) {
             $this->enqueue_app_assets('dashboard', 'dashboard/');
             add_action('wp_head', array($this, 'add_dashboard_styles'));
+            add_action('wp_footer', array($this, 'add_dashboard_scripts'));
         }
     }
     
@@ -103,9 +105,6 @@ class GCSEwalaEnqueue {
      * Home app shortcode
      */
     public function home_shortcode($atts) {
-        // Add initialization script
-        add_action('wp_footer', array($this, 'add_home_init_script'));
-        
         return '<div id="root" style="width: 100%; min-height: 100vh; position: relative; z-index: 1;"></div>';
     }
     
@@ -113,10 +112,41 @@ class GCSEwalaEnqueue {
      * Dashboard app shortcode
      */
     public function dashboard_shortcode($atts) {
-        // Add initialization script
-        add_action('wp_footer', array($this, 'add_dashboard_init_script'));
-        
         return '<div id="dashboard-root" style="width: 100%; min-height: 100vh; position: relative; z-index: 1;"></div>';
+    }
+    
+    /**
+     * Add JavaScript files for home app
+     */
+    public function add_home_scripts() {
+        if (isset($this->js_files['home'])) {
+            $js_data = $this->js_files['home'];
+            echo "\n<!-- GCSEwala Home JS Files -->\n";
+            foreach ($js_data['files'] as $js_file) {
+                $file_url = $js_data['url'] . $js_file;
+                $version = filemtime(ABSPATH . $js_data['path'] . 'assets/' . $js_file);
+                echo '<script type="module" src="' . esc_url($file_url) . '?v=' . $version . '"></script>' . "\n";
+            }
+        }
+        
+        $this->add_home_init_script();
+    }
+    
+    /**
+     * Add JavaScript files for dashboard app
+     */
+    public function add_dashboard_scripts() {
+        if (isset($this->js_files['dashboard'])) {
+            $js_data = $this->js_files['dashboard'];
+            echo "\n<!-- GCSEwala Dashboard JS Files -->\n";
+            foreach ($js_data['files'] as $js_file) {
+                $file_url = $js_data['url'] . $js_file;
+                $version = filemtime(ABSPATH . $js_data['path'] . 'assets/' . $js_file);
+                echo '<script type="module" src="' . esc_url($file_url) . '?v=' . $version . '"></script>' . "\n";
+            }
+        }
+        
+        $this->add_dashboard_init_script();
     }
     
     /**
