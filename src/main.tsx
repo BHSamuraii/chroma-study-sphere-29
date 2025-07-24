@@ -12,7 +12,12 @@ import './index.css'
 
 const queryClient = new QueryClient();
 
-// For Lovable preview with routing, but can also be used for WordPress integration
+// Check if we're in WordPress environment
+const isWordPress = window.location.hostname !== 'localhost' && 
+                   window.location.hostname !== '127.0.0.1' &&
+                   !window.location.hostname.includes('lovableproject.com');
+
+// Single App component for routing (Lovable preview only)
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
@@ -32,10 +37,22 @@ const App = () => {
   );
 };
 
-// WordPress integration - check if we're in WordPress environment
-const isWordPress = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+// WordPress component (no routing)
+const WordPressApp = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <EdTechHomepage />
+        </TooltipProvider>
+      </ThemeProvider>
+    </QueryClientProvider>
+  );
+};
 
-// Wait for DOM to be ready
+// Initialize the app
 function initializeApp() {
   const rootElement = document.getElementById("root");
   
@@ -44,26 +61,16 @@ function initializeApp() {
     return;
   }
 
-  console.log('Initializing React app...', { isWordPress, rootElement });
+  console.log('Initializing React app...', { isWordPress, hostname: window.location.hostname });
 
   try {
     const root = createRoot(rootElement);
     
     if (isWordPress) {
-      // In WordPress, render just the homepage component without routing
-      root.render(
-        <QueryClientProvider client={queryClient}>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-            <TooltipProvider>
-              <Toaster />
-              <Sonner />
-              <EdTechHomepage />
-            </TooltipProvider>
-          </ThemeProvider>
-        </QueryClientProvider>
-      );
+      console.log('Rendering WordPress version without routing');
+      root.render(<WordPressApp />);
     } else {
-      // In development/preview, use full routing
+      console.log('Rendering full app with routing');
       root.render(<App />);
     }
     
