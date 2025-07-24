@@ -56,12 +56,13 @@ const WordPressApp = () => {
   );
 };
 
-// Initialize the app
+// Initialize the app with retry mechanism
 function initializeApp() {
   const rootElement = document.getElementById("root");
   
   if (!rootElement) {
-    console.error('Root element not found!');
+    console.error('Root element not found, retrying in 100ms...');
+    setTimeout(initializeApp, 100);
     return;
   }
 
@@ -87,9 +88,18 @@ function initializeApp() {
   }
 }
 
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeApp);
-} else {
+// Initialize with multiple fallbacks
+function safeInitialize() {
+  // Try immediate initialization
   initializeApp();
+  
+  // Fallback: try after a short delay
+  setTimeout(initializeApp, 50);
+  
+  // Final fallback: try after DOM content loaded
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+  }
 }
+
+safeInitialize();
