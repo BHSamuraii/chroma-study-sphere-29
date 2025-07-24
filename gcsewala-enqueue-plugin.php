@@ -304,54 +304,8 @@ class GCSEwalaEnqueue {
     public function add_home_init_script() {
         ?>
         <script>
-        console.log('GCSEwala Home: Plugin loaded, initializing...');
-        
-        // Ensure the root element exists before any scripts try to mount
-        function ensureRootElement() {
-            let rootElement = document.getElementById('root');
-            if (!rootElement) {
-                console.log('GCSEwala Home: Creating root element');
-                rootElement = document.createElement('div');
-                rootElement.id = 'root';
-                rootElement.style.cssText = 'width: 100%; min-height: 100vh; position: relative; z-index: 1;';
-                
-                // Find the shortcode container and replace it
-                const shortcodeContainer = document.querySelector('[id*="root"]') || document.body;
-                if (shortcodeContainer && shortcodeContainer !== document.body) {
-                    shortcodeContainer.parentNode.replaceChild(rootElement, shortcodeContainer);
-                } else {
-                    document.body.appendChild(rootElement);
-                }
-            }
-            return rootElement;
-        }
-        
-        // Initialize immediately if DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log('GCSEwala Home: DOM loaded');
-                const rootElement = ensureRootElement();
-                console.log('GCSEwala Home: Root element ready!', rootElement);
-            });
-        } else {
-            console.log('GCSEwala Home: DOM already loaded');
-            const rootElement = ensureRootElement();
-            console.log('GCSEwala Home: Root element ready!', rootElement);
-        }
-        
-        // Final verification after window load
-        window.addEventListener('load', function() {
-            console.log('GCSEwala Home: Window fully loaded');
-            setTimeout(function() {
-                const rootElement = document.getElementById('root');
-                if (rootElement) {
-                    console.log('GCSEwala Home: Final check - Root element exists!', rootElement);
-                } else {
-                    console.error('GCSEwala Home: Final check - Root element missing!');
-                    ensureRootElement();
-                }
-            }, 500);
-        });
+        // Minimal initialization - let React handle DOM manipulation
+        console.log('GCSEwala Home: Plugin loaded');
         </script>
         <?php
     }
@@ -362,54 +316,8 @@ class GCSEwalaEnqueue {
     public function add_dashboard_init_script() {
         ?>
         <script>
-        console.log('GCSEwala Dashboard: Plugin loaded, initializing...');
-        
-        // Ensure the dashboard root element exists
-        function ensureDashboardRootElement() {
-            let rootElement = document.getElementById('dashboard-root');
-            if (!rootElement) {
-                console.log('GCSEwala Dashboard: Creating dashboard-root element');
-                rootElement = document.createElement('div');
-                rootElement.id = 'dashboard-root';
-                rootElement.style.cssText = 'width: 100%; min-height: 100vh; position: relative; z-index: 1;';
-                
-                // Find the shortcode container and replace it
-                const shortcodeContainer = document.querySelector('[id*="dashboard-root"]') || document.body;
-                if (shortcodeContainer && shortcodeContainer !== document.body) {
-                    shortcodeContainer.parentNode.replaceChild(rootElement, shortcodeContainer);
-                } else {
-                    document.body.appendChild(rootElement);
-                }
-            }
-            return rootElement;
-        }
-        
-        // Initialize immediately if DOM is ready
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', function() {
-                console.log('GCSEwala Dashboard: DOM loaded');
-                const rootElement = ensureDashboardRootElement();
-                console.log('GCSEwala Dashboard: Root element ready!', rootElement);
-            });
-        } else {
-            console.log('GCSEwala Dashboard: DOM already loaded');
-            const rootElement = ensureDashboardRootElement();
-            console.log('GCSEwala Dashboard: Root element ready!', rootElement);
-        }
-        
-        // Final verification after window load
-        window.addEventListener('load', function() {
-            console.log('GCSEwala Dashboard: Window fully loaded');
-            setTimeout(function() {
-                const rootElement = document.getElementById('dashboard-root');
-                if (rootElement) {
-                    console.log('GCSEwala Dashboard: Final check - Root element exists!', rootElement);
-                } else {
-                    console.error('GCSEwala Dashboard: Final check - Root element missing!');
-                    ensureDashboardRootElement();
-                }
-            }, 500);
-        });
+        // Minimal initialization - let React handle DOM manipulation
+        console.log('GCSEwala Dashboard: Plugin loaded');
         </script>
         <?php
     }
