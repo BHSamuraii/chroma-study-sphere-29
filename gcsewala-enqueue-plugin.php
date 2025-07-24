@@ -1,4 +1,3 @@
-
 <?php
 /**
  * Plugin Name: GCSEwala Enqueue
@@ -88,14 +87,14 @@ class GCSEwalaEnqueue {
         
         // Check if home shortcode is present
         if (has_shortcode($post->post_content, 'gcsewala_home')) {
-            $this->enqueue_app_assets('home', 'home/');
+            $this->enqueue_app_assets('home', 'home2/');
             add_action('wp_head', array($this, 'add_home_styles'));
             add_action('wp_footer', array($this, 'add_home_scripts'));
         }
         
         // Check if dashboard shortcode is present
         if (has_shortcode($post->post_content, 'gcsewala_dashboard')) {
-            $this->enqueue_app_assets('dashboard', 'dashboard/');
+            $this->enqueue_app_assets('dashboard', 'dashboard2/');
             add_action('wp_head', array($this, 'add_dashboard_styles'));
             add_action('wp_footer', array($this, 'add_dashboard_scripts'));
         }
