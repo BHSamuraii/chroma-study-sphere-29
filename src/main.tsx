@@ -23,29 +23,33 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<EdTechHomepage />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-            </Routes>
-          </BrowserRouter>
+          <div className="min-h-screen w-full">
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<EdTechHomepage />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+              </Routes>
+            </BrowserRouter>
+          </div>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
   );
 };
 
-// WordPress component (no routing)
+// WordPress component (no routing, simplified wrapper)
 const WordPressApp = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <EdTechHomepage />
+          <div className="w-full">
+            <Toaster />
+            <Sonner />
+            <EdTechHomepage />
+          </div>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>
@@ -64,6 +68,9 @@ function initializeApp() {
   console.log('Initializing React app...', { isWordPress, hostname: window.location.hostname });
 
   try {
+    // Clear any existing content to prevent conflicts
+    rootElement.innerHTML = '';
+    
     const root = createRoot(rootElement);
     
     if (isWordPress) {
