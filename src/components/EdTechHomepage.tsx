@@ -6,7 +6,7 @@ import FlashcardCounter from './FlashcardCounter';
 import SubjectCarousel from './SubjectCarousel';
 import SignInDialog from './SignInDialog';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useSafeNavigate } from '@/hooks/useSafeNavigate';
 import { 
   Users, 
   Star, 
@@ -25,7 +25,7 @@ const EdTechHomepage = () => {
   const [signInMode, setSignInMode] = useState<'signin' | 'signup'>('signin');
 
   const { user, signOut, loading } = useAuth();
-  const navigate = useNavigate();
+  const navigate = useSafeNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
