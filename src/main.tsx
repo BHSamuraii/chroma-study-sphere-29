@@ -32,4 +32,50 @@ const App = () => {
   );
 };
 
-createRoot(document.getElementById("root")!).render(<App />);
+// WordPress integration - check if we're in WordPress environment
+const isWordPress = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+
+// Wait for DOM to be ready
+function initializeApp() {
+  const rootElement = document.getElementById("root");
+  
+  if (!rootElement) {
+    console.error('Root element not found!');
+    return;
+  }
+
+  console.log('Initializing React app...', { isWordPress, rootElement });
+
+  try {
+    const root = createRoot(rootElement);
+    
+    if (isWordPress) {
+      // In WordPress, render just the homepage component without routing
+      root.render(
+        <QueryClientProvider client={queryClient}>
+          <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+            <TooltipProvider>
+              <Toaster />
+              <Sonner />
+              <EdTechHomepage />
+            </TooltipProvider>
+          </ThemeProvider>
+        </QueryClientProvider>
+      );
+    } else {
+      // In development/preview, use full routing
+      root.render(<App />);
+    }
+    
+    console.log('React app initialized successfully!');
+  } catch (error) {
+    console.error('Failed to initialize React app:', error);
+  }
+}
+
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+  initializeApp();
+}
