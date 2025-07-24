@@ -125,7 +125,7 @@ class GCSEwalaEnqueue {
             foreach ($js_data['files'] as $js_file) {
                 $file_url = $js_data['url'] . $js_file;
                 $version = filemtime(ABSPATH . $js_data['path'] . 'assets/' . $js_file);
-                echo '<script type="module" src="' . esc_url($file_url) . '?v=' . $version . '"></script>' . "\n";
+                echo '<script type="module" crossorigin src="' . esc_url($file_url) . '?v=' . $version . '"></script>' . "\n";
             }
         }
         
@@ -142,7 +142,7 @@ class GCSEwalaEnqueue {
             foreach ($js_data['files'] as $js_file) {
                 $file_url = $js_data['url'] . $js_file;
                 $version = filemtime(ABSPATH . $js_data['path'] . 'assets/' . $js_file);
-                echo '<script type="module" src="' . esc_url($file_url) . '?v=' . $version . '"></script>' . "\n";
+                echo '<script type="module" crossorigin src="' . esc_url($file_url) . '?v=' . $version . '"></script>' . "\n";
             }
         }
         
@@ -216,7 +216,10 @@ class GCSEwalaEnqueue {
         }
         </style>
         <script>
-        document.body.classList.add('gcsewala-home');
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.classList.add('gcsewala-home');
+            console.log('GCSEwala Home: Body class added');
+        });
         </script>
         <?php
     }
@@ -288,7 +291,10 @@ class GCSEwalaEnqueue {
         }
         </style>
         <script>
-        document.body.classList.add('gcsewala-dashboard');
+        document.addEventListener('DOMContentLoaded', function() {
+            document.body.classList.add('gcsewala-dashboard');
+            console.log('GCSEwala Dashboard: Body class added');
+        });
         </script>
         <?php
     }
@@ -299,29 +305,53 @@ class GCSEwalaEnqueue {
     public function add_home_init_script() {
         ?>
         <script>
-        console.log('GCSEwala Home: Plugin loaded');
+        console.log('GCSEwala Home: Plugin loaded, initializing...');
         
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('GCSEwala Home: DOM loaded');
-            
-            const rootElement = document.getElementById('root');
-            if (rootElement) {
-                console.log('GCSEwala Home: Root element found!', rootElement);
-            } else {
-                console.error('GCSEwala Home: Root element NOT found!');
+        // Ensure the root element exists before any scripts try to mount
+        function ensureRootElement() {
+            let rootElement = document.getElementById('root');
+            if (!rootElement) {
+                console.log('GCSEwala Home: Creating root element');
+                rootElement = document.createElement('div');
+                rootElement.id = 'root';
+                rootElement.style.cssText = 'width: 100%; min-height: 100vh; position: relative; z-index: 1;';
+                
+                // Find the shortcode container and replace it
+                const shortcodeContainer = document.querySelector('[id*="root"]') || document.body;
+                if (shortcodeContainer && shortcodeContainer !== document.body) {
+                    shortcodeContainer.parentNode.replaceChild(rootElement, shortcodeContainer);
+                } else {
+                    document.body.appendChild(rootElement);
+                }
             }
-        });
+            return rootElement;
+        }
         
+        // Initialize immediately if DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('GCSEwala Home: DOM loaded');
+                const rootElement = ensureRootElement();
+                console.log('GCSEwala Home: Root element ready!', rootElement);
+            });
+        } else {
+            console.log('GCSEwala Home: DOM already loaded');
+            const rootElement = ensureRootElement();
+            console.log('GCSEwala Home: Root element ready!', rootElement);
+        }
+        
+        // Final verification after window load
         window.addEventListener('load', function() {
             console.log('GCSEwala Home: Window fully loaded');
             setTimeout(function() {
                 const rootElement = document.getElementById('root');
                 if (rootElement) {
-                    console.log('GCSEwala Home: Final check - Root element exists!');
+                    console.log('GCSEwala Home: Final check - Root element exists!', rootElement);
                 } else {
                     console.error('GCSEwala Home: Final check - Root element missing!');
+                    ensureRootElement();
                 }
-            }, 1000);
+            }, 500);
         });
         </script>
         <?php
@@ -333,29 +363,53 @@ class GCSEwalaEnqueue {
     public function add_dashboard_init_script() {
         ?>
         <script>
-        console.log('GCSEwala Dashboard: Plugin loaded');
+        console.log('GCSEwala Dashboard: Plugin loaded, initializing...');
         
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('GCSEwala Dashboard: DOM loaded');
-            
-            const rootElement = document.getElementById('dashboard-root');
-            if (rootElement) {
-                console.log('GCSEwala Dashboard: Root element found!', rootElement);
-            } else {
-                console.error('GCSEwala Dashboard: Root element NOT found!');
+        // Ensure the dashboard root element exists
+        function ensureDashboardRootElement() {
+            let rootElement = document.getElementById('dashboard-root');
+            if (!rootElement) {
+                console.log('GCSEwala Dashboard: Creating dashboard-root element');
+                rootElement = document.createElement('div');
+                rootElement.id = 'dashboard-root';
+                rootElement.style.cssText = 'width: 100%; min-height: 100vh; position: relative; z-index: 1;';
+                
+                // Find the shortcode container and replace it
+                const shortcodeContainer = document.querySelector('[id*="dashboard-root"]') || document.body;
+                if (shortcodeContainer && shortcodeContainer !== document.body) {
+                    shortcodeContainer.parentNode.replaceChild(rootElement, shortcodeContainer);
+                } else {
+                    document.body.appendChild(rootElement);
+                }
             }
-        });
+            return rootElement;
+        }
         
+        // Initialize immediately if DOM is ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('GCSEwala Dashboard: DOM loaded');
+                const rootElement = ensureDashboardRootElement();
+                console.log('GCSEwala Dashboard: Root element ready!', rootElement);
+            });
+        } else {
+            console.log('GCSEwala Dashboard: DOM already loaded');
+            const rootElement = ensureDashboardRootElement();
+            console.log('GCSEwala Dashboard: Root element ready!', rootElement);
+        }
+        
+        // Final verification after window load
         window.addEventListener('load', function() {
             console.log('GCSEwala Dashboard: Window fully loaded');
             setTimeout(function() {
                 const rootElement = document.getElementById('dashboard-root');
                 if (rootElement) {
-                    console.log('GCSEwala Dashboard: Final check - Root element exists!');
+                    console.log('GCSEwala Dashboard: Final check - Root element exists!', rootElement);
                 } else {
                     console.error('GCSEwala Dashboard: Final check - Root element missing!');
+                    ensureDashboardRootElement();
                 }
-            }, 1000);
+            }, 500);
         });
         </script>
         <?php
