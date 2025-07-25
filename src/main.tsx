@@ -60,8 +60,8 @@ const WordPressApp = () => {
 function initializeApp() {
   const rootElement = document.getElementById("root");
   
-  if (!rootElement) {
-    console.error('Root element not found, retrying in 100ms...');
+  if (!rootElement || !document.body.contains(rootElement)) {
+    console.error('Root element not found or not in document body, retrying in 100ms...');
     setTimeout(initializeApp, 100);
     return;
   }
