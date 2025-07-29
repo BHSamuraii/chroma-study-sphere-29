@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: mode === 'production' ? './' : '/',
+  base: mode === 'production' ? '/dashboard/' : '/',
   server: {
     host: "::",
     port: 8080,
@@ -22,17 +22,10 @@ export default defineConfig(({ mode }) => ({
     },
   },
   build: {
-    outDir: 'dist',
-    assetsDir: 'assets',
     rollupOptions: {
       input: {
-        index: path.resolve(__dirname, 'index.html'),
+        main: path.resolve(__dirname, 'index.html'),
         dashboard: path.resolve(__dirname, 'dashboard.html')
-      },
-      output: {
-        entryFileNames: 'assets/[name]-[hash].js',
-        chunkFileNames: 'assets/[name]-[hash].js',
-        assetFileNames: 'assets/[name]-[hash].[ext]'
       }
     }
   }

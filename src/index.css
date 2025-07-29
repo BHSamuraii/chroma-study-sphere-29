@@ -93,21 +93,6 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
-  /* WordPress compatibility - ensure no conflicts with WordPress styles */
-  #root {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    text-align: left !important;
-    box-sizing: border-box;
-  }
-
-  /* Override WordPress default styles that might interfere */
-  #root * {
-    box-sizing: border-box;
-  }
-
   body {
     @apply text-foreground;
     position: relative;
@@ -120,19 +105,6 @@ All colors MUST be HSL.
       hsl(270, 35%, 12%) 100%
     );
     min-height: 100vh;
-    margin: 0;
-    padding: 0;
-  }
-
-  /* WordPress specific body overrides */
-  body.wordpress {
-    background: linear-gradient(135deg, 
-      hsl(260, 35%, 8%) 0%, 
-      hsl(260, 30%, 12%) 25%, 
-      hsl(280, 25%, 10%) 50%, 
-      hsl(260, 30%, 8%) 75%, 
-      hsl(270, 35%, 12%) 100%
-    ) !important;
   }
 
   body::before {
