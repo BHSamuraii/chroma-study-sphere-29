@@ -48,13 +48,14 @@ export const EnrolledCourses = () => {
       if (error) throw error;
       return data as EnrolledCourse[];
     },
+    enabled: !!supabase.auth.getUser(),
   });
 
   if (isLoading) {
     return (
-      <Card>
+      <Card className="bg-black/20 border-white/10 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
+          <CardTitle className="flex items-center space-x-2 text-yellow-400">
             <BookOpen className="w-5 h-5" />
             <span>My Enrolled Courses</span>
           </CardTitle>
@@ -63,7 +64,7 @@ export const EnrolledCourses = () => {
           <div className="space-y-4">
             {[1, 2, 3].map((i) => (
               <div key={i} className="animate-pulse">
-                <div className="h-24 bg-gray-200 rounded-lg"></div>
+                <div className="h-24 bg-white/10 rounded-lg"></div>
               </div>
             ))}
           </div>
@@ -75,42 +76,42 @@ export const EnrolledCourses = () => {
   if (error) {
     console.error('Error loading enrolled courses:', error);
     return (
-      <Card>
+      <Card className="bg-black/20 border-white/10 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2">
+          <CardTitle className="flex items-center space-x-2 text-yellow-400">
             <BookOpen className="w-5 h-5" />
             <span>My Enrolled Courses</span>
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <p className="text-red-600">Error loading enrolled courses. Please try again.</p>
+          <p className="text-red-400">Error loading enrolled courses. Please try again.</p>
         </CardContent>
       </Card>
     );
   }
 
   return (
-    <Card>
+    <Card className="bg-black/20 border-white/10 backdrop-blur-sm">
       <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
+        <CardTitle className="flex items-center space-x-2 text-yellow-400">
           <BookOpen className="w-5 h-5" />
           <span>My Enrolled Courses</span>
         </CardTitle>
-        <CardDescription>
+        <CardDescription className="text-white/60">
           {enrolledCourses?.length || 0} course{enrolledCourses?.length !== 1 ? 's' : ''} enrolled
         </CardDescription>
       </CardHeader>
       <CardContent>
         {!enrolledCourses || enrolledCourses.length === 0 ? (
           <div className="text-center py-8">
-            <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600 mb-2">No enrolled courses yet</p>
-            <p className="text-sm text-gray-500">Browse available courses below to get started!</p>
+            <BookOpen className="w-12 h-12 text-white/40 mx-auto mb-4" />
+            <p className="text-white/70 mb-2">No enrolled courses yet</p>
+            <p className="text-sm text-white/50">Browse available courses below to get started!</p>
           </div>
         ) : (
           <div className="space-y-4">
             {enrolledCourses.map((enrollment) => (
-              <div key={enrollment.id} className="flex items-center space-x-4 p-4 border rounded-lg hover:bg-gray-50 transition-colors">
+              <div key={enrollment.id} className="flex items-center space-x-4 p-4 border border-white/10 rounded-lg hover:bg-white/5 transition-colors bg-black/10 backdrop-blur-sm">
                 <img 
                   src={enrollment.courses.image_url} 
                   alt={enrollment.courses.title}
@@ -118,18 +119,20 @@ export const EnrolledCourses = () => {
                 />
                 <div className="flex-1">
                   <div className="flex items-center space-x-2 mb-1">
-                    <h3 className="font-semibold text-gray-900">{enrollment.courses.title}</h3>
-                    {enrollment.courses.is_free && (
-                      <Badge variant="secondary">Free</Badge>
+                    <h3 className="font-semibold text-yellow-400">{enrollment.courses.title}</h3>
+                    {enrollment.courses.is_free ? (
+                      <Badge variant="secondary" className="bg-green-400/20 text-green-400 border-green-400/30">Free</Badge>
+                    ) : (
+                      <Badge variant="secondary" className="bg-yellow-400/20 text-yellow-400 border-yellow-400/30 text-xs">GCSE</Badge>
                     )}
                   </div>
-                  <p className="text-sm text-gray-600 mb-2">{enrollment.courses.description}</p>
-                  <div className="flex items-center text-xs text-gray-500">
+                  <p className="text-sm text-white/70 mb-2">{enrollment.courses.description}</p>
+                  <div className="flex items-center text-xs text-white/50">
                     <Calendar className="w-3 h-3 mr-1" />
                     Enrolled {new Date(enrollment.enrolled_at).toLocaleDateString()}
                   </div>
                 </div>
-                <Button size="sm" className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700">
+                <Button size="sm" className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-medium">
                   Continue Learning
                 </Button>
               </div>

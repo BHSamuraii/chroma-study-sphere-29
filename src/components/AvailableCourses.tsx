@@ -38,17 +38,37 @@ export const AvailableCourses = () => {
     },
   });
 
-  const { data: enrolledCourseIds } = useQuery({
+  const { data: enrolledCourses } = useQuery({
     queryKey: ['enrolled-course-ids'],
     queryFn: async () => {
       const { data, error } = await supabase
         .from('enrollments')
-        .select('course_id');
+        .select(`
+          course_id,
+          courses (
+            title
+          )
+        `);
 
       if (error) throw error;
-      return data.map(enrollment => enrollment.course_id);
+      return data;
     },
   });
+
+  const enrolledCourseIds = enrolledCourses?.map(e => e.course_id) || [];
+  
+  // Science courses that should be mutually exclusive
+  const scienceCourses = [
+    'AQA Triple Science',
+    'Edexcel Triple Science', 
+    'Edexcel Combined Science',
+    'AQA Combined Science'
+  ];
+  
+  // Check if user is enrolled in any science course
+  const enrolledScienceCourse = enrolledCourses?.find(e => 
+    scienceCourses.includes(e.courses?.title || '')
+  );
 
   const enrollMutation = useMutation({
     mutationFn: async (courseId: string) => {
@@ -141,12 +161,36 @@ export const AvailableCourses = () => {
           <span>Other Courses</span>
         </CardTitle>
         <CardDescription className="text-white/60">
-          {courses?.filter(course => !enrolledCourseIds?.includes(course.id)).length || 0} course{courses?.filter(course => !enrolledCourseIds?.includes(course.id)).length !== 1 ? 's' : ''} available
+          {(() => {
+            const filteredCourses = courses?.filter(course => {
+              // Don't show enrolled courses
+              if (enrolledCourseIds.includes(course.id)) return false;
+              
+              // If user is enrolled in a science course, hide other science courses
+              if (enrolledScienceCourse && scienceCourses.includes(course.title)) {
+                return course.title === enrolledScienceCourse.courses?.title;
+              }
+              
+              return true;
+            }) || [];
+            
+            return `${filteredCourses.length} course${filteredCourses.length !== 1 ? 's' : ''} available`;
+          })()}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {courses?.filter(course => !enrolledCourseIds?.includes(course.id)).map((course) => {
+          {courses?.filter(course => {
+            // Don't show enrolled courses
+            if (enrolledCourseIds.includes(course.id)) return false;
+            
+            // If user is enrolled in a science course, hide other science courses
+            if (enrolledScienceCourse && scienceCourses.includes(course.title)) {
+              return course.title === enrolledScienceCourse.courses?.title;
+            }
+            
+            return true;
+          }).map((course) => {
             const isEnrolled = enrolledCourseIds?.includes(course.id);
             
             return (
