@@ -98,10 +98,10 @@ export const AvailableCourses = () => {
     return (
       <Card className="bg-black/20 border-white/10 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-yellow-400">
-            <GraduationCap className="w-5 h-5" />
-            <span>Available Courses</span>
-          </CardTitle>
+        <CardTitle className="flex items-center space-x-2 text-yellow-400">
+          <GraduationCap className="w-5 h-5" />
+          <span>Other Courses</span>
+        </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -121,10 +121,10 @@ export const AvailableCourses = () => {
     return (
       <Card className="bg-black/20 border-white/10 backdrop-blur-sm">
         <CardHeader>
-          <CardTitle className="flex items-center space-x-2 text-yellow-400">
-            <GraduationCap className="w-5 h-5" />
-            <span>Available Courses</span>
-          </CardTitle>
+        <CardTitle className="flex items-center space-x-2 text-yellow-400">
+          <GraduationCap className="w-5 h-5" />
+          <span>Other Courses</span>
+        </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-red-400">Error loading courses. Please try again.</p>
@@ -138,15 +138,15 @@ export const AvailableCourses = () => {
       <CardHeader>
         <CardTitle className="flex items-center space-x-2 text-yellow-400">
           <GraduationCap className="w-5 h-5" />
-          <span>Available Courses</span>
+          <span>Other Courses</span>
         </CardTitle>
         <CardDescription className="text-white/60">
-          {courses?.length || 0} course{courses?.length !== 1 ? 's' : ''} available
+          {courses?.filter(course => !enrolledCourseIds?.includes(course.id)).length || 0} course{courses?.filter(course => !enrolledCourseIds?.includes(course.id)).length !== 1 ? 's' : ''} available
         </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {courses?.map((course) => {
+          {courses?.filter(course => !enrolledCourseIds?.includes(course.id)).map((course) => {
             const isEnrolled = enrolledCourseIds?.includes(course.id);
             
             return (
