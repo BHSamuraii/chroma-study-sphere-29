@@ -8,15 +8,15 @@ const ExamPapers = () => {
   const [selectedBoard, setSelectedBoard] = useState<string | null>(null);
 
   const subjects = [
-    { id: 'biology', name: 'Biology', icon: '🧬' },
-    { id: 'chemistry', name: 'Chemistry', icon: '⚗️' },
-    { id: 'physics', name: 'Physics', icon: '⚛️' },
-    { id: 'maths', name: 'Mathematics', icon: '📐' },
-    { id: 'history', name: 'History', icon: '📜' },
-    { id: 'geography', name: 'Geography', icon: '🌍' },
-    { id: 'english-literature', name: 'English Literature', icon: '📚' },
-    { id: 'spanish', name: 'Spanish', icon: '🇪🇸' },
-    { id: 'french', name: 'French', icon: '🇫🇷' }
+    { id: 'biology', name: 'Biology', icon: '🧬', color: 'bg-green-500/10 border-green-500/20 hover:bg-green-500/20' },
+    { id: 'chemistry', name: 'Chemistry', icon: '⚗️', color: 'bg-orange-500/10 border-orange-500/20 hover:bg-orange-500/20' },
+    { id: 'physics', name: 'Physics', icon: '⚛️', color: 'bg-blue-500/10 border-blue-500/20 hover:bg-blue-500/20' },
+    { id: 'maths', name: 'Mathematics', icon: '📐', color: 'bg-red-500/10 border-red-500/20 hover:bg-red-500/20' },
+    { id: 'history', name: 'History', icon: '📜', color: 'bg-amber-600/10 border-amber-600/20 hover:bg-amber-600/20' },
+    { id: 'geography', name: 'Geography', icon: '🌍', color: 'bg-emerald-600/10 border-emerald-600/20 hover:bg-emerald-600/20' },
+    { id: 'english-literature', name: 'English Literature', icon: '📚', color: 'bg-purple-500/10 border-purple-500/20 hover:bg-purple-500/20' },
+    { id: 'spanish', name: 'Spanish', icon: '🇪🇸', color: 'bg-yellow-500/10 border-yellow-500/20 hover:bg-yellow-500/20' },
+    { id: 'french', name: 'French', icon: '🇫🇷', color: 'bg-indigo-500/10 border-indigo-500/20 hover:bg-indigo-500/20' }
   ];
 
   const boards = ['AQA', 'Edexcel'];
@@ -64,7 +64,7 @@ const ExamPapers = () => {
           {subjects.map((subject) => (
             <div key={subject.id} className="space-y-3">
               <Card 
-                className={`edtech-card cursor-pointer transition-all duration-300 transform hover:scale-105 ${
+                className={`cursor-pointer transition-all duration-300 transform hover:scale-105 ${subject.color} ${
                   selectedSubject === subject.id ? 'ring-2 ring-primary shadow-lg' : ''
                 }`}
                 onClick={() => handleSubjectClick(subject.id)}
@@ -86,12 +86,12 @@ const ExamPapers = () => {
 
               {/* Board Selection */}
               {selectedSubject === subject.id && (
-                <div className="animate-fade-in space-y-2">
+                <div className="animate-fade-in flex gap-2">
                   {boards.map((board) => (
                     <Button
                       key={board}
                       variant={selectedBoard === board ? "default" : "outline"}
-                      className="w-full"
+                      className="flex-1"
                       onClick={() => handleBoardClick(board)}
                     >
                       {board}
