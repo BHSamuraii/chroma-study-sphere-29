@@ -49,6 +49,8 @@ export const EnrolledCourses = () => {
       return data as EnrolledCourse[];
     },
     enabled: !!supabase.auth.getUser(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {

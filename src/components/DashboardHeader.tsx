@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
-import { LogOut, Settings } from 'lucide-react';
+import { LogOut, Settings, FileText } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { AccountSettingsPopup } from '@/components/AccountSettingsPopup';
 
@@ -38,6 +38,16 @@ export const DashboardHeader = () => {
             </div>
             
             <div className="flex items-center space-x-3">
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => window.location.href = '/exampapers'}
+                className="text-foreground hover:bg-accent/20"
+              >
+                <FileText className="w-4 h-4 mr-2" />
+                Exam Papers
+              </Button>
+              
               <Button 
                 variant="ghost" 
                 size="icon"

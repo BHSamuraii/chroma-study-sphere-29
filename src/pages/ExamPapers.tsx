@@ -7,6 +7,29 @@ const ExamPapers = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedBoard, setSelectedBoard] = useState<string | null>(null);
 
+  // Sample papers data - replace with your actual links
+  const paperLinks = {
+    biology: {
+      AQA: [
+        { name: "AQA Biology Paper 1 2023", url: "https://example.com/biology-aqa-p1-2023.pdf" },
+        { name: "AQA Biology Paper 2 2023", url: "https://example.com/biology-aqa-p2-2023.pdf" },
+        { name: "AQA Biology Paper 1 2022", url: "https://example.com/biology-aqa-p1-2022.pdf" },
+        { name: "AQA Biology Paper 2 2022", url: "https://example.com/biology-aqa-p2-2022.pdf" },
+        { name: "AQA Biology Paper 1 2021", url: "https://example.com/biology-aqa-p1-2021.pdf" },
+        { name: "AQA Biology Paper 2 2021", url: "https://example.com/biology-aqa-p2-2021.pdf" },
+      ],
+      Edexcel: [
+        { name: "Edexcel Biology Paper 1 2023", url: "https://example.com/biology-edexcel-p1-2023.pdf" },
+        { name: "Edexcel Biology Paper 2 2023", url: "https://example.com/biology-edexcel-p2-2023.pdf" },
+        { name: "Edexcel Biology Paper 1 2022", url: "https://example.com/biology-edexcel-p1-2022.pdf" },
+        { name: "Edexcel Biology Paper 2 2022", url: "https://example.com/biology-edexcel-p2-2022.pdf" },
+        { name: "Edexcel Biology Paper 1 2021", url: "https://example.com/biology-edexcel-p1-2021.pdf" },
+        { name: "Edexcel Biology Paper 2 2021", url: "https://example.com/biology-edexcel-p2-2021.pdf" },
+      ]
+    },
+    // Add more subjects as needed - just copy the pattern above
+  };
+
   const subjects = [
     { id: 'biology', name: 'Biology', icon: '🧬', color: 'bg-green-500/10 border-green-500/20 hover:bg-green-500/20' },
     { id: 'chemistry', name: 'Chemistry', icon: '⚗️', color: 'bg-orange-500/10 border-orange-500/20 hover:bg-orange-500/20' },
@@ -104,14 +127,33 @@ const ExamPapers = () => {
               {selectedSubject === subject.id && selectedBoard && (
                 <Card className="animate-fade-in bg-muted/50">
                   <CardContent className="p-4">
-                    <div className="text-center text-foreground/60">
-                      <p className="text-sm">
-                        {selectedBoard} {subject.name} papers coming soon...
-                      </p>
-                      <p className="text-xs mt-1">
-                        File links will be added here
-                      </p>
-                    </div>
+                    {paperLinks[subject.id as keyof typeof paperLinks]?.[selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]] ? (
+                      <div className="space-y-2">
+                        <h4 className="font-semibold text-foreground mb-3">
+                          {selectedBoard} {subject.name} Papers
+                        </h4>
+                        {paperLinks[subject.id as keyof typeof paperLinks][selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]].map((paper, index) => (
+                          <a
+                            key={index}
+                            href={paper.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="block text-blue-500 hover:text-blue-600 hover:underline text-sm py-1 transition-colors"
+                          >
+                            {paper.name}
+                          </a>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center text-foreground/60">
+                        <p className="text-sm">
+                          {selectedBoard} {subject.name} papers coming soon...
+                        </p>
+                        <p className="text-xs mt-1">
+                          Papers will be added here
+                        </p>
+                      </div>
+                    )}
                   </CardContent>
                 </Card>
               )}
