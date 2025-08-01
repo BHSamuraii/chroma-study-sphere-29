@@ -142,9 +142,7 @@ const ExamPapers = () => {
                 </Button>
               )}
               <a href="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</a>
-              <a href="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</a>
               <a href="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</a>
-              <a href="/#testimonials" className="text-foreground hover:text-primary transition-colors">Reviews</a>
               
               {user ? (
                 <div className="flex items-center space-x-4">
