@@ -96,9 +96,9 @@ const ExamPapers = () => {
         { name: "Paper 1 2023 (Higher)", url: "https://example.com/maths-aqa-p1-2023-higher.pdf" },
         { name: "Paper 2 2023 (Higher)", url: "https://example.com/maths-aqa-p2-2023-higher.pdf" },
         { name: "Paper 3 2023 (Higher)", url: "https://example.com/maths-aqa-p3-2023-higher.pdf" },
-        { name: "Paper 1 2022 (Higher)", url: "https://example.com/maths-aqa-p1-2022-higher.pdf" },
-        { name: "Paper 2 2022 (Higher)", url: "https://example.com/maths-aqa-p2-2022-higher.pdf" },
-        { name: "Paper 3 2022 (Higher)", url: "https://example.com/maths-aqa-p3-2022-higher.pdf" },
+        { name: "Paper 1 2022 (Higher)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/AQA-83001H-QP-JUN22-merged.pdf" },
+        { name: "Paper 2 2022 (Higher)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/AQA-83002H-QP-JUN22-merged.pdf" },
+        { name: "Paper 3 2022 (Higher)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/AQA-MAY-2022-PAPER-3-HIGHER-merged.pdf" },
       ],
       Edexcel: [
         { name: "Paper 1 2023 (Higher)", url: "https://example.com/maths-edexcel-p1-2023-higher.pdf" },
