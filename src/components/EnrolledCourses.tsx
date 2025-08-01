@@ -19,6 +19,7 @@ interface EnrolledCourse {
     price: number;
     image_url: string;
     is_free: boolean;
+    course_url: string;
   };
 }
 
@@ -40,7 +41,8 @@ export const EnrolledCourses = () => {
             description,
             price,
             image_url,
-            is_free
+            is_free,
+            course_url
           )
         `)
         .order('enrolled_at', { ascending: false });
@@ -134,7 +136,16 @@ export const EnrolledCourses = () => {
                     Enrolled {new Date(enrollment.enrolled_at).toLocaleDateString()}
                   </div>
                 </div>
-                <Button size="sm" className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-medium">
+                <Button 
+                  size="sm" 
+                  className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-medium"
+                  onClick={() => {
+                    if (enrollment.courses.course_url) {
+                      window.open(enrollment.courses.course_url, '_blank');
+                    }
+                  }}
+                  disabled={!enrollment.courses.course_url}
+                >
                   Continue Learning
                 </Button>
               </div>

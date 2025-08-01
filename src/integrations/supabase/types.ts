@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       courses: {
         Row: {
+          course_url: string | null
           created_at: string
           description: string | null
           id: string
@@ -26,6 +27,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          course_url?: string | null
           created_at?: string
           description?: string | null
           id?: string
@@ -36,6 +38,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          course_url?: string | null
           created_at?: string
           description?: string | null
           id?: string
