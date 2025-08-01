@@ -108,7 +108,7 @@ export const AccountSettingsPopup = ({ isOpen, onClose }: AccountSettingsPopupPr
                     <User className="w-6 h-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900">
+                    <h3 className="font-semibold text-yellow-500">
                       {user.user_metadata?.full_name || 'User'}
                     </h3>
                     <div className="flex items-center space-x-1 text-sm text-gray-600">

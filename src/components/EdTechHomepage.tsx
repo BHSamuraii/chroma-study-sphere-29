@@ -104,12 +104,12 @@ const EdTechHomepage = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <button 
-                onClick={handleTitleClick}
+              <a 
+                href="/"
                 className="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity cursor-pointer"
               >
                 gcsewala
-              </button>
+              </a>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               {user && (
@@ -124,8 +124,7 @@ const EdTechHomepage = () => {
               )}
               <a href="#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</a>
               <a href="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</a>
-              <a href="#faq" className="text-foreground hover:text-primary transition-colors">FAQ</a>
-              <a href="#testimonials" className="text-foreground hover:text-primary transition-colors">Reviews</a>
+              <a href="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</a>
               
               {user ? (
                 <div className="flex items-center space-x-4">
