@@ -23,18 +23,18 @@ const ExamPapers = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Updated papers data with "Higher" removed from all paper names
+  // Updated papers data with Mathematics section added
   const paperLinks = {
     biology: {
       AQA: [
         { name: "Paper 1 2023 (Triple)", url: "https://example.com/biology-aqa-p1-2023-triple.pdf" },
         { name: "Paper 2 2023 (Triple)", url: "https://example.com/biology-aqa-p2-2023-triple.pdf" },
-        { name: "Paper 1 2022 (Triple)", url: "https://example.com/biology-aqa-p1-2022-triple.pdf" },
-        { name: "Paper 2 2022 (Triple)", url: "https://example.com/biology-aqa-p2-2022-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper1Triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper2Triple.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/biology-aqa-p1-2023-combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/biology-aqa-p2-2023-combined.pdf" },
-        { name: "Paper 1 2022 (Combined)", url: "https://example.com/biology-aqa-p1-2022-combined.pdf" },
-        { name: "Paper 2 2022 (Combined)", url: "https://example.com/biology-aqa-p2-2022-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper1Combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper2Combined.pdf" },
       ],
       Edexcel: [
         { name: "Paper 1 2023 (Triple)", url: "https://example.com/biology-edexcel-p1-2023-triple.pdf" },
@@ -51,12 +51,12 @@ const ExamPapers = () => {
       AQA: [
         { name: "Paper 1 2023 (Triple)", url: "https://example.com/chemistry-aqa-p1-2023-triple.pdf" },
         { name: "Paper 2 2023 (Triple)", url: "https://example.com/chemistry-aqa-p2-2023-triple.pdf" },
-        { name: "Paper 1 2022 (Triple)", url: "https://example.com/chemistry-aqa-p1-2022-triple.pdf" },
-        { name: "Paper 2 2022 (Triple)", url: "https://example.com/chemistry-aqa-p2-2022-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper1Triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryTriplePaper2.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/chemistry-aqa-p1-2023-combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/chemistry-aqa-p2-2023-combined.pdf" },
-        { name: "Paper 1 2022 (Combined)", url: "https://example.com/chemistry-aqa-p1-2022-combined.pdf" },
-        { name: "Paper 2 2022 (Combined)", url: "https://example.com/chemistry-aqa-p2-2022-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper1Combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper2Combined.pdf" },
       ],
       Edexcel: [
         { name: "Paper 1 2023 (Triple)", url: "https://example.com/chemistry-edexcel-p1-2023-triple.pdf" },
@@ -73,12 +73,12 @@ const ExamPapers = () => {
       AQA: [
         { name: "Paper 1 2023 (Triple)", url: "https://example.com/physics-aqa-p1-2023-triple.pdf" },
         { name: "Paper 2 2023 (Triple)", url: "https://example.com/physics-aqa-p2-2023-triple.pdf" },
-        { name: "Paper 1 2022 (Triple)", url: "https://example.com/physics-aqa-p1-2022-triple.pdf" },
-        { name: "Paper 2 2022 (Triple)", url: "https://example.com/physics-aqa-p2-2022-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022PhysicsPaper1Triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/AQAPhysicsPaper2Triple2022.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/physics-aqa-p1-2023-combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/physics-aqa-p2-2023-combined.pdf" },
-        { name: "Paper 1 2022 (Combined)", url: "https://example.com/physics-aqa-p1-2022-combined.pdf" },
-        { name: "Paper 2 2022 (Combined)", url: "https://example.com/physics-aqa-p2-2022-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022PhysicsPaper1Combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022PhysicsPaper2Combined.pdf" },
       ],
       Edexcel: [
         { name: "Paper 1 2023 (Triple)", url: "https://example.com/physics-edexcel-p1-2023-triple.pdf" },
@@ -89,6 +89,24 @@ const ExamPapers = () => {
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/physics-edexcel-p2-2023-combined.pdf" },
         { name: "Paper 1 2022 (Combined)", url: "https://example.com/physics-edexcel-p1-2022-combined.pdf" },
         { name: "Paper 2 2022 (Combined)", url: "https://example.com/physics-edexcel-p2-2022-combined.pdf" },
+      ],
+    },
+    maths: {
+      AQA: [
+        { name: "Paper 1 2023 (Higher)", url: "https://example.com/maths-aqa-p1-2023-higher.pdf" },
+        { name: "Paper 2 2023 (Higher)", url: "https://example.com/maths-aqa-p2-2023-higher.pdf" },
+        { name: "Paper 3 2023 (Higher)", url: "https://example.com/maths-aqa-p3-2023-higher.pdf" },
+        { name: "Paper 1 2022 (Higher)", url: "https://example.com/maths-aqa-p1-2022-higher.pdf" },
+        { name: "Paper 2 2022 (Higher)", url: "https://example.com/maths-aqa-p2-2022-higher.pdf" },
+        { name: "Paper 3 2022 (Higher)", url: "https://example.com/maths-aqa-p3-2022-higher.pdf" },
+      ],
+      Edexcel: [
+        { name: "Paper 1 2023 (Higher)", url: "https://example.com/maths-edexcel-p1-2023-higher.pdf" },
+        { name: "Paper 2 2023 (Higher)", url: "https://example.com/maths-edexcel-p2-2023-higher.pdf" },
+        { name: "Paper 3 2023 (Higher)", url: "https://example.com/maths-edexcel-p3-2023-higher.pdf" },
+        { name: "Paper 1 2022 (Higher)", url: "https://example.com/maths-edexcel-p1-2022-higher.pdf" },
+        { name: "Paper 2 2022 (Higher)", url: "https://example.com/maths-edexcel-p2-2022-higher.pdf" },
+        { name: "Paper 3 2022 (Higher)", url: "https://example.com/maths-edexcel-p3-2022-higher.pdf" },
       ],
     },
   };
@@ -102,7 +120,7 @@ const ExamPapers = () => {
     { id: 'geography', name: 'Geography', icon: '🌍', color: 'bg-emerald-600/10 border-emerald-600/20 hover:bg-emerald-600/20' },
     { id: 'english-literature', name: 'English Literature', icon: '📚', color: 'bg-purple-500/10 border-purple-500/20 hover:bg-purple-500/20' },
     { id: 'spanish', name: 'Spanish', icon: '🇪🇸', color: 'bg-yellow-500/10 border-yellow-500/20 hover:bg-yellow-500/20' },
-    { id: 'french', name: 'French', icon: '🇫🇷', color: 'bg-indigo-500/10 border-indigo-500/20 hover:bg-indigo-500/20' }
+    { id: 'french', name: 'French', icon: '🇫🇷', color: 'bg-indigo-500/10 border-indigo-500/20 hover:bg-indigo-500/20' },
   ];
 
   const boards = ['AQA', 'Edexcel'];
@@ -123,7 +141,7 @@ const ExamPapers = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <button 
+              <button
                 onClick={handleTitleClick}
                 className="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity cursor-pointer"
               >
@@ -132,8 +150,8 @@ const ExamPapers = () => {
             </div>
             <div className="hidden md:flex items-center space-x-8">
               {user && (
-                <Button 
-                  variant="ghost" 
+                <Button
+                  variant="ghost"
                   onClick={handleDashboardClick}
                   className="text-primary hover:text-black hover:bg-accent/20"
                 >
@@ -143,7 +161,6 @@ const ExamPapers = () => {
               )}
               <a href="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</a>
               <a href="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</a>
-              
               {user ? (
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2">
@@ -154,8 +171,8 @@ const ExamPapers = () => {
                       {user.user_metadata?.full_name || user.email}
                     </span>
                   </div>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     size="sm"
                     onClick={handleSignOut}
                     disabled={loading}
@@ -166,16 +183,16 @@ const ExamPapers = () => {
                 </div>
               ) : (
                 <>
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     className="mr-2"
                     onClick={() => window.location.href = '/'}
                     disabled={loading}
                   >
                     Log In
                   </Button>
-                  <Button 
-                    className="animate-pulse-glow" 
+                  <Button
+                    className="animate-pulse-glow"
                     onClick={() => window.location.href = '/'}
                     disabled={loading}
                   >
@@ -203,7 +220,7 @@ const ExamPapers = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
           {subjects.map((subject) => (
             <div key={subject.id} className="space-y-3">
-              <Card 
+              <Card
                 className={`cursor-pointer transition-all duration-300 transform hover:scale-105 ${subject.color} ${
                   selectedSubject === subject.id ? 'ring-2 ring-primary shadow-lg' : ''
                 }`}
@@ -247,22 +264,9 @@ const ExamPapers = () => {
                     {paperLinks[subject.id as keyof typeof paperLinks]?.[selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]] ? (
                       <div className="space-y-2">
                         <div className="grid grid-cols-2 gap-4">
-                          {/* Triple Papers (first 4 items) */}
-                          {paperLinks[subject.id as keyof typeof paperLinks][selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]].slice(0, 4).map((paper, index) => (
+                          {paperLinks[subject.id as keyof typeof paperLinks][selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]].map((paper, index) => (
                             <a
                               key={index}
-                              href={paper.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="block text-blue-500 hover:text-blue-600 hover:underline text-sm py-1 transition-colors"
-                            >
-                              {paper.name}
-                            </a>
-                          ))}
-                          {/* Combined Papers (last 4 items) */}
-                          {paperLinks[subject.id as keyof typeof paperLinks][selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]].slice(4, 8).map((paper, index) => (
-                            <a
-                              key={index + 4}
                               href={paper.url}
                               target="_blank"
                               rel="noopener noreferrer"
