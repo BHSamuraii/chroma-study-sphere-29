@@ -7,72 +7,72 @@ const ExamPapers = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedBoard, setSelectedBoard] = useState<string | null>(null);
 
-  // Updated papers data with board prefixes removed from all paper names
+  // Updated papers data with "Higher" removed from all paper names
   const paperLinks = {
     biology: {
       AQA: [
-        { name: "Paper 1 2023 (Triple Higher)", url: "https://example.com/biology-aqa-p1-2023-triple-higher.pdf" },
-        { name: "Paper 2 2023 (Triple Higher)", url: "https://example.com/biology-aqa-p2-2023-triple-higher.pdf" },
-        { name: "Paper 1 2022 (Triple Higher)", url: "https://example.com/biology-aqa-p1-2022-triple-higher.pdf" },
-        { name: "Paper 2 2022 (Triple Higher)", url: "https://example.com/biology-aqa-p2-2022-triple-higher.pdf" },
-        { name: "Paper 1 2023 (Combined Higher)", url: "https://example.com/biology-aqa-p1-2023-combined-higher.pdf" },
-        { name: "Paper 2 2023 (Combined Higher)", url: "https://example.com/biology-aqa-p2-2023-combined-higher.pdf" },
-        { name: "Paper 1 2022 (Combined Higher)", url: "https://example.com/biology-aqa-p1-2022-combined-higher.pdf" },
-        { name: "Paper 2 2022 (Combined Higher)", url: "https://example.com/biology-aqa-p2-2022-combined-higher.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://example.com/biology-aqa-p1-2023-triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://example.com/biology-aqa-p2-2023-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://example.com/biology-aqa-p1-2022-triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://example.com/biology-aqa-p2-2022-triple.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://example.com/biology-aqa-p1-2023-combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://example.com/biology-aqa-p2-2023-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://example.com/biology-aqa-p1-2022-combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://example.com/biology-aqa-p2-2022-combined.pdf" },
       ],
       Edexcel: [
-        { name: "Paper 1 2023 (Triple Higher)", url: "https://example.com/biology-edexcel-p1-2023-triple-higher.pdf" },
-        { name: "Paper 2 2023 (Triple Higher)", url: "https://example.com/biology-edexcel-p2-2023-triple-higher.pdf" },
-        { name: "Paper 1 2022 (Triple Higher)", url: "https://example.com/biology-edexcel-p1-2022-triple-higher.pdf" },
-        { name: "Paper 2 2022 (Triple Higher)", url: "https://example.com/biology-edexcel-p2-2022-triple-higher.pdf" },
-        { name: "Paper 1 2023 (Combined Higher)", url: "https://example.com/biology-edexcel-p1-2023-combined-higher.pdf" },
-        { name: "Paper 2 2023 (Combined Higher)", url: "https://example.com/biology-edexcel-p2-2023-combined-higher.pdf" },
-        { name: "Paper 1 2022 (Combined Higher)", url: "https://example.com/biology-edexcel-p1-2022-combined-higher.pdf" },
-        { name: "Paper 2 2022 (Combined Higher)", url: "https://example.com/biology-edexcel-p2-2022-combined-higher.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://example.com/biology-edexcel-p1-2023-triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://example.com/biology-edexcel-p2-2023-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://example.com/biology-edexcel-p1-2022-triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://example.com/biology-edexcel-p2-2022-triple.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://example.com/biology-edexcel-p1-2023-combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://example.com/biology-edexcel-p2-2023-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://example.com/biology-edexcel-p1-2022-combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://example.com/biology-edexcel-p2-2022-combined.pdf" },
       ],
     },
     chemistry: {
       AQA: [
-        { name: "Paper 1 2023 (Triple Higher)", url: "https://example.com/chemistry-aqa-p1-2023-triple-higher.pdf" },
-        { name: "Paper 2 2023 (Triple Higher)", url: "https://example.com/chemistry-aqa-p2-2023-triple-higher.pdf" },
-        { name: "Paper 1 2022 (Triple Higher)", url: "https://example.com/chemistry-aqa-p1-2022-triple-higher.pdf" },
-        { name: "Paper 2 2022 (Triple Higher)", url: "https://example.com/chemistry-aqa-p2-2022-triple-higher.pdf" },
-        { name: "Paper 1 2023 (Combined Higher)", url: "https://example.com/chemistry-aqa-p1-2023-combined-higher.pdf" },
-        { name: "Paper 2 2023 (Combined Higher)", url: "https://example.com/chemistry-aqa-p2-2023-combined-higher.pdf" },
-        { name: "Paper 1 2022 (Combined Higher)", url: "https://example.com/chemistry-aqa-p1-2022-combined-higher.pdf" },
-        { name: "Paper 2 2022 (Combined Higher)", url: "https://example.com/chemistry-aqa-p2-2022-combined-higher.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://example.com/chemistry-aqa-p1-2023-triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://example.com/chemistry-aqa-p2-2023-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://example.com/chemistry-aqa-p1-2022-triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://example.com/chemistry-aqa-p2-2022-triple.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://example.com/chemistry-aqa-p1-2023-combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://example.com/chemistry-aqa-p2-2023-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://example.com/chemistry-aqa-p1-2022-combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://example.com/chemistry-aqa-p2-2022-combined.pdf" },
       ],
       Edexcel: [
-        { name: "Paper 1 2023 (Triple Higher)", url: "https://example.com/chemistry-edexcel-p1-2023-triple-higher.pdf" },
-        { name: "Paper 2 2023 (Triple Higher)", url: "https://example.com/chemistry-edexcel-p2-2023-triple-higher.pdf" },
-        { name: "Paper 1 2022 (Triple Higher)", url: "https://example.com/chemistry-edexcel-p1-2022-triple-higher.pdf" },
-        { name: "Paper 2 2022 (Triple Higher)", url: "https://example.com/chemistry-edexcel-p2-2022-triple-higher.pdf" },
-        { name: "Paper 1 2023 (Combined Higher)", url: "https://example.com/chemistry-edexcel-p1-2023-combined-higher.pdf" },
-        { name: "Paper 2 2023 (Combined Higher)", url: "https://example.com/chemistry-edexcel-p2-2023-combined-higher.pdf" },
-        { name: "Paper 1 2022 (Combined Higher)", url: "https://example.com/chemistry-edexcel-p1-2022-combined-higher.pdf" },
-        { name: "Paper 2 2022 (Combined Higher)", url: "https://example.com/chemistry-edexcel-p2-2022-combined-higher.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://example.com/chemistry-edexcel-p1-2023-triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://example.com/chemistry-edexcel-p2-2023-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://example.com/chemistry-edexcel-p1-2022-triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://example.com/chemistry-edexcel-p2-2022-triple.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://example.com/chemistry-edexcel-p1-2023-combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://example.com/chemistry-edexcel-p2-2023-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://example.com/chemistry-edexcel-p1-2022-combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://example.com/chemistry-edexcel-p2-2022-combined.pdf" },
       ],
     },
     physics: {
       AQA: [
-        { name: "Paper 1 2023 (Triple Higher)", url: "https://example.com/physics-aqa-p1-2023-triple-higher.pdf" },
-        { name: "Paper 2 2023 (Triple Higher)", url: "https://example.com/physics-aqa-p2-2023-triple-higher.pdf" },
-        { name: "Paper 1 2022 (Triple Higher)", url: "https://example.com/physics-aqa-p1-2022-triple-higher.pdf" },
-        { name: "Paper 2 2022 (Triple Higher)", url: "https://example.com/physics-aqa-p2-2022-triple-higher.pdf" },
-        { name: "Paper 1 2023 (Combined Higher)", url: "https://example.com/physics-aqa-p1-2023-combined-higher.pdf" },
-        { name: "Paper 2 2023 (Combined Higher)", url: "https://example.com/physics-aqa-p2-2023-combined-higher.pdf" },
-        { name: "Paper 1 2022 (Combined Higher)", url: "https://example.com/physics-aqa-p1-2022-combined-higher.pdf" },
-        { name: "Paper 2 2022 (Combined Higher)", url: "https://example.com/physics-aqa-p2-2022-combined-higher.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://example.com/physics-aqa-p1-2023-triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://example.com/physics-aqa-p2-2023-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://example.com/physics-aqa-p1-2022-triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://example.com/physics-aqa-p2-2022-triple.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://example.com/physics-aqa-p1-2023-combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://example.com/physics-aqa-p2-2023-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://example.com/physics-aqa-p1-2022-combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://example.com/physics-aqa-p2-2022-combined.pdf" },
       ],
       Edexcel: [
-        { name: "Paper 1 2023 (Triple Higher)", url: "https://example.com/physics-edexcel-p1-2023-triple-higher.pdf" },
-        { name: "Paper 2 2023 (Triple Higher)", url: "https://example.com/physics-edexcel-p2-2023-triple-higher.pdf" },
-        { name: "Paper 1 2022 (Triple Higher)", url: "https://example.com/physics-edexcel-p1-2022-triple-higher.pdf" },
-        { name: "Paper 2 2022 (Triple Higher)", url: "https://example.com/physics-edexcel-p2-2022-triple-higher.pdf" },
-        { name: "Paper 1 2023 (Combined Higher)", url: "https://example.com/physics-edexcel-p1-2023-combined-higher.pdf" },
-        { name: "Paper 2 2023 (Combined Higher)", url: "https://example.com/physics-edexcel-p2-2023-combined-higher.pdf" },
-        { name: "Paper 1 2022 (Combined Higher)", url: "https://example.com/physics-edexcel-p1-2022-combined-higher.pdf" },
-        { name: "Paper 2 2022 (Combined Higher)", url: "https://example.com/physics-edexcel-p2-2022-combined-higher.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://example.com/physics-edexcel-p1-2023-triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://example.com/physics-edexcel-p2-2023-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://example.com/physics-edexcel-p1-2022-triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://example.com/physics-edexcel-p2-2022-triple.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://example.com/physics-edexcel-p1-2023-combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://example.com/physics-edexcel-p2-2023-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://example.com/physics-edexcel-p1-2022-combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://example.com/physics-edexcel-p2-2022-combined.pdf" },
       ],
     },
   };
@@ -176,11 +176,8 @@ const ExamPapers = () => {
                   <CardContent className="p-4">
                     {paperLinks[subject.id as keyof typeof paperLinks]?.[selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]] ? (
                       <div className="space-y-2">
-                        <h4 className="font-semibold text-foreground mb-3">
-                          {selectedBoard} {subject.name} Papers
-                        </h4>
                         <div className="grid grid-cols-2 gap-4">
-                          {/* Triple Higher Papers (first 4 items) */}
+                          {/* Triple Papers (first 4 items) */}
                           {paperLinks[subject.id as keyof typeof paperLinks][selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]].slice(0, 4).map((paper, index) => (
                             <a
                               key={index}
@@ -192,7 +189,7 @@ const ExamPapers = () => {
                               {paper.name}
                             </a>
                           ))}
-                          {/* Combined Higher Papers (last 4 items) */}
+                          {/* Combined Papers (last 4 items) */}
                           {paperLinks[subject.id as keyof typeof paperLinks][selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]].slice(4, 8).map((paper, index) => (
                             <a
                               key={index + 4}
