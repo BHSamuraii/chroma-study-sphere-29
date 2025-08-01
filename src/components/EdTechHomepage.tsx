@@ -222,11 +222,11 @@ const EdTechHomepage = () => {
         </div>
       </section>
 
-      {/* Subject Carousel Section - moved before Flashcard Counter */}
-      <SubjectCarousel />
-
-      {/* Flashcard Counter Section - moved after Subject Carousel */}
+      {/* Flashcard Counter Section - Live Learning Stats */}
       <FlashcardCounter />
+
+      {/* Subject Carousel Section */}
+      <SubjectCarousel />
 
       {/* Testimonials Section */}
       <section id="testimonials" className="py-20 bg-card/20">
@@ -322,7 +322,7 @@ const EdTechHomepage = () => {
               <h3 className="text-2xl font-bold mb-6 text-gradient">
                 Why Our Revision Methods Work
               </h3>
-              <div className="grid md:grid-cols-3 gap-6 mb-8">
+              <div className="grid md:grid-cols-3 gap-6">
                 <div className="flex flex-col items-center">
                   <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
                     <span className="text-2xl font-bold text-primary">40%</span>
@@ -341,22 +341,6 @@ const EdTechHomepage = () => {
                   </div>
                   <p className="text-foreground/80 text-center">Reduction in study time needed for exam preparation</p>
                 </div>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button 
-                  size="lg" 
-                  className="text-lg px-8 py-6 animate-pulse-glow" 
-                  onClick={handleEnrolClick}
-                  disabled={loading}
-                >
-                  {user ? 'Access Your Tools' : 'Start Learning Today'}
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8 py-6">
-                  <Play className="mr-2 h-5 w-5" />
-                  See Demo
-                </Button>
               </div>
             </div>
           </div>
