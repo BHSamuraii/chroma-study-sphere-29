@@ -1,11 +1,27 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { ChevronDown, ChevronUp, LogOut, User, LayoutDashboard } from 'lucide-react';
+import { useAuth } from '@/hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const ExamPapers = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedBoard, setSelectedBoard] = useState<string | null>(null);
+  const { user, signOut, loading } = useAuth();
+  const navigate = useNavigate();
+
+  const handleDashboardClick = () => {
+    navigate('/dashboard');
+  };
+
+  const handleSignOut = async () => {
+    await signOut();
+  };
+
+  const handleTitleClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   // Updated papers data with "Higher" removed from all paper names
   const paperLinks = {
@@ -107,12 +123,68 @@ const ExamPapers = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <a 
-                href="/"
+              <button 
+                onClick={handleTitleClick}
                 className="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity cursor-pointer"
               >
                 gcsewala
-              </a>
+              </button>
+            </div>
+            <div className="hidden md:flex items-center space-x-8">
+              {user && (
+                <Button 
+                  variant="ghost" 
+                  onClick={handleDashboardClick}
+                  className="text-primary hover:text-black hover:bg-accent/20"
+                >
+                  <LayoutDashboard className="h-4 w-4 mr-2" />
+                  Dashboard
+                </Button>
+              )}
+              <a href="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</a>
+              <a href="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</a>
+              <a href="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</a>
+              <a href="/#testimonials" className="text-foreground hover:text-primary transition-colors">Reviews</a>
+              
+              {user ? (
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <User className="h-4 w-4 text-primary" />
+                    </div>
+                    <span className="text-sm text-foreground">
+                      {user.user_metadata?.full_name || user.email}
+                    </span>
+                  </div>
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={handleSignOut}
+                    disabled={loading}
+                  >
+                    <LogOut className="h-4 w-4 mr-2" />
+                    Sign Out
+                  </Button>
+                </div>
+              ) : (
+                <>
+                  <Button 
+                    variant="outline" 
+                    className="mr-2"
+                    onClick={() => window.location.href = '/'}
+                    disabled={loading}
+                  >
+                    Log In
+                  </Button>
+                  <Button 
+                    className="animate-pulse-glow" 
+                    onClick={() => window.location.href = '/'}
+                    disabled={loading}
+                  >
+                    Get Started
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>

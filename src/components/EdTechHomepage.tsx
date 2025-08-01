@@ -116,7 +116,7 @@ const EdTechHomepage = () => {
                 <Button 
                   variant="ghost" 
                   onClick={handleDashboardClick}
-                  className="text-primary hover:text-primary/80"
+                  className="text-primary hover:text-black hover:bg-accent/20"
                 >
                   <LayoutDashboard className="h-4 w-4 mr-2" />
                   Dashboard
