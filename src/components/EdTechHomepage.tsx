@@ -266,33 +266,98 @@ const EdTechHomepage = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Features Section */}
       <section className="py-20 gradient-purple-yellow relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-background/10 to-transparent"></div>
         <div className="container mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
-              {user ? 'Ready to Continue Your Journey?' : 'Ready to Transform Your Learning?'}
-            </h2>
-            <p className="text-xl text-foreground/80 mb-8 max-w-2xl mx-auto">
-              {user 
-                ? "Access your personalized dashboard and continue building your skills."
-                : "Join thousands of successful students and start your journey to academic excellence today."
-              }
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
-                className="text-lg px-8 py-6 animate-pulse-glow" 
-                onClick={handleEnrolClick}
-                disabled={loading}
-              >
-                {user ? 'Go to Dashboard' : 'Start Free Trial'}
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-6">
-                Schedule Demo
-              </Button>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-16">
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
+                Powerful Learning Tools & Resources
+              </h2>
+              <p className="text-xl text-foreground/80 max-w-3xl mx-auto">
+                Master your subjects with our comprehensive suite of revision tools designed to boost your academic performance
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              <Card className="bg-card/80 backdrop-blur-sm border-border/50 p-8">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center mr-4">
+                    <div className="w-6 h-6 bg-primary rounded"></div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-primary">Interactive Flashcards</h3>
+                </div>
+                <p className="text-foreground/80 mb-4">
+                  Boost memory retention with our smart flashcard system that adapts to your learning pace.
+                </p>
+                <ul className="space-y-2 text-foreground/70">
+                  <li>• Spaced repetition algorithm for optimal retention</li>
+                  <li>• Track your progress and identify weak areas</li>
+                  <li>• Mobile-friendly for studying on the go</li>
+                  <li>• Customizable difficulty levels</li>
+                </ul>
+              </Card>
+              
+              <Card className="bg-card/80 backdrop-blur-sm border-border/50 p-8">
+                <div className="flex items-center mb-4">
+                  <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center mr-4">
+                    <div className="w-6 h-6 bg-primary rounded-full border-2 border-background"></div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-primary">Topic Tests</h3>
+                </div>
+                <p className="text-foreground/80 mb-4">
+                  Practice with targeted tests designed to strengthen your understanding of specific topics.
+                </p>
+                <ul className="space-y-2 text-foreground/70">
+                  <li>• Instant feedback and detailed explanations</li>
+                  <li>• Performance analytics to track improvement</li>
+                  <li>• Exam-style questions for real preparation</li>
+                  <li>• Unlimited attempts to perfect your skills</li>
+                </ul>
+              </Card>
+            </div>
+            
+            <div className="text-center">
+              <h3 className="text-2xl font-bold mb-6 text-gradient">
+                Why Our Revision Methods Work
+              </h3>
+              <div className="grid md:grid-cols-3 gap-6 mb-8">
+                <div className="flex flex-col items-center">
+                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                    <span className="text-2xl font-bold text-primary">40%</span>
+                  </div>
+                  <p className="text-foreground/80 text-center">Average grade improvement using our flashcard system</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                    <span className="text-2xl font-bold text-primary">85%</span>
+                  </div>
+                  <p className="text-foreground/80 text-center">Students report better exam confidence after topic tests</p>
+                </div>
+                <div className="flex flex-col items-center">
+                  <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center mb-4">
+                    <span className="text-2xl font-bold text-primary">50%</span>
+                  </div>
+                  <p className="text-foreground/80 text-center">Reduction in study time needed for exam preparation</p>
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Button 
+                  size="lg" 
+                  className="text-lg px-8 py-6 animate-pulse-glow" 
+                  onClick={handleEnrolClick}
+                  disabled={loading}
+                >
+                  {user ? 'Access Your Tools' : 'Start Learning Today'}
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+                <Button variant="outline" size="lg" className="text-lg px-8 py-6">
+                  <Play className="mr-2 h-5 w-5" />
+                  See Demo
+                </Button>
+              </div>
             </div>
           </div>
         </div>
