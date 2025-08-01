@@ -8,6 +8,7 @@ import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import ExamPapers from "./pages/ExamPapers";
+import Quizzes from "./pages/Quizzes";
 import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 
@@ -25,6 +26,7 @@ function App() {
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/exampapers" element={<ExamPapers />} />
+              <Route path="/quizzes" element={<Quizzes />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
