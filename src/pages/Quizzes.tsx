@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ChevronDown, ChevronUp, LogOut, User, LayoutDashboard, Lock } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -14,11 +15,30 @@ interface Course {
   image_url: string | null;
 }
 
+interface Question {
+  id: number;
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+}
+
+interface QuizState {
+  currentQuestion: number;
+  answers: (number | null)[];
+  showResults: boolean;
+}
+
 const Quizzes = () => {
-  const [selectedCourse, setSelectedCourse] = useState<string | null>(null);
-  const [selectedTopic, setSelectedTopic] = useState<string | null>(null);
+  const [selectedCourse, setSelectedCourse] = useState<string>('');
+  const [selectedTopic, setSelectedTopic] = useState<string>('');
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
+  const [quizState, setQuizState] = useState<QuizState>({
+    currentQuestion: 0,
+    answers: [],
+    showResults: false
+  });
   const { user, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
 
@@ -32,41 +52,103 @@ const Quizzes = () => {
 
   // Mock topics for each course
   const courseTopics = {
-    'AQA GCSE Triple Science': [
-      'Cell Biology', 'Organisation', 'Infection and Response', 'Bioenergetics',
-      'Homeostasis', 'Inheritance', 'Ecology', 'Atomic Structure', 'Bonding',
-      'Quantitative Chemistry', 'Chemical Changes', 'Energy Changes', 'Organic Chemistry',
-      'Forces', 'Waves', 'Electricity', 'Magnetism', 'Particle Model'
+    'AQA Mathematics': ['Number', 'Algebra'],
+    'OCR Computer Science': ['Computer Systems', 'Algorithms']
+  };
+
+  // Quiz questions for available topics
+  const quizQuestions: Record<string, Question[]> = {
+    'AQA Mathematics-Number': [
+      {
+        id: 1,
+        question: "What is the value of 2³?",
+        options: ["6", "8", "9", "12"],
+        correctAnswer: 1,
+        explanation: "2³ = 2 × 2 × 2 = 8"
+      },
+      {
+        id: 2,
+        question: "Which of these is a prime number?",
+        options: ["15", "21", "23", "27"],
+        correctAnswer: 2,
+        explanation: "23 is prime because it can only be divided by 1 and itself"
+      },
+      {
+        id: 3,
+        question: "What is 25% of 80?",
+        options: ["15", "20", "25", "30"],
+        correctAnswer: 1,
+        explanation: "25% of 80 = 0.25 × 80 = 20"
+      }
     ],
-    'AQA Triple Science': [
-      'Cell Biology', 'Organisation', 'Infection and Response', 'Bioenergetics',
-      'Homeostasis', 'Inheritance', 'Ecology', 'Atomic Structure', 'Bonding',
-      'Quantitative Chemistry', 'Chemical Changes', 'Energy Changes', 'Organic Chemistry',
-      'Forces', 'Waves', 'Electricity', 'Magnetism', 'Particle Model'
+    'AQA Mathematics-Algebra': [
+      {
+        id: 1,
+        question: "Solve for x: 2x + 5 = 13",
+        options: ["x = 3", "x = 4", "x = 5", "x = 6"],
+        correctAnswer: 1,
+        explanation: "2x + 5 = 13, so 2x = 8, therefore x = 4"
+      },
+      {
+        id: 2,
+        question: "Expand (x + 3)(x + 2)",
+        options: ["x² + 5x + 6", "x² + 6x + 5", "x² + 5x + 5", "x² + 6x + 6"],
+        correctAnswer: 0,
+        explanation: "(x + 3)(x + 2) = x² + 2x + 3x + 6 = x² + 5x + 6"
+      },
+      {
+        id: 3,
+        question: "If y = 2x + 1, what is y when x = 3?",
+        options: ["5", "6", "7", "8"],
+        correctAnswer: 2,
+        explanation: "y = 2(3) + 1 = 6 + 1 = 7"
+      }
     ],
-    'AQA Mathematics': [
-      'Number', 'Algebra', 'Ratio & Proportion', 'Geometry & Measures',
-      'Probability', 'Statistics', 'Sequences', 'Graphs', 'Transformations'
+    'OCR Computer Science-Computer Systems': [
+      {
+        id: 1,
+        question: "What does CPU stand for?",
+        options: ["Computer Processing Unit", "Central Processing Unit", "Central Program Unit", "Computer Program Unit"],
+        correctAnswer: 1,
+        explanation: "CPU stands for Central Processing Unit"
+      },
+      {
+        id: 2,
+        question: "Which of these is volatile memory?",
+        options: ["Hard Drive", "SSD", "RAM", "ROM"],
+        correctAnswer: 2,
+        explanation: "RAM (Random Access Memory) is volatile - it loses data when power is removed"
+      },
+      {
+        id: 3,
+        question: "What is the purpose of the ALU?",
+        options: ["Store data", "Control operations", "Perform calculations", "Manage memory"],
+        correctAnswer: 2,
+        explanation: "The ALU (Arithmetic Logic Unit) performs mathematical and logical operations"
+      }
     ],
-    'OCR Computer Science': [
-      'Computer Systems', 'Computational Thinking', 'Algorithms', 'Programming',
-      'Data Representation', 'Computer Networks', 'Cyber Security', 'Ethical Issues'
-    ],
-    'AQA Combined Science': [
-      'Cell Biology', 'Organisation', 'Infection and Response', 'Bioenergetics',
-      'Atomic Structure', 'Bonding', 'Chemical Changes', 'Forces', 'Waves', 'Electricity'
-    ],
-    'AQA English Literature': [
-      'Poetry Analysis', 'Shakespeare', 'Modern Texts', 'Literary Techniques',
-      'Character Analysis', 'Themes and Context'
-    ],
-    'Edexcel Combined Science': [
-      'Cells and Control', 'Genetics', 'Natural Selection', 'Health and Disease',
-      'Plant Structures', 'Animal Coordination', 'Atomic Structure', 'States of Matter'
-    ],
-    'Edexcel Triple Science': [
-      'Cells and Control', 'Genetics', 'Natural Selection', 'Health and Disease',
-      'Plant Structures', 'Animal Coordination', 'Motion and Forces', 'Conservation of Energy'
+    'OCR Computer Science-Algorithms': [
+      {
+        id: 1,
+        question: "What is the first step in writing an algorithm?",
+        options: ["Write the code", "Test the solution", "Understand the problem", "Choose a programming language"],
+        correctAnswer: 2,
+        explanation: "Understanding the problem is the first and most important step"
+      },
+      {
+        id: 2,
+        question: "Which sorting algorithm has the best average case time complexity?",
+        options: ["Bubble Sort", "Selection Sort", "Quick Sort", "Insertion Sort"],
+        correctAnswer: 2,
+        explanation: "Quick Sort has an average time complexity of O(n log n)"
+      },
+      {
+        id: 3,
+        question: "What is a flowchart used for?",
+        options: ["Writing code", "Visualizing algorithms", "Testing programs", "Storing data"],
+        correctAnswer: 1,
+        explanation: "Flowcharts are used to visualize the flow and logic of algorithms"
+      }
     ]
   };
 
@@ -98,26 +180,85 @@ const Quizzes = () => {
     await signOut();
   };
 
-  const handleCourseClick = (courseId: string, courseTitle: string) => {
-    // If user is not logged in and course is not free, don't allow selection
-    if (!user && !freeCourses.includes(courseTitle)) {
-      return;
+  const getAvailableCourses = () => {
+    return courses.filter(course => 
+      user || freeCourses.includes(course.title)
+    );
+  };
+
+  const getAvailableTopics = (courseTitle: string) => {
+    if (!user && !freeCourses.includes(courseTitle)) return [];
+    return courseTopics[courseTitle as keyof typeof courseTopics] || [];
+  };
+
+  const isTopicLocked = (courseTitle: string, topic: string) => {
+    if (!courseTitle) return true;
+    if (!user && !freeCourses.includes(courseTitle)) return true;
+    const availableQuestions = quizQuestions[`${courseTitle}-${topic}`];
+    return !availableQuestions;
+  };
+
+  const handleCourseChange = (courseTitle: string) => {
+    setSelectedCourse(courseTitle);
+    setSelectedTopic('');
+    setQuizState({ currentQuestion: 0, answers: [], showResults: false });
+  };
+
+  const handleTopicChange = (topic: string) => {
+    setSelectedTopic(topic);
+    setQuizState({ currentQuestion: 0, answers: [], showResults: false });
+  };
+
+  const startQuiz = () => {
+    const questions = getCurrentQuestions();
+    setQuizState({
+      currentQuestion: 0,
+      answers: new Array(questions.length).fill(null),
+      showResults: false
+    });
+  };
+
+  const getCurrentQuestions = (): Question[] => {
+    if (!selectedCourse || !selectedTopic) return [];
+    return quizQuestions[`${selectedCourse}-${selectedTopic}`] || [];
+  };
+
+  const handleAnswerSelect = (answerIndex: number) => {
+    const newAnswers = [...quizState.answers];
+    newAnswers[quizState.currentQuestion] = answerIndex;
+    setQuizState(prev => ({ ...prev, answers: newAnswers }));
+  };
+
+  const nextQuestion = () => {
+    const questions = getCurrentQuestions();
+    if (quizState.currentQuestion < questions.length - 1) {
+      setQuizState(prev => ({ ...prev, currentQuestion: prev.currentQuestion + 1 }));
+    } else {
+      setQuizState(prev => ({ ...prev, showResults: true }));
     }
-    setSelectedCourse(selectedCourse === courseId ? null : courseId);
-    setSelectedTopic(null);
   };
 
-  const handleTopicClick = (topic: string) => {
-    setSelectedTopic(selectedTopic === topic ? null : topic);
+  const previousQuestion = () => {
+    if (quizState.currentQuestion > 0) {
+      setQuizState(prev => ({ ...prev, currentQuestion: prev.currentQuestion - 1 }));
+    }
   };
 
-  const isCourseLocked = (courseTitle: string) => {
-    return !user && !freeCourses.includes(courseTitle);
+  const resetQuiz = () => {
+    const questions = getCurrentQuestions();
+    setQuizState({
+      currentQuestion: 0,
+      answers: new Array(questions.length).fill(null),
+      showResults: false
+    });
   };
 
-  const getSelectedCourseTitle = () => {
-    const course = courses.find(c => c.id === selectedCourse);
-    return course?.title || '';
+  const calculateScore = () => {
+    const questions = getCurrentQuestions();
+    const correctAnswers = quizState.answers.filter((answer, index) => 
+      answer === questions[index]?.correctAnswer
+    ).length;
+    return { correct: correctAnswers, total: questions.length };
   };
 
   const getCourseIcon = (title: string) => {
@@ -230,98 +371,201 @@ const Quizzes = () => {
           )}
         </div>
 
-        {/* Course Selection */}
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-semibold mb-6 text-foreground">Select a Course</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-            {courses.map((course) => (
-              <Card
-                key={course.id}
-                className={`cursor-pointer transition-all duration-300 transform hover:scale-105 ${
-                  isCourseLocked(course.title) 
-                    ? 'opacity-60 bg-muted/20 border-muted' 
-                    : 'bg-card border-border hover:border-primary/50'
-                } ${
-                  selectedCourse === course.id ? 'ring-2 ring-primary shadow-lg' : ''
-                }`}
-                onClick={() => handleCourseClick(course.id, course.title)}
-              >
-                <CardContent className="p-6">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="text-3xl mb-2">{getCourseIcon(course.title)}</div>
-                    {isCourseLocked(course.title) && (
-                      <Lock className="h-5 w-5 text-muted-foreground" />
-                    )}
-                  </div>
-                  <h3 className="text-lg font-semibold text-foreground mb-2">
-                    {course.title}
-                  </h3>
-                  <p className="text-sm text-foreground/60 mb-4">
-                    {course.description}
-                  </p>
-                  {freeCourses.includes(course.title) && (
-                    <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20">
-                      Free Access
-                    </Badge>
-                  )}
-                  <div className="flex items-center justify-center text-primary mt-4">
-                    {selectedCourse === course.id ? (
-                      <ChevronUp className="h-5 w-5" />
-                    ) : (
-                      <ChevronDown className="h-5 w-5" />
-                    )}
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
+        {/* Quiz Interface */}
+        <div className="max-w-4xl mx-auto">
+          <Card className="bg-muted/30 border-border">
+            <CardContent className="p-8">
+              <h2 className="text-2xl font-semibold mb-8 text-center text-foreground">Start Your Quiz</h2>
+              <p className="text-center text-foreground/70 mb-8">Select a subject and topic to begin your personalized quiz</p>
+              
+              <div className="space-y-6">
+                {/* Subject Selection */}
+                <div>
+                  <label className="block text-sm font-medium text-foreground mb-2">Subject</label>
+                  <Select value={selectedCourse} onValueChange={handleCourseChange}>
+                    <SelectTrigger className="w-full bg-background border-border">
+                      <SelectValue placeholder="Choose a subject" />
+                    </SelectTrigger>
+                    <SelectContent className="bg-background border-border">
+                      {getAvailableCourses().map((course) => (
+                        <SelectItem key={course.id} value={course.title}>
+                          <div className="flex items-center space-x-2">
+                            <span>{getCourseIcon(course.title)}</span>
+                            <span>{course.title}</span>
+                            {freeCourses.includes(course.title) && (
+                              <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20 text-xs ml-2">
+                                Free
+                              </Badge>
+                            )}
+                          </div>
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-          {/* Topic Selection */}
-          {selectedCourse && (
-            <div className="animate-fade-in">
-              <h2 className="text-2xl font-semibold mb-6 text-foreground">
-                Select a Topic - {getSelectedCourseTitle()}
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-                {(courseTopics[getSelectedCourseTitle() as keyof typeof courseTopics] || []).map((topic) => (
-                  <Button
-                    key={topic}
-                    variant={selectedTopic === topic ? "default" : "outline"}
-                    className="p-4 h-auto text-left justify-start"
-                    onClick={() => handleTopicClick(topic)}
-                  >
-                    {topic}
-                  </Button>
-                ))}
+                {/* Topic Selection */}
+                {selectedCourse && (
+                  <div className="animate-fade-in">
+                    <label className="block text-sm font-medium text-foreground mb-2">Topic</label>
+                    <Select value={selectedTopic} onValueChange={handleTopicChange}>
+                      <SelectTrigger className="w-full bg-background border-border">
+                        <SelectValue placeholder="Choose a topic" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-border">
+                        {getAvailableTopics(selectedCourse).map((topic) => (
+                          <SelectItem 
+                            key={topic} 
+                            value={topic}
+                            disabled={isTopicLocked(selectedCourse, topic)}
+                          >
+                            <div className="flex items-center space-x-2">
+                              <span>{topic}</span>
+                              {isTopicLocked(selectedCourse, topic) && (
+                                <Lock className="h-3 w-3 text-muted-foreground ml-2" />
+                              )}
+                            </div>
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                {/* Start Quiz Button */}
+                {selectedCourse && selectedTopic && !isTopicLocked(selectedCourse, selectedTopic) && !quizState.showResults && quizState.currentQuestion === 0 && quizState.answers.length === 0 && (
+                  <div className="text-center animate-fade-in">
+                    <Button 
+                      onClick={startQuiz}
+                      className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-3"
+                    >
+                      Start Quiz <ChevronDown className="ml-2 h-4 w-4 rotate-90" />
+                    </Button>
+                  </div>
+                )}
               </div>
-            </div>
+            </CardContent>
+          </Card>
+
+          {/* Quiz Questions */}
+          {selectedCourse && selectedTopic && !isTopicLocked(selectedCourse, selectedTopic) && (quizState.answers.length > 0 || quizState.showResults) && (
+            <Card className="mt-8 animate-fade-in">
+              <CardContent className="p-8">
+                {!quizState.showResults ? (
+                  <div>
+                    <div className="flex justify-between items-center mb-6">
+                      <h3 className="text-xl font-semibold text-foreground">
+                        {selectedTopic} Quiz
+                      </h3>
+                      <span className="text-sm text-foreground/60">
+                        Question {quizState.currentQuestion + 1} of {getCurrentQuestions().length}
+                      </span>
+                    </div>
+                    
+                    {getCurrentQuestions()[quizState.currentQuestion] && (
+                      <div>
+                        <p className="text-lg text-foreground mb-6">
+                          {getCurrentQuestions()[quizState.currentQuestion].question}
+                        </p>
+                        
+                        <div className="space-y-3 mb-6">
+                          {getCurrentQuestions()[quizState.currentQuestion].options.map((option, index) => (
+                            <Button
+                              key={index}
+                              variant={quizState.answers[quizState.currentQuestion] === index ? "default" : "outline"}
+                              className="w-full text-left justify-start p-4 h-auto"
+                              onClick={() => handleAnswerSelect(index)}
+                            >
+                              <span className="mr-3 font-medium">{String.fromCharCode(65 + index)}.</span>
+                              {option}
+                            </Button>
+                          ))}
+                        </div>
+                        
+                        <div className="flex justify-between">
+                          <Button
+                            variant="outline"
+                            onClick={previousQuestion}
+                            disabled={quizState.currentQuestion === 0}
+                          >
+                            Previous
+                          </Button>
+                          <Button
+                            onClick={nextQuestion}
+                            disabled={quizState.answers[quizState.currentQuestion] === null}
+                          >
+                            {quizState.currentQuestion === getCurrentQuestions().length - 1 ? 'Finish' : 'Next'}
+                          </Button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <div className="text-center">
+                    <div className="text-4xl mb-4">🎉</div>
+                    <h3 className="text-2xl font-semibold text-foreground mb-4">Quiz Complete!</h3>
+                    <div className="text-3xl font-bold text-primary mb-6">
+                      {calculateScore().correct} / {calculateScore().total}
+                    </div>
+                    <p className="text-foreground/70 mb-8">
+                      {calculateScore().correct === calculateScore().total 
+                        ? "Perfect score! Excellent work!" 
+                        : calculateScore().correct >= calculateScore().total * 0.7 
+                        ? "Great job! Keep practicing!" 
+                        : "Good effort! Review the topics and try again."}
+                    </p>
+                    
+                    <div className="space-y-4 mb-8">
+                      {getCurrentQuestions().map((question, index) => (
+                        <div key={index} className="text-left border border-border rounded-lg p-4">
+                          <p className="font-medium text-foreground mb-2">{question.question}</p>
+                          <p className={`text-sm mb-1 ${
+                            quizState.answers[index] === question.correctAnswer 
+                              ? 'text-green-600' 
+                              : 'text-red-600'
+                          }`}>
+                            Your answer: {question.options[quizState.answers[index] ?? -1] || 'Not answered'}
+                          </p>
+                          {quizState.answers[index] !== question.correctAnswer && (
+                            <p className="text-sm text-green-600 mb-1">
+                              Correct answer: {question.options[question.correctAnswer]}
+                            </p>
+                          )}
+                          <p className="text-sm text-foreground/60">{question.explanation}</p>
+                        </div>
+                      ))}
+                    </div>
+                    
+                    <Button onClick={resetQuiz} className="mr-4">
+                      Try Again
+                    </Button>
+                    <Button variant="outline" onClick={() => {
+                      setSelectedCourse('');
+                      setSelectedTopic('');
+                      setQuizState({ currentQuestion: 0, answers: [], showResults: false });
+                    }}>
+                      Choose New Topic
+                    </Button>
+                  </div>
+                )}
+              </CardContent>
+            </Card>
           )}
 
-          {/* Quiz Content */}
-          {selectedCourse && selectedTopic && (
-            <Card className="animate-fade-in bg-muted/30">
+          {/* Locked Topic Message */}
+          {selectedCourse && selectedTopic && isTopicLocked(selectedCourse, selectedTopic) && (
+            <Card className="mt-8 animate-fade-in">
               <CardContent className="p-8 text-center">
-                <div className="text-4xl mb-4">🎯</div>
-                <h3 className="text-2xl font-semibold text-foreground mb-4">
-                  {selectedTopic} Quiz
-                </h3>
+                <Lock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
+                <h3 className="text-xl font-semibold text-foreground mb-4">Topic Locked</h3>
                 <p className="text-foreground/70 mb-6">
-                  Get ready to test your knowledge on {selectedTopic} from {getSelectedCourseTitle()}!
+                  This topic doesn't have quiz questions available yet or requires an account to access.
                 </p>
-                <div className="space-y-4">
-                  <p className="text-sm text-foreground/60">
-                    Quiz features coming soon:
-                  </p>
-                  <ul className="text-sm text-foreground/60 space-y-1">
-                    <li>• 10-15 exam-style questions</li>
-                    <li>• Instant feedback with explanations</li>
-                    <li>• Progress tracking and scoring</li>
-                    <li>• Timed practice mode</li>
-                  </ul>
-                  <Button className="mt-6" disabled>
-                    Start Quiz (Coming Soon)
+                {!user && (
+                  <Button onClick={() => window.location.href = '/'}>
+                    Sign Up to Access More Content
                   </Button>
-                </div>
+                )}
               </CardContent>
             </Card>
           )}
