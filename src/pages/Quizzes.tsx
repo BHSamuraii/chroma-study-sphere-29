@@ -58,7 +58,7 @@ const Quizzes = () => {
 
   // Free courses that are unlocked for everyone
   const freeCourses = [
-    'AQA Mathematics',
+    'AQA Mathematics ',
     'OCR Computer Science', 
     'AQA Triple Science'
   ];
@@ -678,11 +678,6 @@ const Quizzes = () => {
                             <span>{course.title}</span>
                             {!isCourseUnlocked(course.title) && (
                               <Lock className="h-3 w-3 text-muted-foreground ml-2" />
-                            )}
-                            {freeCourses.includes(course.title) && (
-                              <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20 text-xs ml-2">
-                                Free
-                              </Badge>
                             )}
                           </div>
                         </SelectItem>
