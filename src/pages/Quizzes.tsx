@@ -50,6 +50,7 @@ const Quizzes = () => {
   // Free courses that are unlocked for everyone
   const freeCourses = [
     'AQA GCSE Triple Science',
+    'AQA Triple Science', 
     'AQA Mathematics'
   ];
 
