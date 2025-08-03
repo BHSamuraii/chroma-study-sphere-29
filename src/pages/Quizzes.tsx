@@ -49,9 +49,9 @@ const Quizzes = () => {
 
   // Free courses that are unlocked for everyone
   const freeCourses = [
-    'OCR Computer Science',
-    'AQA Triple Science', 
-    'AQA Mathematics'
+    'AQA Mathematics',
+    'OCR Computer Science', 
+    'AQA Triple Science'
   ];
 
   // Mock topics for each course
