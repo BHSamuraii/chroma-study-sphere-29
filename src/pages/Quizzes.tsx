@@ -258,12 +258,18 @@ const Quizzes = () => {
     await signOut();
   };
 
-  const getAvailableCourses = () => {
-    return courses;
-  };
-
   const isCourseUnlocked = (courseTitle: string) => {
     return user || freeCourses.includes(courseTitle);
+  };
+
+  const getAvailableCourses = () => {
+    return [...courses].sort((a, b) => {
+      const aUnlocked = isCourseUnlocked(a.title);
+      const bUnlocked = isCourseUnlocked(b.title);
+      if (aUnlocked && !bUnlocked) return -1;
+      if (!aUnlocked && bUnlocked) return 1;
+      return a.title.localeCompare(b.title);
+    });
   };
 
   const isScienceCourse = (courseTitle: string) => {
