@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { ChevronDown, LogOut, User, LayoutDashboard, Lock, ArrowLeft, Clock } from 'lucide-react';
@@ -724,11 +723,6 @@ const Quizzes = () => {
                               <span>{topic.topic_name}</span>
                               {isTopicLocked(topic) && (
                                 <Lock className="h-3 w-3 text-muted-foreground ml-2" />
-                              )}
-                              {topic.is_free && (
-                                <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20 text-xs ml-2">
-                                  Free
-                                </Badge>
                               )}
                             </div>
                           </SelectItem>
