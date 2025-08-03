@@ -3,7 +3,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ChevronDown, ChevronUp, LogOut, User, LayoutDashboard, Lock } from 'lucide-react';
+import { Progress } from '@/components/ui/progress';
+import { ChevronDown, LogOut, User, LayoutDashboard, Lock, ArrowLeft, Clock } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
@@ -27,6 +28,8 @@ interface QuizState {
   currentQuestion: number;
   answers: (number | null)[];
   showResults: boolean;
+  timer: number;
+  isQuizActive: boolean;
 }
 
 const Quizzes = () => {
@@ -37,7 +40,9 @@ const Quizzes = () => {
   const [quizState, setQuizState] = useState<QuizState>({
     currentQuestion: 0,
     answers: [],
-    showResults: false
+    showResults: false,
+    timer: 0,
+    isQuizActive: false
   });
   const { user, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
@@ -45,9 +50,7 @@ const Quizzes = () => {
   // Free courses that are unlocked for everyone
   const freeCourses = [
     'AQA GCSE Triple Science',
-    'AQA Triple Science', 
-    'AQA Mathematics',
-    'OCR Computer Science'
+    'AQA Mathematics'
   ];
 
   // Mock topics for each course
@@ -156,6 +159,17 @@ const Quizzes = () => {
     fetchCourses();
   }, []);
 
+  // Timer effect for quiz
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (quizState.isQuizActive && !quizState.showResults) {
+      interval = setInterval(() => {
+        setQuizState(prev => ({ ...prev, timer: prev.timer + 1 }));
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [quizState.isQuizActive, quizState.showResults]);
+
   const fetchCourses = async () => {
     try {
       const { data, error } = await supabase
@@ -181,32 +195,35 @@ const Quizzes = () => {
   };
 
   const getAvailableCourses = () => {
-    return courses.filter(course => 
-      user || freeCourses.includes(course.title)
-    );
+    return courses;
+  };
+
+  const isCourseUnlocked = (courseTitle: string) => {
+    return user || freeCourses.includes(courseTitle);
   };
 
   const getAvailableTopics = (courseTitle: string) => {
-    if (!user && !freeCourses.includes(courseTitle)) return [];
+    if (!isCourseUnlocked(courseTitle)) return [];
     return courseTopics[courseTitle as keyof typeof courseTopics] || [];
   };
 
   const isTopicLocked = (courseTitle: string, topic: string) => {
     if (!courseTitle) return true;
-    if (!user && !freeCourses.includes(courseTitle)) return true;
+    if (!isCourseUnlocked(courseTitle)) return true;
     const availableQuestions = quizQuestions[`${courseTitle}-${topic}`];
     return !availableQuestions;
   };
 
   const handleCourseChange = (courseTitle: string) => {
+    if (!isCourseUnlocked(courseTitle)) return;
     setSelectedCourse(courseTitle);
     setSelectedTopic('');
-    setQuizState({ currentQuestion: 0, answers: [], showResults: false });
+    setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
   };
 
   const handleTopicChange = (topic: string) => {
     setSelectedTopic(topic);
-    setQuizState({ currentQuestion: 0, answers: [], showResults: false });
+    setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
   };
 
   const startQuiz = () => {
@@ -214,7 +231,9 @@ const Quizzes = () => {
     setQuizState({
       currentQuestion: 0,
       answers: new Array(questions.length).fill(null),
-      showResults: false
+      showResults: false,
+      timer: 0,
+      isQuizActive: true
     });
   };
 
@@ -234,7 +253,7 @@ const Quizzes = () => {
     if (quizState.currentQuestion < questions.length - 1) {
       setQuizState(prev => ({ ...prev, currentQuestion: prev.currentQuestion + 1 }));
     } else {
-      setQuizState(prev => ({ ...prev, showResults: true }));
+      setQuizState(prev => ({ ...prev, showResults: true, isQuizActive: false }));
     }
   };
 
@@ -249,8 +268,16 @@ const Quizzes = () => {
     setQuizState({
       currentQuestion: 0,
       answers: new Array(questions.length).fill(null),
-      showResults: false
+      showResults: false,
+      timer: 0,
+      isQuizActive: true
     });
+  };
+
+  const goBackToSelection = () => {
+    setSelectedCourse('');
+    setSelectedTopic('');
+    setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
   };
 
   const calculateScore = () => {
@@ -261,12 +288,10 @@ const Quizzes = () => {
     return { correct: correctAnswers, total: questions.length };
   };
 
-  const getCourseIcon = (title: string) => {
-    if (title.toLowerCase().includes('science')) return '🧬';
-    if (title.toLowerCase().includes('mathematics') || title.toLowerCase().includes('maths')) return '📐';
-    if (title.toLowerCase().includes('computer')) return '💻';
-    if (title.toLowerCase().includes('english')) return '📚';
-    return '📖';
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   if (loading) {
@@ -280,6 +305,169 @@ const Quizzes = () => {
     );
   }
 
+  // Quiz active view (full page)
+  if (quizState.isQuizActive || quizState.showResults) {
+    return (
+      <div className="min-h-screen bg-background">
+        {/* Quiz Header */}
+        <div className="border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-50">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <Button
+                  variant="ghost"
+                  onClick={goBackToSelection}
+                  className="text-foreground hover:text-primary"
+                >
+                  <ArrowLeft className="h-4 w-4 mr-2" />
+                  Back to Selection
+                </Button>
+                <div className="text-sm text-foreground/60">
+                  {selectedCourse} - {selectedTopic}
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-6">
+                {/* Timer */}
+                <div className="flex items-center space-x-2 text-foreground">
+                  <Clock className="h-4 w-4" />
+                  <span className="font-mono text-sm">{formatTime(quizState.timer)}</span>
+                </div>
+                
+                {/* Progress */}
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-foreground/60">Progress:</span>
+                  <div className="w-32">
+                    <Progress 
+                      value={((quizState.currentQuestion + 1) / getCurrentQuestions().length) * 100} 
+                      className="h-2"
+                    />
+                  </div>
+                  <span className="text-sm text-foreground/60">
+                    {quizState.currentQuestion + 1}/{getCurrentQuestions().length}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Quiz Content */}
+        <div className="container mx-auto px-6 py-12">
+          <div className="max-w-4xl mx-auto">
+            {!quizState.showResults ? (
+              <Card className="border-border">
+                <CardContent className="p-12">
+                  {getCurrentQuestions()[quizState.currentQuestion] && (
+                    <div>
+                      <div className="mb-8">
+                        <div className="flex justify-between items-center mb-6">
+                          <h2 className="text-2xl font-semibold text-foreground">
+                            Question {quizState.currentQuestion + 1}
+                          </h2>
+                          <Badge variant="outline" className="px-3 py-1">
+                            {getCurrentQuestions().length} questions total
+                          </Badge>
+                        </div>
+                        
+                        <p className="text-xl text-foreground leading-relaxed">
+                          {getCurrentQuestions()[quizState.currentQuestion].question}
+                        </p>
+                      </div>
+                      
+                      <div className="space-y-4 mb-12">
+                        {getCurrentQuestions()[quizState.currentQuestion].options.map((option, index) => (
+                          <Button
+                            key={index}
+                            variant={quizState.answers[quizState.currentQuestion] === index ? "default" : "outline"}
+                            className="w-full text-left justify-start p-6 h-auto text-lg"
+                            onClick={() => handleAnswerSelect(index)}
+                          >
+                            <span className="mr-4 font-bold text-xl">{String.fromCharCode(65 + index)}.</span>
+                            {option}
+                          </Button>
+                        ))}
+                      </div>
+                      
+                      <div className="flex justify-between">
+                        <Button
+                          variant="outline"
+                          onClick={previousQuestion}
+                          disabled={quizState.currentQuestion === 0}
+                          size="lg"
+                        >
+                          Previous
+                        </Button>
+                        <Button
+                          onClick={nextQuestion}
+                          disabled={quizState.answers[quizState.currentQuestion] === null}
+                          size="lg"
+                        >
+                          {quizState.currentQuestion === getCurrentQuestions().length - 1 ? 'Finish Quiz' : 'Next Question'}
+                        </Button>
+                      </div>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            ) : (
+              <Card className="border-border">
+                <CardContent className="p-12 text-center">
+                  <div className="text-6xl mb-6">🎉</div>
+                  <h2 className="text-3xl font-bold text-foreground mb-4">Quiz Complete!</h2>
+                  <div className="text-5xl font-bold text-primary mb-6">
+                    {calculateScore().correct} / {calculateScore().total}
+                  </div>
+                  <p className="text-xl text-foreground/70 mb-8">
+                    Time taken: {formatTime(quizState.timer)}
+                  </p>
+                  <p className="text-lg text-foreground/70 mb-12">
+                    {calculateScore().correct === calculateScore().total 
+                      ? "Perfect score! Excellent work!" 
+                      : calculateScore().correct >= calculateScore().total * 0.7 
+                      ? "Great job! Keep practicing!" 
+                      : "Good effort! Review the topics and try again."}
+                  </p>
+                  
+                  <div className="space-y-6 mb-12 text-left">
+                    {getCurrentQuestions().map((question, index) => (
+                      <div key={index} className="border border-border rounded-lg p-6">
+                        <p className="font-semibold text-foreground mb-3 text-lg">{question.question}</p>
+                        <p className={`text-base mb-2 ${
+                          quizState.answers[index] === question.correctAnswer 
+                            ? 'text-green-600' 
+                            : 'text-red-600'
+                        }`}>
+                          Your answer: {question.options[quizState.answers[index] ?? -1] || 'Not answered'}
+                        </p>
+                        {quizState.answers[index] !== question.correctAnswer && (
+                          <p className="text-base text-green-600 mb-2">
+                            Correct answer: {question.options[question.correctAnswer]}
+                          </p>
+                        )}
+                        <p className="text-sm text-foreground/60">{question.explanation}</p>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="flex justify-center space-x-4">
+                    <Button onClick={resetQuiz} size="lg">
+                      Try Again
+                    </Button>
+                    <Button variant="outline" onClick={goBackToSelection} size="lg">
+                      Choose New Topic
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Course selection view
   return (
     <div className="min-h-screen bg-background">
       {/* Navigation */}
@@ -376,22 +564,28 @@ const Quizzes = () => {
           <Card className="bg-muted/30 border-border">
             <CardContent className="p-8">
               <h2 className="text-2xl font-semibold mb-8 text-center text-foreground">Start Your Quiz</h2>
-              <p className="text-center text-foreground/70 mb-8">Select a subject and topic to begin your personalized quiz</p>
+              <p className="text-center text-foreground/70 mb-8">Select a course and topic to begin your personalized quiz</p>
               
               <div className="space-y-6">
-                {/* Subject Selection */}
+                {/* Course Selection */}
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-2">Subject</label>
+                  <label className="block text-sm font-medium text-foreground mb-2">Course</label>
                   <Select value={selectedCourse} onValueChange={handleCourseChange}>
                     <SelectTrigger className="w-full bg-background border-border">
-                      <SelectValue placeholder="Choose a subject" />
+                      <SelectValue placeholder="Choose a course" />
                     </SelectTrigger>
                     <SelectContent className="bg-background border-border">
                       {getAvailableCourses().map((course) => (
-                        <SelectItem key={course.id} value={course.title}>
+                        <SelectItem 
+                          key={course.id} 
+                          value={course.title}
+                          disabled={!isCourseUnlocked(course.title)}
+                        >
                           <div className="flex items-center space-x-2">
-                            <span>{getCourseIcon(course.title)}</span>
                             <span>{course.title}</span>
+                            {!isCourseUnlocked(course.title) && (
+                              <Lock className="h-3 w-3 text-muted-foreground ml-2" />
+                            )}
                             {freeCourses.includes(course.title) && (
                               <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20 text-xs ml-2">
                                 Free
@@ -433,7 +627,7 @@ const Quizzes = () => {
                 )}
 
                 {/* Start Quiz Button */}
-                {selectedCourse && selectedTopic && !isTopicLocked(selectedCourse, selectedTopic) && !quizState.showResults && quizState.currentQuestion === 0 && quizState.answers.length === 0 && (
+                {selectedCourse && selectedTopic && !isTopicLocked(selectedCourse, selectedTopic) && (
                   <div className="text-center animate-fade-in">
                     <Button 
                       onClick={startQuiz}
@@ -446,111 +640,6 @@ const Quizzes = () => {
               </div>
             </CardContent>
           </Card>
-
-          {/* Quiz Questions */}
-          {selectedCourse && selectedTopic && !isTopicLocked(selectedCourse, selectedTopic) && (quizState.answers.length > 0 || quizState.showResults) && (
-            <Card className="mt-8 animate-fade-in">
-              <CardContent className="p-8">
-                {!quizState.showResults ? (
-                  <div>
-                    <div className="flex justify-between items-center mb-6">
-                      <h3 className="text-xl font-semibold text-foreground">
-                        {selectedTopic} Quiz
-                      </h3>
-                      <span className="text-sm text-foreground/60">
-                        Question {quizState.currentQuestion + 1} of {getCurrentQuestions().length}
-                      </span>
-                    </div>
-                    
-                    {getCurrentQuestions()[quizState.currentQuestion] && (
-                      <div>
-                        <p className="text-lg text-foreground mb-6">
-                          {getCurrentQuestions()[quizState.currentQuestion].question}
-                        </p>
-                        
-                        <div className="space-y-3 mb-6">
-                          {getCurrentQuestions()[quizState.currentQuestion].options.map((option, index) => (
-                            <Button
-                              key={index}
-                              variant={quizState.answers[quizState.currentQuestion] === index ? "default" : "outline"}
-                              className="w-full text-left justify-start p-4 h-auto"
-                              onClick={() => handleAnswerSelect(index)}
-                            >
-                              <span className="mr-3 font-medium">{String.fromCharCode(65 + index)}.</span>
-                              {option}
-                            </Button>
-                          ))}
-                        </div>
-                        
-                        <div className="flex justify-between">
-                          <Button
-                            variant="outline"
-                            onClick={previousQuestion}
-                            disabled={quizState.currentQuestion === 0}
-                          >
-                            Previous
-                          </Button>
-                          <Button
-                            onClick={nextQuestion}
-                            disabled={quizState.answers[quizState.currentQuestion] === null}
-                          >
-                            {quizState.currentQuestion === getCurrentQuestions().length - 1 ? 'Finish' : 'Next'}
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                ) : (
-                  <div className="text-center">
-                    <div className="text-4xl mb-4">🎉</div>
-                    <h3 className="text-2xl font-semibold text-foreground mb-4">Quiz Complete!</h3>
-                    <div className="text-3xl font-bold text-primary mb-6">
-                      {calculateScore().correct} / {calculateScore().total}
-                    </div>
-                    <p className="text-foreground/70 mb-8">
-                      {calculateScore().correct === calculateScore().total 
-                        ? "Perfect score! Excellent work!" 
-                        : calculateScore().correct >= calculateScore().total * 0.7 
-                        ? "Great job! Keep practicing!" 
-                        : "Good effort! Review the topics and try again."}
-                    </p>
-                    
-                    <div className="space-y-4 mb-8">
-                      {getCurrentQuestions().map((question, index) => (
-                        <div key={index} className="text-left border border-border rounded-lg p-4">
-                          <p className="font-medium text-foreground mb-2">{question.question}</p>
-                          <p className={`text-sm mb-1 ${
-                            quizState.answers[index] === question.correctAnswer 
-                              ? 'text-green-600' 
-                              : 'text-red-600'
-                          }`}>
-                            Your answer: {question.options[quizState.answers[index] ?? -1] || 'Not answered'}
-                          </p>
-                          {quizState.answers[index] !== question.correctAnswer && (
-                            <p className="text-sm text-green-600 mb-1">
-                              Correct answer: {question.options[question.correctAnswer]}
-                            </p>
-                          )}
-                          <p className="text-sm text-foreground/60">{question.explanation}</p>
-                        </div>
-                      ))}
-                    </div>
-                    
-                    <Button onClick={resetQuiz} className="mr-4">
-                      Try Again
-                    </Button>
-                    <Button variant="outline" onClick={() => {
-                      setSelectedCourse('');
-                      setSelectedTopic('');
-                      setQuizState({ currentQuestion: 0, answers: [], showResults: false });
-                    }}>
-                      Choose New Topic
-                    </Button>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
 
           {/* Locked Topic Message */}
           {selectedCourse && selectedTopic && isTopicLocked(selectedCourse, selectedTopic) && (
