@@ -554,7 +554,7 @@ const Quizzes = () => {
             <div className="mt-4 p-4 bg-accent/10 border border-accent rounded-lg max-w-lg mx-auto">
               <p className="text-sm text-foreground/70">
                 <Lock className="h-4 w-4 inline mr-1" />
-                Some courses require an account. Sign up to access all content!
+                Access to full courses require enrolment. Sign up to study all content!!
               </p>
             </div>
           )}
