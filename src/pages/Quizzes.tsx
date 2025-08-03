@@ -16,6 +16,13 @@ interface Course {
   image_url: string | null;
 }
 
+interface Topic {
+  id: string;
+  topic_name: string;
+  subject?: string;
+  is_free: boolean;
+}
+
 interface Question {
   id: number;
   question: string;
@@ -34,8 +41,10 @@ interface QuizState {
 
 const Quizzes = () => {
   const [selectedCourse, setSelectedCourse] = useState<string>('');
+  const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [selectedTopic, setSelectedTopic] = useState<string>('');
   const [courses, setCourses] = useState<Course[]>([]);
+  const [topics, setTopics] = useState<Topic[]>([]);
   const [loading, setLoading] = useState(true);
   const [quizState, setQuizState] = useState<QuizState>({
     currentQuestion: 0,
@@ -53,12 +62,6 @@ const Quizzes = () => {
     'OCR Computer Science', 
     'AQA Triple Science'
   ];
-
-  // Mock topics for each course
-  const courseTopics = {
-    'AQA Mathematics': ['Number', 'Algebra'],
-    'OCR Computer Science': ['Computer Systems', 'Algorithms']
-  };
 
   // Quiz questions for available topics
   const quizQuestions: Record<string, Question[]> = {
@@ -153,12 +156,52 @@ const Quizzes = () => {
         correctAnswer: 1,
         explanation: "Flowcharts are used to visualize the flow and logic of algorithms"
       }
+    ],
+    'AQA Triple Science-Biology-Cell Biology': [
+      {
+        id: 1,
+        question: "What is the function of mitochondria?",
+        options: ["Protein synthesis", "Energy production", "Cell division", "Waste removal"],
+        correctAnswer: 1,
+        explanation: "Mitochondria are the powerhouses of the cell, producing ATP for energy"
+      },
+      {
+        id: 2,
+        question: "Which organelle contains the cell's genetic material?",
+        options: ["Nucleus", "Cytoplasm", "Ribosome", "Vacuole"],
+        correctAnswer: 0,
+        explanation: "The nucleus contains the cell's DNA and controls cell activities"
+      }
+    ],
+    'AQA Triple Science-Chemistry-Atomic Structure': [
+      {
+        id: 1,
+        question: "What is the atomic number of an element?",
+        options: ["Number of neutrons", "Number of protons", "Number of electrons", "Mass number"],
+        correctAnswer: 1,
+        explanation: "The atomic number is the number of protons in an atom's nucleus"
+      }
+    ],
+    'AQA Triple Science-Physics-Forces': [
+      {
+        id: 1,
+        question: "What is Newton's first law of motion?",
+        options: ["F = ma", "An object at rest stays at rest", "Action-reaction", "Energy conservation"],
+        correctAnswer: 1,
+        explanation: "Newton's first law states that an object at rest stays at rest unless acted upon by a force"
+      }
     ]
   };
 
   useEffect(() => {
     fetchCourses();
   }, []);
+
+  useEffect(() => {
+    if (selectedCourse) {
+      fetchTopics();
+    }
+  }, [selectedCourse]);
 
   // Timer effect for quiz
   useEffect(() => {
@@ -187,6 +230,27 @@ const Quizzes = () => {
     }
   };
 
+  const fetchTopics = async () => {
+    if (!selectedCourse) return;
+    
+    try {
+      const course = courses.find(c => c.title === selectedCourse);
+      if (!course) return;
+
+      const { data, error } = await supabase
+        .from('topics')
+        .select('*')
+        .eq('course_id', course.id)
+        .order('subject', { nullsFirst: true })
+        .order('topic_name');
+
+      if (error) throw error;
+      setTopics(data || []);
+    } catch (error) {
+      console.error('Error fetching topics:', error);
+    }
+  };
+
   const handleDashboardClick = () => {
     navigate('/dashboard');
   };
@@ -203,27 +267,49 @@ const Quizzes = () => {
     return user || freeCourses.includes(courseTitle);
   };
 
-  const getAvailableTopics = (courseTitle: string) => {
-    if (!isCourseUnlocked(courseTitle)) return [];
-    return courseTopics[courseTitle as keyof typeof courseTopics] || [];
+  const isScienceCourse = (courseTitle: string) => {
+    return courseTitle.toLowerCase().includes('triple') || courseTitle.toLowerCase().includes('combined');
   };
 
-  const isTopicLocked = (courseTitle: string, topic: string) => {
-    if (!courseTitle) return true;
-    if (!isCourseUnlocked(courseTitle)) return true;
-    const availableQuestions = quizQuestions[`${courseTitle}-${topic}`];
-    return !availableQuestions;
+  const getAvailableSubjects = () => {
+    if (!isScienceCourse(selectedCourse)) return [];
+    const subjects = [...new Set(topics.filter(t => t.subject).map(t => t.subject!))];
+    return subjects;
+  };
+
+  const getAvailableTopics = () => {
+    if (isScienceCourse(selectedCourse)) {
+      if (!selectedSubject) return [];
+      return topics.filter(t => t.subject === selectedSubject);
+    } else {
+      return topics.filter(t => !t.subject);
+    }
+  };
+
+  const isTopicLocked = (topic: Topic) => {
+    if (!user && !topic.is_free) return true;
+    const questionKey = isScienceCourse(selectedCourse) && topic.subject
+      ? `${selectedCourse}-${topic.subject}-${topic.topic_name}`
+      : `${selectedCourse}-${topic.topic_name}`;
+    return !quizQuestions[questionKey];
   };
 
   const handleCourseChange = (courseTitle: string) => {
     if (!isCourseUnlocked(courseTitle)) return;
     setSelectedCourse(courseTitle);
+    setSelectedSubject('');
     setSelectedTopic('');
     setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
   };
 
-  const handleTopicChange = (topic: string) => {
-    setSelectedTopic(topic);
+  const handleSubjectChange = (subject: string) => {
+    setSelectedSubject(subject);
+    setSelectedTopic('');
+    setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
+  };
+
+  const handleTopicChange = (topicName: string) => {
+    setSelectedTopic(topicName);
     setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
   };
 
@@ -240,7 +326,12 @@ const Quizzes = () => {
 
   const getCurrentQuestions = (): Question[] => {
     if (!selectedCourse || !selectedTopic) return [];
-    return quizQuestions[`${selectedCourse}-${selectedTopic}`] || [];
+    
+    const questionKey = isScienceCourse(selectedCourse) && selectedSubject
+      ? `${selectedCourse}-${selectedSubject}-${selectedTopic}`
+      : `${selectedCourse}-${selectedTopic}`;
+    
+    return quizQuestions[questionKey] || [];
   };
 
   const handleAnswerSelect = (answerIndex: number) => {
@@ -277,6 +368,7 @@ const Quizzes = () => {
 
   const goBackToSelection = () => {
     setSelectedCourse('');
+    setSelectedSubject('');
     setSelectedTopic('');
     setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
   };
@@ -324,7 +416,7 @@ const Quizzes = () => {
                   Back to Selection
                 </Button>
                 <div className="text-sm text-foreground/60">
-                  {selectedCourse} - {selectedTopic}
+                  {selectedCourse} {selectedSubject && `- ${selectedSubject}`} - {selectedTopic}
                 </div>
               </div>
               
@@ -599,8 +691,27 @@ const Quizzes = () => {
                   </Select>
                 </div>
 
+                {/* Subject Selection (for science courses) */}
+                {selectedCourse && isScienceCourse(selectedCourse) && (
+                  <div className="animate-fade-in">
+                    <label className="block text-sm font-medium text-foreground mb-2">Subject</label>
+                    <Select value={selectedSubject} onValueChange={handleSubjectChange}>
+                      <SelectTrigger className="w-full bg-background border-border">
+                        <SelectValue placeholder="Choose a subject" />
+                      </SelectTrigger>
+                      <SelectContent className="bg-background border-border">
+                        {getAvailableSubjects().map((subject) => (
+                          <SelectItem key={subject} value={subject}>
+                            {subject}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
                 {/* Topic Selection */}
-                {selectedCourse && (
+                {selectedCourse && (!isScienceCourse(selectedCourse) || selectedSubject) && (
                   <div className="animate-fade-in">
                     <label className="block text-sm font-medium text-foreground mb-2">Topic</label>
                     <Select value={selectedTopic} onValueChange={handleTopicChange}>
@@ -608,16 +719,21 @@ const Quizzes = () => {
                         <SelectValue placeholder="Choose a topic" />
                       </SelectTrigger>
                       <SelectContent className="bg-background border-border">
-                        {getAvailableTopics(selectedCourse).map((topic) => (
+                        {getAvailableTopics().map((topic) => (
                           <SelectItem 
-                            key={topic} 
-                            value={topic}
-                            disabled={isTopicLocked(selectedCourse, topic)}
+                            key={topic.id} 
+                            value={topic.topic_name}
+                            disabled={isTopicLocked(topic)}
                           >
                             <div className="flex items-center space-x-2">
-                              <span>{topic}</span>
-                              {isTopicLocked(selectedCourse, topic) && (
+                              <span>{topic.topic_name}</span>
+                              {isTopicLocked(topic) && (
                                 <Lock className="h-3 w-3 text-muted-foreground ml-2" />
+                              )}
+                              {topic.is_free && (
+                                <Badge variant="secondary" className="bg-green-500/10 text-green-600 border-green-500/20 text-xs ml-2">
+                                  Free
+                                </Badge>
                               )}
                             </div>
                           </SelectItem>
@@ -628,7 +744,7 @@ const Quizzes = () => {
                 )}
 
                 {/* Start Quiz Button */}
-                {selectedCourse && selectedTopic && !isTopicLocked(selectedCourse, selectedTopic) && (
+                {selectedCourse && selectedTopic && getCurrentQuestions().length > 0 && (
                   <div className="text-center animate-fade-in">
                     <Button 
                       onClick={startQuiz}
@@ -643,7 +759,7 @@ const Quizzes = () => {
           </Card>
 
           {/* Locked Topic Message */}
-          {selectedCourse && selectedTopic && isTopicLocked(selectedCourse, selectedTopic) && (
+          {selectedCourse && selectedTopic && getCurrentQuestions().length === 0 && (
             <Card className="mt-8 animate-fade-in">
               <CardContent className="p-8 text-center">
                 <Lock className="h-12 w-12 text-muted-foreground mx-auto mb-4" />

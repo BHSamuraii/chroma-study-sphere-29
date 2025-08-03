@@ -79,6 +79,44 @@ export type Database = {
           },
         ]
       }
+      topics: {
+        Row: {
+          course_id: string
+          created_at: string
+          id: string
+          is_free: boolean
+          subject: string | null
+          topic_name: string
+          updated_at: string
+        }
+        Insert: {
+          course_id: string
+          created_at?: string
+          id?: string
+          is_free?: boolean
+          subject?: string | null
+          topic_name: string
+          updated_at?: string
+        }
+        Update: {
+          course_id?: string
+          created_at?: string
+          id?: string
+          is_free?: boolean
+          subject?: string | null
+          topic_name?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "topics_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
