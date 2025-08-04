@@ -58,7 +58,7 @@ const Quizzes = () => {
 
   // Free courses that are unlocked for everyone
   const freeCourses = [
-    'AQA Mathematics ',
+    'AQA Mathematics',
     'OCR Computer Science', 
     'AQA Triple Science'
   ];
@@ -134,6 +134,29 @@ const Quizzes = () => {
         explanation: "The ALU (Arithmetic Logic Unit) performs mathematical and logical operations"
       }
     ],
+    'AQA Triple Science-Physics-Forces': [
+      {
+        id: 1,
+        question: "What is the unit of force?",
+        options: ["Joule", "Newton", "Watt", "Pascal"],
+        correctAnswer: 1,
+        explanation: "Force is measured in Newtons (N), named after Sir Isaac Newton"
+      },
+      {
+        id: 2,
+        question: "What is Newton's first law of motion?",
+        options: ["F = ma", "Objects at rest stay at rest unless acted upon by a force", "For every action there is an equal and opposite reaction", "Force equals mass times acceleration"],
+        correctAnswer: 1,
+        explanation: "Newton's first law states that objects at rest stay at rest and objects in motion stay in motion unless acted upon by an unbalanced force"
+      },
+      {
+        id: 3,
+        question: "If a 10N force is applied to a 2kg object, what is its acceleration?",
+        options: ["5 m/s²", "20 m/s²", "0.2 m/s²", "12 m/s²"],
+        correctAnswer: 0,
+        explanation: "Using F = ma, acceleration = F/m = 10N/2kg = 5 m/s²"
+      }
+    ],
     'AQA Triple Science-Biology-Cell Biology': [
       {
         id: 1,
@@ -157,15 +180,6 @@ const Quizzes = () => {
         options: ["Number of neutrons", "Number of protons", "Number of electrons", "Mass number"],
         correctAnswer: 1,
         explanation: "The atomic number is the number of protons in an atom's nucleus"
-      }
-    ],
-    'AQA Triple Science-Physics-Forces': [
-      {
-        id: 1,
-        question: "What is Newton's first law of motion?",
-        options: ["F = ma", "An object at rest stays at rest", "Action-reaction", "Energy conservation"],
-        correctAnswer: 1,
-        explanation: "Newton's first law states that an object at rest stays at rest unless acted upon by a force"
       }
     ]
   };
