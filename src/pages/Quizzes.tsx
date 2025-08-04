@@ -111,7 +111,7 @@ const Quizzes = () => {
         explanation: "y = 2(3) + 1 = 6 + 1 = 7"
       }
     ],
-    'OCR Computer Science-Computer Systems': [
+    'OCR Computer Science-SLR 1.1 - Systems Architecture': [
       {
         id: 1,
         question: "What does CPU stand for?",
@@ -132,29 +132,6 @@ const Quizzes = () => {
         options: ["Store data", "Control operations", "Perform calculations", "Manage memory"],
         correctAnswer: 2,
         explanation: "The ALU (Arithmetic Logic Unit) performs mathematical and logical operations"
-      }
-    ],
-    'OCR Computer Science-Algorithms': [
-      {
-        id: 1,
-        question: "What is the first step in writing an algorithm?",
-        options: ["Write the code", "Test the solution", "Understand the problem", "Choose a programming language"],
-        correctAnswer: 2,
-        explanation: "Understanding the problem is the first and most important step"
-      },
-      {
-        id: 2,
-        question: "Which sorting algorithm has the best average case time complexity?",
-        options: ["Bubble Sort", "Selection Sort", "Quick Sort", "Insertion Sort"],
-        correctAnswer: 2,
-        explanation: "Quick Sort has an average time complexity of O(n log n)"
-      },
-      {
-        id: 3,
-        question: "What is a flowchart used for?",
-        options: ["Writing code", "Visualizing algorithms", "Testing programs", "Storing data"],
-        correctAnswer: 1,
-        explanation: "Flowcharts are used to visualize the flow and logic of algorithms"
       }
     ],
     'AQA Triple Science-Biology-Cell Biology': [
@@ -288,7 +265,8 @@ const Quizzes = () => {
       if (!selectedSubject) return [];
       return topics.filter(t => t.subject === selectedSubject);
     } else {
-      return topics.filter(t => !t.subject);
+      // For non-science courses, show all topics regardless of subject
+      return topics;
     }
   };
 
