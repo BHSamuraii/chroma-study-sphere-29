@@ -53,6 +53,7 @@ const Quizzes = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [topics, setTopics] = useState<Topic[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
+  const [dbQuestions, setDbQuestions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [quizState, setQuizState] = useState<QuizState>({
     currentQuestion: 0,
@@ -231,6 +232,12 @@ const Quizzes = () => {
     }
   }, [selectedCourse]);
 
+  useEffect(() => {
+    if (selectedCourse && selectedTopic) {
+      fetchQuestions();
+    }
+  }, [selectedCourse, selectedTopic, selectedSubject]);
+
   // Timer effect for quiz
   useEffect(() => {
     let interval: NodeJS.Timeout;
@@ -292,6 +299,28 @@ const Quizzes = () => {
       setTopics(data || []);
     } catch (error) {
       console.error('Error fetching topics:', error);
+    }
+  };
+
+  const fetchQuestions = async () => {
+    if (!selectedCourse || !selectedTopic) return;
+    
+    try {
+      const course = courses.find(c => c.title === selectedCourse);
+      const topic = topics.find(t => t.topic_name === selectedTopic);
+      
+      if (!course || !topic) return;
+
+      const { data, error } = await supabase
+        .from('quiz_questions')
+        .select('*')
+        .eq('course_id', course.id)
+        .eq('topic_id', topic.id);
+
+      if (error) throw error;
+      setDbQuestions(data || []);
+    } catch (error) {
+      console.error('Error fetching questions:', error);
     }
   };
 
@@ -399,11 +428,14 @@ const Quizzes = () => {
   const getCurrentQuestions = (): Question[] => {
     if (!selectedCourse || !selectedTopic) return [];
     
-    const questionKey = isScienceCourse(selectedCourse) && selectedSubject
-      ? `${selectedCourse}-${selectedSubject}-${selectedTopic}`
-      : `${selectedCourse}-${selectedTopic}`;
-    
-    return quizQuestions[questionKey] || [];
+    // Convert database questions to the expected format
+    return dbQuestions.map(q => ({
+      id: parseInt(q.id),
+      question: q.question_text,
+      options: q.question_type === 'mcq' ? [q.option_a, q.option_b, q.option_c, q.option_d].filter(Boolean) : [],
+      correctAnswer: q.question_type === 'mcq' ? ['a', 'b', 'c', 'd'].indexOf(q.correct_answer) : 0,
+      explanation: q.explanation || ''
+    }));
   };
 
   const handleAnswerSelect = (answerIndex: number) => {
