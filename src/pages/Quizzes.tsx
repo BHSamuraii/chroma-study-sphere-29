@@ -348,11 +348,26 @@ const Quizzes = () => {
   };
 
   const isTopicLocked = (topic: Topic) => {
-    if (!user && !topic.is_free) return true;
-    const questionKey = isScienceCourse(selectedCourse) && topic.subject
-      ? `${selectedCourse}-${topic.subject}-${topic.topic_name}`
-      : `${selectedCourse}-${topic.topic_name}`;
-    return !quizQuestions[questionKey];
+    if (!user) {
+      // For non-logged-in users, only free topics are unlocked
+      return !topic.is_free;
+    }
+    
+    // If user is logged in and enrolled in the course, all topics are unlocked
+    const course = courses.find(c => c.title === selectedCourse);
+    if (course) {
+      const isEnrolled = enrollments.some(enrollment => enrollment.course_id === course.id);
+      if (isEnrolled) {
+        // Check if quiz questions exist for this topic
+        const questionKey = isScienceCourse(selectedCourse) && topic.subject
+          ? `${selectedCourse}-${topic.subject}-${topic.topic_name}`
+          : `${selectedCourse}-${topic.topic_name}`;
+        return !quizQuestions[questionKey];
+      }
+    }
+    
+    // If not enrolled, only free topics are unlocked
+    return !topic.is_free;
   };
 
   const handleCourseChange = (courseTitle: string) => {
