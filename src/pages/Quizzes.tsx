@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { ChevronDown, LogOut, User, LayoutDashboard, Lock, ArrowLeft, Clock } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -711,21 +712,24 @@ const Quizzes = () => {
                       <SelectTrigger className="w-full bg-background border-border">
                         <SelectValue placeholder="Choose a topic" />
                       </SelectTrigger>
-                      <SelectContent className="bg-background border-border">
-                        {getAvailableTopics().map((topic) => (
-                          <SelectItem 
-                            key={topic.id} 
-                            value={topic.topic_name}
-                            disabled={isTopicLocked(topic)}
-                          >
-                            <div className="flex items-center space-x-2">
-                              <span>{topic.topic_name}</span>
-                              {isTopicLocked(topic) && (
-                                <Lock className="h-3 w-3 text-muted-foreground ml-2" />
-                              )}
-                            </div>
-                          </SelectItem>
-                        ))}
+                      <SelectContent className="bg-muted/50 border-border backdrop-blur-sm">
+                        <ScrollArea className="h-[200px]">
+                          {getAvailableTopics().map((topic) => (
+                            <SelectItem 
+                              key={topic.id} 
+                              value={topic.topic_name}
+                              disabled={isTopicLocked(topic)}
+                              className="hover:bg-muted/70"
+                            >
+                              <div className="flex items-center space-x-2">
+                                <span>{topic.topic_name}</span>
+                                {isTopicLocked(topic) && (
+                                  <Lock className="h-3 w-3 text-muted-foreground ml-2" />
+                                )}
+                              </div>
+                            </SelectItem>
+                          ))}
+                        </ScrollArea>
                       </SelectContent>
                     </Select>
                   </div>
