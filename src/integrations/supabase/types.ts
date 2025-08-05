@@ -79,6 +79,69 @@ export type Database = {
           },
         ]
       }
+      quiz_questions: {
+        Row: {
+          correct_answer: string
+          course_id: string
+          created_at: string
+          explanation: string | null
+          id: string
+          option_a: string | null
+          option_b: string | null
+          option_c: string | null
+          option_d: string | null
+          question_text: string
+          question_type: Database["public"]["Enums"]["question_type"]
+          topic_id: string
+          updated_at: string
+        }
+        Insert: {
+          correct_answer: string
+          course_id: string
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          option_a?: string | null
+          option_b?: string | null
+          option_c?: string | null
+          option_d?: string | null
+          question_text: string
+          question_type: Database["public"]["Enums"]["question_type"]
+          topic_id: string
+          updated_at?: string
+        }
+        Update: {
+          correct_answer?: string
+          course_id?: string
+          created_at?: string
+          explanation?: string | null
+          id?: string
+          option_a?: string | null
+          option_b?: string | null
+          option_c?: string | null
+          option_d?: string | null
+          question_text?: string
+          question_type?: Database["public"]["Enums"]["question_type"]
+          topic_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "quiz_questions_course_id_fkey"
+            columns: ["course_id"]
+            isOneToOne: false
+            referencedRelation: "courses"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "quiz_questions_topic_id_fkey"
+            columns: ["topic_id"]
+            isOneToOne: false
+            referencedRelation: "topics"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       topics: {
         Row: {
           course_id: string
@@ -125,7 +188,7 @@ export type Database = {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      question_type: "mcq" | "short_answer"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -252,6 +315,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      question_type: ["mcq", "short_answer"],
+    },
   },
 } as const
