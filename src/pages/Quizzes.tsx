@@ -358,15 +358,11 @@ const Quizzes = () => {
     if (course) {
       const isEnrolled = enrollments.some(enrollment => enrollment.course_id === course.id);
       if (isEnrolled) {
-        // Check if quiz questions exist for this topic
-        const questionKey = isScienceCourse(selectedCourse) && topic.subject
-          ? `${selectedCourse}-${topic.subject}-${topic.topic_name}`
-          : `${selectedCourse}-${topic.topic_name}`;
-        return !quizQuestions[questionKey];
+        return false; // All topics unlocked for enrolled users
       }
     }
     
-    // If not enrolled, only free topics are unlocked
+    // If not enrolled, only free topics are unlocked  
     return !topic.is_free;
   };
 
