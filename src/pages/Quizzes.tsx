@@ -712,7 +712,7 @@ const Quizzes = () => {
                       <SelectTrigger className="w-full bg-background border-border">
                         <SelectValue placeholder="Choose a topic" />
                       </SelectTrigger>
-                      <SelectContent className="bg-purple-890 border-border">
+                      <SelectContent className="bg-purple-820 border-border">
                         <div className="relative">
                           {getAvailableTopics().length > 5 && (
                             <div className="absolute top-2 left-1/2 transform -translate-x-1/2 z-10 pointer-events-none">
