@@ -17,6 +17,12 @@ interface Course {
   image_url: string | null;
 }
 
+interface Enrollment {
+  id: string;
+  course_id: string;
+  user_id: string;
+}
+
 interface Topic {
   id: string;
   topic_name: string;
@@ -46,6 +52,7 @@ const Quizzes = () => {
   const [selectedTopic, setSelectedTopic] = useState<string>('');
   const [courses, setCourses] = useState<Course[]>([]);
   const [topics, setTopics] = useState<Topic[]>([]);
+  const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [loading, setLoading] = useState(true);
   const [quizState, setQuizState] = useState<QuizState>({
     currentQuestion: 0,
@@ -174,6 +181,29 @@ const Quizzes = () => {
         explanation: "The nucleus contains the cell's DNA and controls cell activities"
       }
     ],
+    'AQA Triple Science-Biology-Cell Structure and Transport': [
+      {
+        id: 1,
+        question: "What is the primary function of the cell membrane?",
+        options: ["Energy production", "Protein synthesis", "Control entry and exit of substances", "DNA storage"],
+        correctAnswer: 2,
+        explanation: "The cell membrane controls what enters and exits the cell, maintaining selective permeability"
+      },
+      {
+        id: 2,
+        question: "Which process allows water to move across cell membranes?",
+        options: ["Active transport", "Osmosis", "Photosynthesis", "Respiration"],
+        correctAnswer: 1,
+        explanation: "Osmosis is the movement of water molecules across a partially permeable membrane from a dilute to a concentrated solution"
+      },
+      {
+        id: 3,
+        question: "What is diffusion?",
+        options: ["Movement of water only", "Movement of particles from high to low concentration", "Movement requiring energy", "Movement of large molecules only"],
+        correctAnswer: 1,
+        explanation: "Diffusion is the net movement of particles from an area of higher concentration to an area of lower concentration"
+      }
+    ],
     'AQA Triple Science-Chemistry-Atomic Structure': [
       {
         id: 1,
@@ -188,6 +218,12 @@ const Quizzes = () => {
   useEffect(() => {
     fetchCourses();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      fetchEnrollments();
+    }
+  }, [user]);
 
   useEffect(() => {
     if (selectedCourse) {
@@ -222,6 +258,22 @@ const Quizzes = () => {
     }
   };
 
+  const fetchEnrollments = async () => {
+    if (!user) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('enrollments')
+        .select('*')
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+      setEnrollments(data || []);
+    } catch (error) {
+      console.error('Error fetching enrollments:', error);
+    }
+  };
+
   const fetchTopics = async () => {
     if (!selectedCourse) return;
     
@@ -252,7 +304,17 @@ const Quizzes = () => {
   };
 
   const isCourseUnlocked = (courseTitle: string) => {
-    return user || freeCourses.includes(courseTitle);
+    // If user is not logged in, only free courses are unlocked
+    if (!user) {
+      return freeCourses.includes(courseTitle);
+    }
+    
+    // If user is logged in, check if they're enrolled in the course
+    const course = courses.find(c => c.title === courseTitle);
+    if (!course) return false;
+    
+    const isEnrolled = enrollments.some(enrollment => enrollment.course_id === course.id);
+    return isEnrolled;
   };
 
   const getAvailableCourses = () => {
