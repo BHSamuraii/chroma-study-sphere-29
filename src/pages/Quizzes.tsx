@@ -308,19 +308,20 @@ const Quizzes = () => {
 
   const fetchQuestions = async () => {
     if (!selectedCourse || !selectedTopic) return;
-    
+    // Only fetch from Supabase when user is logged in
+    if (!user) {
+      setDbQuestions([]);
+      return;
+    }
     try {
       const course = courses.find(c => c.title === selectedCourse);
       const topic = topics.find(t => t.topic_name === selectedTopic);
-      
       if (!course || !topic) return;
-
       const { data, error } = await supabase
         .from('quiz_questions')
         .select('*')
         .eq('course_id', course.id)
         .eq('topic_id', topic.id);
-
       if (error) throw error;
       setDbQuestions(data || []);
     } catch (error) {
@@ -435,13 +436,24 @@ const Quizzes = () => {
 
   const getCurrentQuestions = (): Question[] => {
     if (!selectedCourse || !selectedTopic) return [];
-    
-    // Convert database questions to the expected format
-    return dbQuestions.map(q => ({
-      id: parseInt(q.id),
+
+    // If user is logged out, use built-in questions and avoid Supabase
+    if (!user) {
+      const key = isScienceCourse(selectedCourse) && selectedSubject
+        ? `${selectedCourse}-${selectedSubject}-${selectedTopic}`
+        : `${selectedCourse}-${selectedTopic}`;
+      return quizQuestions[key] || [];
+    }
+
+    // Logged-in: convert database questions to the expected format
+    return dbQuestions.map((q) => ({
+      id: typeof q.id === 'number' ? q.id : 0,
       question: q.question_text,
-      options: q.question_type === 'mcq' ? [q.option_a, q.option_b, q.option_c, q.option_d].filter(Boolean) : [],
-      correctAnswer: q.question_type === 'mcq' ? ['a', 'b', 'c', 'd'].indexOf(q.correct_answer) : 0,
+      options: q.question_type === 'mcq'
+        ? [q.option_a, q.option_b, q.option_c, q.option_d].filter(Boolean)
+        : [],
+      correctAnswer:
+        q.question_type === 'mcq' ? ['a', 'b', 'c', 'd'].indexOf(q.correct_answer) : 0,
       explanation: q.explanation || ''
     }));
   };
@@ -490,6 +502,22 @@ const Quizzes = () => {
   const mapIndexToLetter = (idx: number) => ['a', 'b', 'c', 'd'][idx] ?? '';
 
   const isAnswerCorrect = (index: number) => {
+    const currentQ = getCurrentQuestions()[index];
+    if (!currentQ) return false;
+
+    // When logged out, compare against local questions
+    if (!user) {
+      if (currentQ.options.length > 0) {
+        const ansIdx = quizState.answers[index];
+        if (ansIdx === null || ansIdx === undefined) return false;
+        return ansIdx === currentQ.correctAnswer;
+      }
+      // No short-answer local questions for now
+      const userText = (shortAnswers[index] ?? '').trim();
+      return userText.length > 0 && false;
+    }
+
+    // Logged-in: use DB source of truth
     const dbQ = dbQuestions[index];
     if (!dbQ) return false;
 
