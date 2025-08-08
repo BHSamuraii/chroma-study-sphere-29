@@ -45,7 +45,7 @@ export const DashboardHeader = () => {
                 className="text-foreground hover:bg-accent/20"
               >
                 <FileText className="w-4 h-4 mr-2" />
-                Exam Papers
+                Past Papers
               </Button>
               
               <Button 

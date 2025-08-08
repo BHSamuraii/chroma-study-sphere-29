@@ -161,8 +161,10 @@ const ExamPapers = () => {
                   Dashboard
                 </Button>
               )}
-              <Link to="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</Link>
-              <Link to="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</Link>
+              {!user && (
+                <Link to="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</Link>
+              )}
+              <Link to="/exampapers" className="text-foreground hover:text-primary transition-colors">Past Papers</Link>
               <Link to="/quizzes" className="text-foreground hover:text-primary transition-colors">Quizzes</Link>
               <Link to="/lessons" className="text-foreground hover:text-primary transition-colors">Lessons</Link>
               <Link to="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</Link>
@@ -214,7 +216,7 @@ const ExamPapers = () => {
       <div className="container mx-auto px-6 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">
-            Exam Papers
+            Past Papers
           </h1>
           <p className="text-xl text-foreground/70 max-w-2xl mx-auto">
             Access past papers for your subjects (mark schemes all included!)

@@ -122,8 +122,10 @@ const EdTechHomepage = () => {
                   Dashboard
                 </Button>
               )}
-              <a href="#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</a>
-              <a href="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</a>
+              {!user && (
+                <a href="#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</a>
+              )}
+              <a href="/exampapers" className="text-foreground hover:text-primary transition-colors">Past Papers</a>
               <a href="/quizzes" className="text-foreground hover:text-primary transition-colors">Quizzes</a>
               <a href="/lessons" className="text-foreground hover:text-primary transition-colors">Lessons</a>
               <a href="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</a>
