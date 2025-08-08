@@ -699,6 +699,11 @@ const Quizzes = () => {
                             Correct answer: {question.options[question.correctAnswer]}
                           </p>
                         )}
+                        {question.options.length === 0 && !isAnswerCorrect(index) && (
+                          <p className="text-base text-green-600 mb-2">
+                            Correct answer: {dbQuestions[index]?.correct_answer}
+                          </p>
+                        )}
                         <p className="text-sm text-foreground/60">{question.explanation}</p>
                       </div>
                     ))}
