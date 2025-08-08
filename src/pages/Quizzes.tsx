@@ -485,14 +485,33 @@ const Quizzes = () => {
     setShortAnswers({});
   };
 
-  const calculateScore = () => {
-    const questions = getCurrentQuestions();
-    const correctAnswers = quizState.answers.filter((answer, index) => 
-      answer === questions[index]?.correctAnswer
-    ).length;
-    return { correct: correctAnswers, total: questions.length };
+  const mapIndexToLetter = (idx: number) => ['a', 'b', 'c', 'd'][idx] ?? '';
+
+  const isAnswerCorrect = (index: number) => {
+    const dbQ = dbQuestions[index];
+    if (!dbQ) return false;
+
+    if (dbQ.question_type === 'mcq') {
+      const ansIdx = quizState.answers[index];
+      if (ansIdx === null || ansIdx === undefined) return false;
+      const letter = mapIndexToLetter(ansIdx);
+      return letter === dbQ.correct_answer;
+    }
+
+    // Short answer: direct text match with DB's correct_answer
+    const userText = (shortAnswers[index] ?? '').trim();
+    const correctText = (dbQ.correct_answer ?? '');
+    return userText === correctText;
   };
 
+  const calculateScore = () => {
+    const total = getCurrentQuestions().length;
+    let correct = 0;
+    for (let i = 0; i < total; i++) {
+      if (isAnswerCorrect(i)) correct++;
+    }
+    return { correct, total };
+  };
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
@@ -662,8 +681,12 @@ const Quizzes = () => {
                         <p
                           className={`text-base mb-2 ${
                             question.options.length > 0
-                              ? (quizState.answers[index] === question.correctAnswer ? 'text-green-600' : 'text-red-600')
-                              : 'text-foreground'
+                              ? (quizState.answers[index] !== null
+                                  ? (isAnswerCorrect(index) ? 'text-green-600' : 'text-red-600')
+                                  : 'text-foreground')
+                              : (shortAnswers[index]?.trim()
+                                  ? (isAnswerCorrect(index) ? 'text-green-600' : 'text-red-600')
+                                  : 'text-foreground')
                           }`}
                         >
                           Your answer:{' '}
