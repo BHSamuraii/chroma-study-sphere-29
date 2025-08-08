@@ -204,7 +204,7 @@ const Lessons = () => {
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-gradient">Lessons</h1>
           <p className="text-xl text-foreground/70 max-w-2xl mx-auto">
-            Select courses on the left to see their lesson videos. Click a video to watch in a popup player.
+            Select courses on the left to see their lesson videos.
           </p>
         </div>
 
