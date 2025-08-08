@@ -5,6 +5,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Textarea } from '@/components/ui/textarea';
 import { ChevronDown, LogOut, User, LayoutDashboard, Lock, ArrowLeft, Clock, ChevronUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -54,6 +55,7 @@ const Quizzes = () => {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [dbQuestions, setDbQuestions] = useState<any[]>([]);
+  const [shortAnswers, setShortAnswers] = useState<Record<number, string>>({});
   const [loading, setLoading] = useState(true);
   const [quizState, setQuizState] = useState<QuizState>({
     currentQuestion: 0,
@@ -401,21 +403,25 @@ const Quizzes = () => {
     setSelectedSubject('');
     setSelectedTopic('');
     setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
+    setShortAnswers({});
   };
 
   const handleSubjectChange = (subject: string) => {
     setSelectedSubject(subject);
     setSelectedTopic('');
     setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
+    setShortAnswers({});
   };
 
   const handleTopicChange = (topicName: string) => {
     setSelectedTopic(topicName);
     setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
+    setShortAnswers({});
   };
 
   const startQuiz = () => {
     const questions = getCurrentQuestions();
+    setShortAnswers({});
     setQuizState({
       currentQuestion: 0,
       answers: new Array(questions.length).fill(null),
@@ -461,6 +467,7 @@ const Quizzes = () => {
 
   const resetQuiz = () => {
     const questions = getCurrentQuestions();
+    setShortAnswers({});
     setQuizState({
       currentQuestion: 0,
       answers: new Array(questions.length).fill(null),
@@ -475,6 +482,7 @@ const Quizzes = () => {
     setSelectedSubject('');
     setSelectedTopic('');
     setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
+    setShortAnswers({});
   };
 
   const calculateScore = () => {
@@ -586,6 +594,23 @@ const Quizzes = () => {
                         ))}
                       </div>
                       
+                      {getCurrentQuestions()[quizState.currentQuestion].options.length === 0 && (
+                        <div className="mb-12">
+                          <label className="block text-sm font-medium text-foreground mb-2">Your Answer</label>
+                          <Textarea
+                            placeholder="Type your answer here..."
+                            value={shortAnswers[quizState.currentQuestion] ?? ""}
+                            onChange={(e) =>
+                              setShortAnswers((prev) => ({
+                                ...prev,
+                                [quizState.currentQuestion]: e.target.value,
+                              }))
+                            }
+                            className="min-h-[120px]"
+                          />
+                        </div>
+                      )}
+                      
                       <div className="flex justify-between">
                         <Button
                           variant="outline"
@@ -597,7 +622,11 @@ const Quizzes = () => {
                         </Button>
                         <Button
                           onClick={nextQuestion}
-                          disabled={quizState.answers[quizState.currentQuestion] === null}
+                          disabled={
+                            getCurrentQuestions()[quizState.currentQuestion].options.length === 0
+                              ? !(shortAnswers[quizState.currentQuestion]?.trim())
+                              : quizState.answers[quizState.currentQuestion] === null
+                          }
                           size="lg"
                         >
                           {quizState.currentQuestion === getCurrentQuestions().length - 1 ? 'Finish Quiz' : 'Next Question'}
@@ -630,14 +659,19 @@ const Quizzes = () => {
                     {getCurrentQuestions().map((question, index) => (
                       <div key={index} className="border border-border rounded-lg p-6">
                         <p className="font-semibold text-foreground mb-3 text-lg">{question.question}</p>
-                        <p className={`text-base mb-2 ${
-                          quizState.answers[index] === question.correctAnswer 
-                            ? 'text-green-600' 
-                            : 'text-red-600'
-                        }`}>
-                          Your answer: {question.options[quizState.answers[index] ?? -1] || 'Not answered'}
+                        <p
+                          className={`text-base mb-2 ${
+                            question.options.length > 0
+                              ? (quizState.answers[index] === question.correctAnswer ? 'text-green-600' : 'text-red-600')
+                              : 'text-foreground'
+                          }`}
+                        >
+                          Your answer:{' '}
+                          {question.options.length > 0
+                            ? (question.options[quizState.answers[index] ?? -1] || 'Not answered')
+                            : (shortAnswers[index]?.trim() || 'Not answered')}
                         </p>
-                        {quizState.answers[index] !== question.correctAnswer && (
+                        {question.options.length > 0 && quizState.answers[index] !== question.correctAnswer && (
                           <p className="text-base text-green-600 mb-2">
                             Correct answer: {question.options[question.correctAnswer]}
                           </p>
