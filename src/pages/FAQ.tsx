@@ -100,8 +100,9 @@ const FAQ = () => {
               )}
               <a href="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</a>
               <a href="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</a>
+              <a href="/quizzes" className="text-foreground hover:text-primary transition-colors">Quizzes</a>
+              <a href="/lessons" className="text-foreground hover:text-primary transition-colors">Lessons</a>
               <a href="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</a>
-              <a href="/#testimonials" className="text-foreground hover:text-primary transition-colors">Reviews</a>
               
               {user ? (
                 <div className="flex items-center space-x-4">

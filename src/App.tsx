@@ -11,6 +11,7 @@ import ExamPapers from "./pages/ExamPapers";
 import Quizzes from "./pages/Quizzes";
 import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
+import Lessons from "./pages/Lessons";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/exampapers" element={<ExamPapers />} />
               <Route path="/quizzes" element={<Quizzes />} />
+              <Route path="/lessons" element={<Lessons />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
