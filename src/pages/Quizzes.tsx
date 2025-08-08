@@ -8,7 +8,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
 import { ChevronDown, LogOut, User, LayoutDashboard, Lock, ArrowLeft, Clock, ChevronUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Course {
@@ -734,12 +734,12 @@ const Quizzes = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <a
-                href="/"
+              <Link
+                to="/"
                 className="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity cursor-pointer"
               >
                 gcsewala
-              </a>
+              </Link>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               {user && (
@@ -752,11 +752,11 @@ const Quizzes = () => {
                   Dashboard
                 </Button>
               )}
-              <a href="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</a>
-              <a href="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</a>
-              <a href="/quizzes" className="text-foreground hover:text-primary transition-colors">Quizzes</a>
-              <a href="/lessons" className="text-foreground hover:text-primary transition-colors">Lessons</a>
-              <a href="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</a>
+              <Link to="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</Link>
+              <Link to="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</Link>
+              <Link to="/quizzes" className="text-foreground hover:text-primary transition-colors">Quizzes</Link>
+              <Link to="/lessons" className="text-foreground hover:text-primary transition-colors">Lessons</Link>
+              <Link to="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</Link>
               {user ? (
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2">

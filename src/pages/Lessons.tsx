@@ -5,7 +5,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, LogOut, Play, User } from "lucide-react";
 
@@ -50,7 +50,7 @@ const Lessons = () => {
       );
     }
 
-    const canonical = document.querySelector('link[rel="canonical"]');
+    const canonical = document.querySelector('link[rel="canonical"]') as HTMLLinkElement | null;
     if (!canonical) {
       const link = document.createElement("link");
       link.rel = "canonical";
@@ -150,9 +150,9 @@ const Lessons = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <a href="/" className="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity cursor-pointer">
+              <Link to="/" className="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity cursor-pointer">
                 gcsewala
-              </a>
+              </Link>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               {user && (
@@ -161,11 +161,11 @@ const Lessons = () => {
                   Dashboard
                 </Button>
               )}
-              <a href="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</a>
-              <a href="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</a>
-              <a href="/quizzes" className="text-foreground hover:text-primary transition-colors">Quizzes</a>
-              <a href="/lessons" className="text-foreground hover:text-primary transition-colors">Lessons</a>
-              <a href="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</a>
+              <Link to="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</Link>
+              <Link to="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</Link>
+              <Link to="/quizzes" className="text-foreground hover:text-primary transition-colors">Quizzes</Link>
+              <Link to="/lessons" className="text-foreground hover:text-primary transition-colors">Lessons</Link>
+              <Link to="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</Link>
               {user ? (
                 <div className="flex items-center space-x-4">
                   <div className="flex items-center space-x-2">
@@ -183,10 +183,10 @@ const Lessons = () => {
                 </div>
               ) : (
                 <>
-                  <Button variant="outline" className="mr-2" onClick={() => (window.location.href = "/")} disabled={loading}>
+                  <Button variant="outline" className="mr-2" onClick={() => (navigate("/"))} disabled={loading}>
                     Log In
                   </Button>
-                  <Button className="animate-pulse-glow" onClick={() => (window.location.href = "/")} disabled={loading}>
+                  <Button className="animate-pulse-glow" onClick={() => (navigate("/"))} disabled={loading}>
                     Get Started
                   </Button>
                 </>

@@ -3,7 +3,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   ChevronDown,
   ChevronUp,
@@ -80,12 +80,12 @@ const FAQ = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <button 
-                onClick={handleTitleClick}
+              <Link 
+                to="/"
                 className="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity cursor-pointer"
               >
                 gcsewala
-              </button>
+              </Link>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               {user && (
@@ -98,11 +98,11 @@ const FAQ = () => {
                   Dashboard
                 </Button>
               )}
-              <a href="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</a>
-              <a href="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</a>
-              <a href="/quizzes" className="text-foreground hover:text-primary transition-colors">Quizzes</a>
-              <a href="/lessons" className="text-foreground hover:text-primary transition-colors">Lessons</a>
-              <a href="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</a>
+              <Link to="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</Link>
+              <Link to="/exampapers" className="text-foreground hover:text-primary transition-colors">Exam Papers</Link>
+              <Link to="/quizzes" className="text-foreground hover:text-primary transition-colors">Quizzes</Link>
+              <Link to="/lessons" className="text-foreground hover:text-primary transition-colors">Lessons</Link>
+              <Link to="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</Link>
               
               {user ? (
                 <div className="flex items-center space-x-4">
@@ -129,14 +129,14 @@ const FAQ = () => {
                   <Button 
                     variant="outline" 
                     className="mr-2"
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => navigate('/')}
                     disabled={loading}
                   >
                     Log In
                   </Button>
                   <Button 
                     className="animate-pulse-glow" 
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => navigate('/')}
                     disabled={loading}
                   >
                     Get Started

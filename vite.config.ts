@@ -28,5 +28,8 @@ export default defineConfig(({ mode }) => ({
         dashboard: path.resolve(__dirname, 'dashboard.html')
       }
     }
+  },
+  optimizeDeps: {
+    include: ["react", "react-dom"],
   }
 }));

@@ -6,7 +6,7 @@ import FlashcardCounter from './FlashcardCounter';
 import SubjectCarousel from './SubjectCarousel';
 import SignInDialog from './SignInDialog';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { 
   Users, 
   Star, 
@@ -104,12 +104,12 @@ const EdTechHomepage = () => {
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <a 
-                href="/"
+              <Link 
+                to="/"
                 className="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity cursor-pointer"
               >
                 gcsewala
-              </a>
+              </Link>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               {user && (
