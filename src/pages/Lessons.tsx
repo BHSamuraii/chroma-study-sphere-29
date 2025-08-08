@@ -6,6 +6,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useAuth } from "@/hooks/useAuth";
 import { useNavigate, Link } from "react-router-dom";
+import { useAuthDialog } from "@/components/AuthDialogProvider";
 import { supabase } from "@/integrations/supabase/client";
 import { LayoutDashboard, LogOut, Play, User } from "lucide-react";
 
@@ -27,7 +28,7 @@ interface CourseVideo {
 const Lessons = () => {
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
-
+  const { openAuth } = useAuthDialog();
   const [courses, setCourses] = useState<Course[]>([]);
   const [selectedCourseIds, setSelectedCourseIds] = useState<string[]>([]);
   const [videos, setVideos] = useState<CourseVideo[]>([]);
@@ -183,10 +184,10 @@ const Lessons = () => {
                 </div>
               ) : (
                 <>
-                  <Button variant="outline" className="mr-2" onClick={() => (navigate("/"))} disabled={loading}>
+                  <Button variant="outline" className="mr-2" onClick={() => openAuth('signin')} disabled={loading}>
                     Log In
                   </Button>
-                  <Button className="animate-pulse-glow" onClick={() => (navigate("/"))} disabled={loading}>
+                  <Button className="animate-pulse-glow" onClick={() => openAuth('signup')} disabled={loading}>
                     Get Started
                   </Button>
                 </>

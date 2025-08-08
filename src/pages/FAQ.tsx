@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuthDialog } from '@/components/AuthDialogProvider';
 import { 
   ChevronDown,
   ChevronUp,
@@ -21,6 +22,7 @@ const FAQ = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
+  const { openAuth } = useAuthDialog();
 
   const handleDashboardClick = () => {
     navigate('/dashboard');
@@ -129,14 +131,14 @@ const FAQ = () => {
                   <Button 
                     variant="outline" 
                     className="mr-2"
-                    onClick={() => navigate('/')}
+                    onClick={() => openAuth('signin')}
                     disabled={loading}
                   >
                     Log In
                   </Button>
                   <Button 
                     className="animate-pulse-glow" 
-                    onClick={() => navigate('/')}
+                    onClick={() => openAuth('signup')}
                     disabled={loading}
                   >
                     Get Started

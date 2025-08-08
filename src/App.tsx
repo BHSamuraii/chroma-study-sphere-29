@@ -12,6 +12,7 @@ import Quizzes from "./pages/Quizzes";
 import FAQ from "./pages/FAQ";
 import NotFound from "./pages/NotFound";
 const Lessons = lazy(() => import("./pages/Lessons"));
+import { AuthDialogProvider } from "@/components/AuthDialogProvider";
 
 const queryClient = new QueryClient();
 
@@ -22,19 +23,21 @@ function App() {
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
-            <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" /></div>}>
-              <Routes>
-                <Route path="/" element={<Index />} />
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/exampapers" element={<ExamPapers />} />
-                <Route path="/quizzes" element={<Quizzes />} />
-                <Route path="/lessons" element={<Lessons />} />
-                <Route path="/faq" element={<FAQ />} />
-                <Route path="*" element={<NotFound />} />
-              </Routes>
-            </Suspense>
-          </BrowserRouter>
+          <AuthDialogProvider>
+            <BrowserRouter>
+              <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary" /></div>}>
+                <Routes>
+                  <Route path="/" element={<Index />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/exampapers" element={<ExamPapers />} />
+                  <Route path="/quizzes" element={<Quizzes />} />
+                  <Route path="/lessons" element={<Lessons />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </BrowserRouter>
+          </AuthDialogProvider>
         </TooltipProvider>
       </ThemeProvider>
     </QueryClientProvider>

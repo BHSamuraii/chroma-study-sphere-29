@@ -4,12 +4,14 @@ import { Button } from '@/components/ui/button';
 import { ChevronDown, ChevronUp, LogOut, User, LayoutDashboard } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuthDialog } from '@/components/AuthDialogProvider';
 
 const ExamPapers = () => {
   const [selectedSubject, setSelectedSubject] = useState<string | null>(null);
   const [selectedBoard, setSelectedBoard] = useState<string | null>(null);
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
+  const { openAuth } = useAuthDialog();
 
   const handleDashboardClick = () => {
     navigate('/dashboard');
@@ -189,14 +191,14 @@ const ExamPapers = () => {
                   <Button
                     variant="outline"
                     className="mr-2"
-                    onClick={() => navigate('/')}
+                    onClick={() => openAuth('signin')}
                     disabled={loading}
                   >
                     Log In
                   </Button>
                   <Button
                     className="animate-pulse-glow"
-                    onClick={() => navigate('/')}
+                    onClick={() => openAuth('signup')}
                     disabled={loading}
                   >
                     Get Started

@@ -9,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { ChevronDown, LogOut, User, LayoutDashboard, Lock, ArrowLeft, Clock, ChevronUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
+import { useAuthDialog } from '@/components/AuthDialogProvider';
 import { supabase } from '@/integrations/supabase/client';
 
 interface Course {
@@ -66,6 +67,7 @@ const Quizzes = () => {
   });
   const { user, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
+  const { openAuth } = useAuthDialog();
 
   // Free courses that are unlocked for everyone
   const freeCourses = [
@@ -782,14 +784,14 @@ const Quizzes = () => {
                   <Button
                     variant="outline"
                     className="mr-2"
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => openAuth('signin')}
                     disabled={authLoading}
                   >
                     Log In
                   </Button>
                   <Button
                     className="animate-pulse-glow"
-                    onClick={() => window.location.href = '/'}
+                    onClick={() => openAuth('signup')}
                     disabled={authLoading}
                   >
                     Get Started
@@ -941,7 +943,7 @@ const Quizzes = () => {
                   This topic doesn't have quiz questions available yet or requires an account to access.
                 </p>
                 {!user && (
-                  <Button onClick={() => window.location.href = '/'}>
+                  <Button onClick={() => openAuth('signup')}>
                     Sign Up to Access More Content
                   </Button>
                 )}
