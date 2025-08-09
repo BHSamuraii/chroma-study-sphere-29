@@ -20,7 +20,6 @@ interface CourseVideo {
   id: string;
   course_id: string;
   title: string;
-  description?: string | null;
   video_url: string;
   thumbnail_url?: string | null;
 }
@@ -91,7 +90,7 @@ const Lessons = () => {
       try {
         const { data, error } = await supabase
           .from("course_videos")
-          .select("id, course_id, title, description, video_url, thumbnail_url")
+          .select("id, course_id, title, video_url, thumbnail_url")
           .in("course_id", selectedCourseIds)
           .order("created_at", { ascending: false });
         if (error) throw error;
@@ -269,9 +268,6 @@ const Lessons = () => {
                     <CardContent className="p-4">
                       <p className="text-sm text-primary/80 mb-1">{courseTitleById[v.course_id] || "Course"}</p>
                       <h3 className="font-semibold text-foreground line-clamp-2">{v.title}</h3>
-                      {v.description && (
-                        <p className="text-sm text-foreground/70 mt-1 line-clamp-2">{v.description}</p>
-                      )}
                     </CardContent>
                   </button>
                 </Card>
@@ -300,9 +296,6 @@ const Lessons = () => {
                 allowFullScreen
               />
             </div>
-          )}
-          {activeVideo?.description && (
-            <p className="text-sm text-foreground/70 mt-3">{activeVideo.description}</p>
           )}
         </DialogContent>
       </Dialog>
