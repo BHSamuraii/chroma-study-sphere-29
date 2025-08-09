@@ -8,7 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuthDialog } from "@/components/AuthDialogProvider";
 import { supabase } from "@/integrations/supabase/client";
-import { LayoutDashboard, LogOut, Play, User } from "lucide-react";
+import { LayoutDashboard, LogOut, Play, User, Lock } from "lucide-react";
 
 interface Course {
   id: string;
@@ -33,7 +33,7 @@ const Lessons = () => {
   const [videos, setVideos] = useState<CourseVideo[]>([]);
   const [activeVideo, setActiveVideo] = useState<CourseVideo | null>(null);
   const [fetching, setFetching] = useState(false);
-
+  const [enrolledCourseIds, setEnrolledCourseIds] = useState<string[]>([]);
   // SEO basics
   useEffect(() => {
     document.title = "Lessons – Course Video Library";
@@ -72,8 +72,6 @@ const Lessons = () => {
           .order("title");
         if (error) throw error;
         setCourses(data || []);
-        // Default: show all accessible courses (public RLS will filter videos later)
-        setSelectedCourseIds((data || []).map((c) => c.id));
       } catch (e) {
         console.error("Error loading courses", e);
       } finally {
@@ -82,6 +80,20 @@ const Lessons = () => {
     };
     load();
   }, []);
+
+  // Fetch user's enrollments when logged in
+  useEffect(() => {
+    if (!user) { setEnrolledCourseIds([]); return; }
+    const loadEnrollments = async () => {
+      const { data, error } = await supabase
+        .from('enrollments')
+        .select('course_id');
+      if (!error) {
+        setEnrolledCourseIds((data || []).map((e) => e.course_id));
+      }
+    };
+    loadEnrollments();
+  }, [user]);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -104,15 +116,25 @@ const Lessons = () => {
     fetchVideos();
   }, [selectedCourseIds]);
 
+  // Sync selection with auth/enrollments
+  useEffect(() => {
+    if (user) {
+      setSelectedCourseIds(enrolledCourseIds);
+    } else {
+      setSelectedCourseIds(courses.map((c) => c.id));
+    }
+  }, [user, enrolledCourseIds, courses]);
+
   const toggleCourse = (id: string) => {
     setSelectedCourseIds((prev) =>
       prev.includes(id) ? prev.filter((c) => c !== id) : [...prev, id]
     );
   };
 
-  const allSelected = selectedCourseIds.length === courses.length && courses.length > 0;
+  const selectableIds = user ? enrolledCourseIds : courses.map((c) => c.id);
+  const allSelected = selectedCourseIds.length === selectableIds.length && selectableIds.length > 0;
   const toggleAll = () => {
-    setSelectedCourseIds(allSelected ? [] : courses.map((c) => c.id));
+    setSelectedCourseIds(allSelected ? [] : selectableIds);
   };
 
   const courseTitleById = useMemo(() => Object.fromEntries(courses.map(c => [c.id, c.title])), [courses]);
@@ -213,22 +235,37 @@ const Lessons = () => {
             <Card className="border-border">
               <CardContent className="p-4">
                 <div className="flex items-center justify-between mb-3">
-                  <h2 className="text-lg font-semibold text-foreground">Filter by Course</h2>
+                  <h2 className="text-lg font-semibold text-foreground">
+                    {user ? "Filter by Enrolled Courses" : "Filter by Course"}
+                  </h2>
                   <Button variant="outline" size="sm" onClick={toggleAll}>
                     {allSelected ? "Clear" : "Select all"}
                   </Button>
                 </div>
+                {user && enrolledCourseIds.length === 0 && (
+                  <p className="text-sm text-muted-foreground mb-2">Please enroll to watch lessons.</p>
+                )}
                 <ScrollArea className="h-[360px] pr-2">
                   <div className="space-y-3">
-                    {courses.map((course) => (
-                      <label key={course.id} className="flex items-start gap-3 cursor-pointer">
-                        <Checkbox
-                          checked={selectedCourseIds.includes(course.id)}
-                          onCheckedChange={() => toggleCourse(course.id)}
-                        />
-                        <span className="text-sm leading-5 text-foreground">{course.title}</span>
-                      </label>
-                    ))}
+                    {courses.map((course) => {
+                      const isEnrolled = enrolledCourseIds.includes(course.id);
+                      const isLocked = user ? !isEnrolled && !course.is_free : false;
+                      return (
+                        <label key={course.id} className="flex items-start gap-3">
+                          <Checkbox
+                            checked={selectedCourseIds.includes(course.id)}
+                            onCheckedChange={() => { if (!isLocked) toggleCourse(course.id); }}
+                            disabled={isLocked}
+                          />
+                          <span className="text-sm leading-5 text-foreground flex items-center gap-2">
+                            {course.title}
+                            {user && !isEnrolled && !course.is_free && (
+                              <Lock className="h-3.5 w-3.5 text-muted-foreground" aria-label="Locked" />
+                            )}
+                          </span>
+                        </label>
+                      );
+                    })}
                     {courses.length === 0 && (
                       <p className="text-sm text-muted-foreground">No courses available yet.</p>
                     )}
