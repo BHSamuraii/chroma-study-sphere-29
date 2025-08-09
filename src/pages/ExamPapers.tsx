@@ -51,7 +51,7 @@ const ExamPapers = () => {
     },
     chemistry: {
       AQA: [
-        { name: "Paper 1 2023 (Triple)", url: "https://example.com/chemistry-aqa-p1-2023-triple.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper1Triple.pdf" },
         { name: "Paper 2 2023 (Triple)", url: "https://example.com/chemistry-aqa-p2-2023-triple.pdf" },
         { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper1Triple.pdf" },
         { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryTriplePaper2.pdf" },
