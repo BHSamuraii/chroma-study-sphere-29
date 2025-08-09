@@ -29,8 +29,8 @@ const ExamPapers = () => {
   const paperLinks = {
     biology: {
       AQA: [
-        { name: "Paper 1 2023 (Triple)", url: "https://example.com/biology-aqa-p1-2023-triple.pdf" },
-        { name: "Paper 2 2023 (Triple)", url: "https://example.com/biology-aqa-p2-2023-triple.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper1Triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper2Triple.pdf" },
         { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper1Triple.pdf" },
         { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper2Triple.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/biology-aqa-p1-2023-combined.pdf" },
