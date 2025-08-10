@@ -128,7 +128,7 @@ const ExamPapers = () => {
         { name: "Paper 2 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper2Combined.pdf" },
       ],
       Edexcel: [
-        { name: "Paper 1 2023 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/Exam-materials/1bi0-1h-rms-20230824.pdf },
+        { name: "Paper 1 2023 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/Exam-materials/1bi0-1h-rms-20230824.pdf" },
         { name: "Paper 2 2023 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/Exam-materials/1bi0-2h-rms-20230824.pdf" },
         { name: "Paper 1 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1bi0-1h-rms-20220825.pdf" },
         { name: "Paper 2 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1bi0-2h-rms-20220825.pdf" },
