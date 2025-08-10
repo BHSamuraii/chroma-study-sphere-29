@@ -62,7 +62,7 @@ const ExamPapers = () => {
         { name: "Paper 2 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper2Combined.pdf" },
       ],
       Edexcel: [
-        { name: "Paper 1 2023 (Triple)", url: "https://example.com/chemistry-edexcel-p1-2023-triple.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/Exam-materials/1ch0-1h-que-20230523.pdf" },
         { name: "Paper 2 2023 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/Exam-materials/1ch0-2h-que-20230614.pdf" },
         { name: "Paper 1 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1ch0-1h-que-20220528.pdf" },
         { name: "Paper 2 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1ch0-2h-que-20220621.pdf" },
@@ -86,8 +86,8 @@ const ExamPapers = () => {
       Edexcel: [
         { name: "Paper 1 2023 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/Exam-materials/1ph0-1h-que-20230526.pdf" },
         { name: "Paper 2 2023 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/Exam-materials/1ph0-2h-que-20230617.pdf" },
-        { name: "Paper 1 2022 (Triple)", url: "https://example.com/physics-edexcel-p1-2022-triple.pdf" },
-        { name: "Paper 2 2022 (Triple)", url: "https://example.com/physics-edexcel-p2-2022-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1ph0-1h-que-20220610.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1ph0-2h-que-20220624.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/physics-edexcel-p1-2023-combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/physics-edexcel-p2-2023-combined.pdf" },
         { name: "Paper 1 2022 (Combined)", url: "https://example.com/physics-edexcel-p1-2022-combined.pdf" },
@@ -104,12 +104,12 @@ const ExamPapers = () => {
         { name: "Paper 3 2022 (Higher)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2022/june/AQA-83003H-QP-JUN22.PDF" },
       ],
       Edexcel: [
-        { name: "Paper 1 2023 (Higher)", url: "https://example.com/maths-edexcel-p1-2023-higher.pdf" },
-        { name: "Paper 2 2023 (Higher)", url: "https://example.com/maths-edexcel-p2-2023-higher.pdf" },
-        { name: "Paper 3 2023 (Higher)", url: "https://example.com/maths-edexcel-p3-2023-higher.pdf" },
-        { name: "Paper 1 2022 (Higher)", url: "https://example.com/maths-edexcel-p1-2022-higher.pdf" },
-        { name: "Paper 2 2022 (Higher)", url: "https://example.com/maths-edexcel-p2-2022-higher.pdf" },
-        { name: "Paper 3 2022 (Higher)", url: "https://example.com/maths-edexcel-p3-2022-higher.pdf" },
+        { name: "Paper 1 2023 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Mathematics/2015/Exam-materials/1ma1-1h-que-20230520.pdf" },
+        { name: "Paper 2 2023 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Mathematics/2015/Exam-materials/1ma1-2h-que-20230608.pdf" },
+        { name: "Paper 3 2023 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Mathematics/2015/Exam-materials/1ma1-3h-que-20230615.pdf" },
+        { name: "Paper 1 2022 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/mathematics/2015/exam-materials/1ma1-1h-que-20220521.pdf" },
+        { name: "Paper 2 2022 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/mathematics/2015/exam-materials/1ma1-2h-que-20220608.pdf" },
+        { name: "Paper 3 2022 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/mathematics/2015/exam-materials/1ma1-3h-que-20220614.pdf" },
       ],
     },
   };
@@ -192,12 +192,12 @@ const ExamPapers = () => {
         { name: "Paper 3 2022 (Higher)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2022/june/AQA-83003H-MS-JUN22.PDF" },
       ],
       Edexcel: [
-        { name: "Paper 1 2023 (Higher)", url: "https://example.com/maths-edexcel-p1-2023-higher.pdf" },
-        { name: "Paper 2 2023 (Higher)", url: "https://example.com/maths-edexcel-p2-2023-higher.pdf" },
-        { name: "Paper 3 2023 (Higher)", url: "https://example.com/maths-edexcel-p3-2023-higher.pdf" },
-        { name: "Paper 1 2022 (Higher)", url: "https://example.com/maths-edexcel-p1-2022-higher.pdf" },
-        { name: "Paper 2 2022 (Higher)", url: "https://example.com/maths-edexcel-p2-2022-higher.pdf" },
-        { name: "Paper 3 2022 (Higher)", url: "https://example.com/maths-edexcel-p3-2022-higher.pdf" },
+        { name: "Paper 1 2023 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Mathematics/2015/Exam-materials/1ma1-1h-rms-20230824.pdf" },
+        { name: "Paper 2 2023 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Mathematics/2015/Exam-materials/1ma1-2h-rms-20230824.pdf" },
+        { name: "Paper 3 2023 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Mathematics/2015/Exam-materials/1ma1-3h-rms-20230824.pdf" },
+        { name: "Paper 1 2022 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/mathematics/2015/exam-materials/1ma1-1h-rms-20220825.pdf" },
+        { name: "Paper 2 2022 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/mathematics/2015/exam-materials/1ma1-2h-rms-20220825.pdf" },
+        { name: "Paper 3 2022 (Higher)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/mathematics/2015/exam-materials/1ma1-3h-rms-20220825.pdf" },
       ],
     },
   };
@@ -320,7 +320,7 @@ const ExamPapers = () => {
             Past Papers
           </h1>
           <p className="text-xl text-foreground/70 max-w-2xl mx-auto">
-            Access past papers for your subjects (higher and foundation!)
+            Access past papers for your subjects (higher only!)
           </p>
         </div>
 
