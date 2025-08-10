@@ -12,6 +12,7 @@ const ExamPapers = () => {
   const { user, signOut, loading } = useAuth();
   const navigate = useNavigate();
   const { openAuth } = useAuthDialog();
+  const [selectedType, setSelectedType] = useState<'papers' | 'ms'>('papers');
 
   const handleDashboardClick = () => {
     navigate('/dashboard');
@@ -113,6 +114,14 @@ const ExamPapers = () => {
     },
   };
 
+  // Mark scheme links mirror the paperLinks structure
+  const msLinks: typeof paperLinks = {
+    biology: { AQA: [], Edexcel: [] },
+    chemistry: { AQA: [], Edexcel: [] },
+    physics: { AQA: [], Edexcel: [] },
+    maths: { AQA: [], Edexcel: [] },
+  };
+
   const subjects = [
     { id: 'biology', name: 'Biology', icon: '🧬', color: 'bg-green-500/10 border-green-500/20 hover:bg-green-500/20' },
     { id: 'chemistry', name: 'Chemistry', icon: '⚗️', color: 'bg-orange-500/10 border-orange-500/20 hover:bg-orange-500/20' },
@@ -130,10 +139,22 @@ const ExamPapers = () => {
   const handleSubjectClick = (subjectId: string) => {
     setSelectedSubject(selectedSubject === subjectId ? null : subjectId);
     setSelectedBoard(null); // Reset board selection when changing subject
+    setSelectedType('papers');
   };
 
   const handleBoardClick = (board: string) => {
-    setSelectedBoard(selectedBoard === board ? null : board);
+    if (selectedBoard === board) {
+      setSelectedBoard(null);
+      setSelectedType('papers');
+    } else {
+      setSelectedBoard(board);
+      setSelectedType('papers');
+    }
+  };
+
+  const handleBoardMSClick = (board: string) => {
+    setSelectedBoard(board);
+    setSelectedType('ms');
   };
 
   return (
@@ -249,54 +270,67 @@ const ExamPapers = () => {
               </Card>
 
               {/* Board Selection */}
-              {selectedSubject === subject.id && (
-                <div className="animate-fade-in flex gap-2">
-                  {boards.map((board) => (
-                    <Button
-                      key={board}
-                      variant={selectedBoard === board ? "default" : "outline"}
-                      className="flex-1"
-                      onClick={() => handleBoardClick(board)}
-                    >
-                      {board}
-                    </Button>
-                  ))}
-                </div>
-              )}
+                {selectedSubject === subject.id && (
+                  <div className="animate-fade-in grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    {boards.map((board) => (
+                      <div key={board} className="flex gap-2">
+                        <Button
+                          variant={selectedBoard === board && selectedType === 'papers' ? 'default' : 'outline'}
+                          className="flex-1"
+                          onClick={() => handleBoardClick(board)}
+                        >
+                          {board}
+                        </Button>
+                        <Button
+                          variant={selectedBoard === board && selectedType === 'ms' ? 'default' : 'outline'}
+                          onClick={() => handleBoardMSClick(board)}
+                        >
+                          MS
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
 
               {/* File Links Dropdown */}
-              {selectedSubject === subject.id && selectedBoard && (
-                <Card className="animate-fade-in bg-muted/50">
-                  <CardContent className="p-4">
-                    {paperLinks[subject.id as keyof typeof paperLinks]?.[selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]] ? (
-                      <div className="space-y-2">
-                        <div className="grid grid-cols-2 gap-4">
-                          {paperLinks[subject.id as keyof typeof paperLinks][selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]].map((paper, index) => (
-                            <a
-                              key={index}
-                              href={paper.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="block text-blue-500 hover:text-blue-600 hover:underline text-sm py-1 transition-colors"
-                            >
-                              {paper.name}
-                            </a>
-                          ))}
+                {selectedSubject === subject.id && selectedBoard && (
+                  <Card className="animate-fade-in bg-muted/50">
+                    <CardContent className="p-4">
+                      {(((selectedType === 'papers' ? paperLinks : msLinks)[subject.id as keyof typeof paperLinks]?.[selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]] || []).length > 0) ? (
+                        <div className="space-y-2">
+                          <div className="mb-2 text-sm text-foreground/70">
+                            {selectedType === 'papers' ? 'Papers' : 'Mark Schemes'} — {selectedBoard}
+                          </div>
+                          <div className="grid grid-cols-2 gap-4">
+                            {(selectedType === 'papers'
+                              ? paperLinks[subject.id as keyof typeof paperLinks][selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]]
+                              : msLinks[subject.id as keyof typeof paperLinks][selectedBoard as keyof typeof paperLinks[keyof typeof paperLinks]]
+                            ).map((paper, index) => (
+                              <a
+                                key={index}
+                                href={paper.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block text-blue-500 hover:text-blue-600 hover:underline text-sm py-1 transition-colors"
+                              >
+                                {paper.name}
+                              </a>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="text-center text-foreground/60">
-                        <p className="text-sm">
-                          {selectedBoard} {subject.name} papers coming soon...
-                        </p>
-                        <p className="text-xs mt-1">
-                          Papers will be added here
-                        </p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              )}
+                      ) : (
+                        <div className="text-center text-foreground/60">
+                          <p className="text-sm">
+                            {selectedBoard} {subject.name} {selectedType === 'papers' ? 'papers' : 'mark schemes'} coming soon...
+                          </p>
+                          <p className="text-xs mt-1">
+                            {selectedType === 'papers' ? 'Papers' : 'Mark schemes'} will be added here
+                          </p>
+                        </div>
+                      )}
+                    </CardContent>
+                  </Card>
+                )}
             </div>
           ))}
         </div>
