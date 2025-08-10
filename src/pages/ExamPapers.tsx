@@ -142,8 +142,8 @@ const ExamPapers = () => {
       AQA: [
         { name: "Paper 1 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84621H-MS-JUN23.PDF" },
         { name: "Paper 2 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84622H-MS-JUN23.PDF" },
-        { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper1Triple.pdf" },
-        { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryTriplePaper2.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2022/june/AQA-84621H-MS-JUN22.PDF" },
+        { name: "Paper 2 2022 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2022/june/AQA-84622H-MS-JUN22.PDF" },
         { name: "Paper 1 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper1Combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper2Combined.pdf" },
         { name: "Paper 1 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper1Combined.pdf" },
@@ -162,10 +162,10 @@ const ExamPapers = () => {
     },
     physics: {
       AQA: [
-        { name: "Paper 1 2023 (Triple)", url: "https://example.com/physics-aqa-p1-2023-triple.pdf" },
-        { name: "Paper 2 2023 (Triple)", url: "https://example.com/physics-aqa-p2-2023-triple.pdf" },
-        { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022PhysicsPaper1Triple.pdf" },
-        { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/AQAPhysicsPaper2Triple2022.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84631H-MS-JUN23.PDF" },
+        { name: "Paper 2 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84632H-MS-JUN23.PDF" },
+        { name: "Paper 1 2022 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2022/june/AQA-84631H-MS-JUN22.PDF" },
+        { name: "Paper 2 2022 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2022/june/AQA-84632H-MS-JUN22.PDF" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/physics-aqa-p1-2023-combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/physics-aqa-p2-2023-combined.pdf" },
         { name: "Paper 1 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022PhysicsPaper1Combined.pdf" },
