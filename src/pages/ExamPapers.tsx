@@ -277,7 +277,13 @@ const ExamPapers = () => {
                         <Button
                           variant={selectedBoard === board && selectedType === 'papers' ? 'default' : 'outline'}
                           className="flex-1"
-                          onClick={() => handleBoardClick(board)}
+                          onClick={() => {
+                            if (selectedBoard === board && selectedType === 'ms') {
+                              setSelectedType('papers');
+                            } else {
+                              handleBoardClick(board);
+                            }
+                          }}
                         >
                           {board}
                         </Button>
