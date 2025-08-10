@@ -52,8 +52,8 @@ const ExamPapers = () => {
     },
     chemistry: {
       AQA: [
-        { name: "Paper 1 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper1Triple.pdf" },
-        { name: "Paper 2 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper2Triple.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84621H-QP-JUN23.PDF" },
+        { name: "Paper 2 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84622H-QP-JUN23.PDF" },
         { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper1Triple.pdf" },
         { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryTriplePaper2.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper1Combined.pdf" },
@@ -140,8 +140,8 @@ const ExamPapers = () => {
     },
     chemistry: {
       AQA: [
-        { name: "Paper 1 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper1Triple.pdf" },
-        { name: "Paper 2 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper2Triple.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84621H-MS-JUN23.PDF" },
+        { name: "Paper 2 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84622H-MS-JUN23.PDF" },
         { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper1Triple.pdf" },
         { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryTriplePaper2.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper1Combined.pdf" },
