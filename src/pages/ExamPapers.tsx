@@ -42,8 +42,8 @@ const ExamPapers = () => {
       Edexcel: [
         { name: "Paper 1 2023 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/Exam-materials/1bi0-1h-que-20230517.pdf" },
         { name: "Paper 2 2023 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/Exam-materials/1bi0-2h-que-20230610.pdf" },
-        { name: "Paper 1 2022 (Triple)", url: "https://example.com/biology-edexcel-p1-2022-triple.pdf" },
-        { name: "Paper 2 2022 (Triple)", url: "https://example.com/biology-edexcel-p2-2022-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1bi0-1h-que-20220518.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1bi0-2h-que-20220616.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/biology-edexcel-p1-2023-combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/biology-edexcel-p2-2023-combined.pdf" },
         { name: "Paper 1 2022 (Combined)", url: "https://example.com/biology-edexcel-p1-2022-combined.pdf" },
@@ -64,8 +64,8 @@ const ExamPapers = () => {
       Edexcel: [
         { name: "Paper 1 2023 (Triple)", url: "https://example.com/chemistry-edexcel-p1-2023-triple.pdf" },
         { name: "Paper 2 2023 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/Exam-materials/1ch0-2h-que-20230614.pdf" },
-        { name: "Paper 1 2022 (Triple)", url: "https://example.com/chemistry-edexcel-p1-2022-triple.pdf" },
-        { name: "Paper 2 2022 (Triple)", url: "https://example.com/chemistry-edexcel-p2-2022-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1ch0-1h-que-20220528.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1ch0-2h-que-20220621.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/chemistry-edexcel-p1-2023-combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/chemistry-edexcel-p2-2023-combined.pdf" },
         { name: "Paper 1 2022 (Combined)", url: "https://example.com/chemistry-edexcel-p1-2022-combined.pdf" },
@@ -320,7 +320,7 @@ const ExamPapers = () => {
             Past Papers
           </h1>
           <p className="text-xl text-foreground/70 max-w-2xl mx-auto">
-            Access past papers for your subjects (mark schemes all included!)
+            Access past papers for your subjects (higher and foundation!)
           </p>
         </div>
 
