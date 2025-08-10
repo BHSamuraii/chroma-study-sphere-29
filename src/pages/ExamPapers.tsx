@@ -30,10 +30,10 @@ const ExamPapers = () => {
   const paperLinks = {
     biology: {
       AQA: [
-        { name: "Paper 1 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper1Triple.pdf" },
-        { name: "Paper 2 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper2Triple.pdf" },
-        { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper1Triple.pdf" },
-        { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper2Triple.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84611H-QP-JUN23.PDF" },
+        { name: "Paper 2 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84612H-QP-JUN23.PDF" },
+        { name: "Paper 1 2022 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2022/june/AQA-84611H-QP-JUN22.PDF" },
+        { name: "Paper 2 2022 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2022/june/AQA-84612H-QP-JUN22.PDF" },
         { name: "Paper 1 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper1Combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper2Combined.pdf" },
         { name: "Paper 1 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper1Combined.pdf" },
@@ -118,10 +118,10 @@ const ExamPapers = () => {
   const msLinks: typeof paperLinks = {
     biology: {
       AQA: [
-        { name: "Paper 1 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper1Triple.pdf" },
-        { name: "Paper 2 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper2Triple.pdf" },
-        { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper1Triple.pdf" },
-        { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper2Triple.pdf" },
+        { name: "Paper 1 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84611H-MS-JUN23.PDF" },
+        { name: "Paper 2 2023 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2023/june/AQA-84612H-MS-JUN23.PDF" },
+        { name: "Paper 1 2022 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2022/june/AQA-84611H-MS-JUN22.PDF" },
+        { name: "Paper 2 2022 (Triple)", url: "https://filestore.aqa.org.uk/sample-papers-and-mark-schemes/2022/june/AQA-84612H-MS-JUN22.PDF" },
         { name: "Paper 1 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper1Combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper2Combined.pdf" },
         { name: "Paper 1 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper1Combined.pdf" },
