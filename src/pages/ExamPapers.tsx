@@ -116,10 +116,90 @@ const ExamPapers = () => {
 
   // Mark scheme links mirror the paperLinks structure
   const msLinks: typeof paperLinks = {
-    biology: { AQA: [], Edexcel: [] },
-    chemistry: { AQA: [], Edexcel: [] },
-    physics: { AQA: [], Edexcel: [] },
-    maths: { AQA: [], Edexcel: [] },
+    biology: {
+      AQA: [
+        { name: "Paper 1 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper1Triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper2Triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper1Triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper2Triple.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper1Combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023BiologyPaper2Combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper1Combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022BiologyPaper2Combined.pdf" },
+      ],
+      Edexcel: [
+        { name: "Paper 1 2023 (Triple)", url: "https://example.com/biology-edexcel-p1-2023-triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://example.com/biology-edexcel-p2-2023-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://example.com/biology-edexcel-p1-2022-triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://example.com/biology-edexcel-p2-2022-triple.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://example.com/biology-edexcel-p1-2023-combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://example.com/biology-edexcel-p2-2023-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://example.com/biology-edexcel-p1-2022-combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://example.com/biology-edexcel-p2-2022-combined.pdf" },
+      ],
+    },
+    chemistry: {
+      AQA: [
+        { name: "Paper 1 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper1Triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper2Triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper1Triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryTriplePaper2.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper1Combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2025/08/June2023ChemistryPaper2Combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper1Combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022ChemistryPaper2Combined.pdf" },
+      ],
+      Edexcel: [
+        { name: "Paper 1 2023 (Triple)", url: "https://example.com/chemistry-edexcel-p1-2023-triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://example.com/chemistry-edexcel-p2-2023-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://example.com/chemistry-edexcel-p1-2022-triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://example.com/chemistry-edexcel-p2-2022-triple.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://example.com/chemistry-edexcel-p1-2023-combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://example.com/chemistry-edexcel-p2-2023-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://example.com/chemistry-edexcel-p1-2022-combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://example.com/chemistry-edexcel-p2-2022-combined.pdf" },
+      ],
+    },
+    physics: {
+      AQA: [
+        { name: "Paper 1 2023 (Triple)", url: "https://example.com/physics-aqa-p1-2023-triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://example.com/physics-aqa-p2-2023-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022PhysicsPaper1Triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/AQAPhysicsPaper2Triple2022.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://example.com/physics-aqa-p1-2023-combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://example.com/physics-aqa-p2-2023-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022PhysicsPaper1Combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/June2022PhysicsPaper2Combined.pdf" },
+      ],
+      Edexcel: [
+        { name: "Paper 1 2023 (Triple)", url: "https://example.com/physics-edexcel-p1-2023-triple.pdf" },
+        { name: "Paper 2 2023 (Triple)", url: "https://example.com/physics-edexcel-p2-2023-triple.pdf" },
+        { name: "Paper 1 2022 (Triple)", url: "https://example.com/physics-edexcel-p1-2022-triple.pdf" },
+        { name: "Paper 2 2022 (Triple)", url: "https://example.com/physics-edexcel-p2-2022-triple.pdf" },
+        { name: "Paper 1 2023 (Combined)", url: "https://example.com/physics-edexcel-p1-2023-combined.pdf" },
+        { name: "Paper 2 2023 (Combined)", url: "https://example.com/physics-edexcel-p2-2023-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://example.com/physics-edexcel-p1-2022-combined.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://example.com/physics-edexcel-p2-2022-combined.pdf" },
+      ],
+    },
+    maths: {
+      AQA: [
+        { name: "Paper 1 2023 (Higher)", url: "https://example.com/maths-aqa-p1-2023-higher.pdf" },
+        { name: "Paper 2 2023 (Higher)", url: "https://example.com/maths-aqa-p2-2023-higher.pdf" },
+        { name: "Paper 3 2023 (Higher)", url: "https://example.com/maths-aqa-p3-2023-higher.pdf" },
+        { name: "Paper 1 2022 (Higher)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/AQA-83001H-QP-JUN22-merged.pdf" },
+        { name: "Paper 2 2022 (Higher)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/AQA-83002H-QP-JUN22-merged.pdf" },
+        { name: "Paper 3 2022 (Higher)", url: "https://gcseanki.co.uk/wp-content/uploads/2024/01/AQA-MAY-2022-PAPER-3-HIGHER-merged.pdf" },
+      ],
+      Edexcel: [
+        { name: "Paper 1 2023 (Higher)", url: "https://example.com/maths-edexcel-p1-2023-higher.pdf" },
+        { name: "Paper 2 2023 (Higher)", url: "https://example.com/maths-edexcel-p2-2023-higher.pdf" },
+        { name: "Paper 3 2023 (Higher)", url: "https://example.com/maths-edexcel-p3-2023-higher.pdf" },
+        { name: "Paper 1 2022 (Higher)", url: "https://example.com/maths-edexcel-p1-2022-higher.pdf" },
+        { name: "Paper 2 2022 (Higher)", url: "https://example.com/maths-edexcel-p2-2022-higher.pdf" },
+        { name: "Paper 3 2022 (Higher)", url: "https://example.com/maths-edexcel-p3-2022-higher.pdf" },
+      ],
+    },
   };
 
   const subjects = [
