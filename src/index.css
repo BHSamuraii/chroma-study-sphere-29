@@ -97,23 +97,62 @@ All colors MUST be HSL.
     @apply text-foreground;
     position: relative;
     overflow-x: hidden;
-background: linear-gradient(180deg, 
-      hsl(260, 30%, 12%) 0%, 
-      hsl(260, 28%, 10%) 100%
+    background: linear-gradient(135deg, 
+      hsl(260, 35%, 8%) 0%, 
+      hsl(260, 30%, 12%) 25%, 
+      hsl(280, 25%, 10%) 50%, 
+      hsl(260, 30%, 8%) 75%, 
+      hsl(270, 35%, 12%) 100%
     );
     min-height: 100vh;
   }
 
-body::before {
-    content: none;
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+      radial-gradient(circle at 20% 20%, hsl(260, 35%, 12%) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, hsl(260, 30%, 10%) 0%, transparent 50%),
+      radial-gradient(circle at 40% 60%, hsl(260, 25%, 8%) 0%, transparent 50%);
+    z-index: -3;
   }
 
-body::after {
-    content: none;
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 10% 10%, hsl(48, 100%, 70%, 0.02) 0%, transparent 25%),
+      radial-gradient(circle at 90% 20%, hsl(48, 100%, 70%, 0.015) 0%, transparent 25%),
+      radial-gradient(circle at 30% 80%, hsl(48, 100%, 70%, 0.02) 0%, transparent 25%),
+      radial-gradient(circle at 70% 90%, hsl(48, 100%, 70%, 0.015) 0%, transparent 25%);
+    z-index: -2;
   }
 
-html::before {
-    content: none;
+  /* Studying logos background pattern */
+  html::before {
+    content: '📚 ✏️ 🎓 📖 🔬 ⚗️ 📐 🧮 🏆 💡 🎯 📊 📝 🔍 💻 🌟 📚 ✏️ 🎓 📖 🔬 ⚗️ 📐 🧮 🏆 💡 🎯 📊 📝 🔍 💻 🌟';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 24px;
+    opacity: 0.03;
+    line-height: 60px;
+    letter-spacing: 40px;
+    word-spacing: 40px;
+    white-space: pre-wrap;
+    z-index: -1;
+    animation: float-logos 120s linear infinite;
+    pointer-events: none;
   }
 
   @keyframes float-logos {
@@ -124,14 +163,17 @@ html::before {
 
 /* Custom gradient classes for sections */
 .gradient-purple-yellow {
-  background: linear-gradient(180deg, 
-    hsl(260, 32%, 12%) 0%, 
-    hsl(260, 28%, 14%) 100%
+  background: linear-gradient(135deg, 
+    hsl(260, 40%, 15%) 0%, 
+    hsl(280, 35%, 18%) 25%, 
+    hsl(260, 30%, 12%) 50%, 
+    hsl(270, 35%, 15%) 75%, 
+    hsl(260, 40%, 18%) 100%
   );
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(48 100% 80%) 100%);
+  background: linear-gradient(135deg, hsl(48, 100%, 70%) 0%, hsl(45, 100%, 82%) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -161,8 +203,8 @@ html::before {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 8px hsl(48, 100%, 70%, 0.2); }
-  50% { box-shadow: 0 0 16px hsl(48, 100%, 70%, 0.35); }
+  0%, 100% { box-shadow: 0 0 20px hsl(48, 100%, 70%, 0.3); }
+  50% { box-shadow: 0 0 40px hsl(48, 100%, 70%, 0.6); }
 }
 
 .animate-pulse-glow {
@@ -199,9 +241,12 @@ html::before {
 
 /* EdTech specific elements */
 .edtech-card {
-  background: hsl(260 22% 16% / 0.6);
-  backdrop-filter: blur(4px);
-  border: 1px solid hsl(260 20% 25% / 0.2);
+  background: linear-gradient(135deg, 
+    hsl(260, 25%, 18%, 0.8) 0%, 
+    hsl(260, 20%, 15%, 0.9) 100%
+  );
+  backdrop-filter: blur(10px);
+  border: 1px solid hsl(260, 20%, 25%, 0.3);
 }
 
 .edtech-highlight {
