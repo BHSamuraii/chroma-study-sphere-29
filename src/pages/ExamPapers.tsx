@@ -134,8 +134,8 @@ const ExamPapers = () => {
         { name: "Paper 2 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1bi0-2h-rms-20220825.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/biology-edexcel-p1-2023-combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/biology-edexcel-p2-2023-combined.pdf" },
-        { name: "Paper 1 2022 (Combined)", url: "https://example.com/biology-edexcel-p1-2022-combined.pdf" },
-        { name: "Paper 2 2022 (Combined)", url: "https://example.com/biology-edexcel-p2-2022-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1sc0-1bh-rms-20220825.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1sc0-2bh-rms-20220825.pdf" },
       ],
     },
     chemistry: {
@@ -156,8 +156,8 @@ const ExamPapers = () => {
         { name: "Paper 2 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1ch0-2h-rms-20220825.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/chemistry-edexcel-p1-2023-combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/chemistry-edexcel-p2-2023-combined.pdf" },
-        { name: "Paper 1 2022 (Combined)", url: "https://example.com/chemistry-edexcel-p1-2022-combined.pdf" },
-        { name: "Paper 2 2022 (Combined)", url: "https://example.com/chemistry-edexcel-p2-2022-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1sc0-1ch-rms-20220825.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1sc0-2ch-rms-20220825.pdf" },
       ],
     },
     physics: {
@@ -178,8 +178,8 @@ const ExamPapers = () => {
         { name: "Paper 2 2022 (Triple)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1ph0-2h-rms-20220825.pdf" },
         { name: "Paper 1 2023 (Combined)", url: "https://example.com/physics-edexcel-p1-2023-combined.pdf" },
         { name: "Paper 2 2023 (Combined)", url: "https://example.com/physics-edexcel-p2-2023-combined.pdf" },
-        { name: "Paper 1 2022 (Combined)", url: "https://example.com/physics-edexcel-p1-2022-combined.pdf" },
-        { name: "Paper 2 2022 (Combined)", url: "https://example.com/physics-edexcel-p2-2022-combined.pdf" },
+        { name: "Paper 1 2022 (Combined)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1sc0-1ph-rms-20220825.pdf" },
+        { name: "Paper 2 2022 (Combined)", url: "https://qualifications.pearson.com/content/dam/pdf/GCSE/Science/2016/exam-materials/1sc0-2ph-rms-20220825.pdf" },
       ],
     },
     maths: {
