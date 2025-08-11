@@ -41,7 +41,7 @@ export const DashboardHeader = () => {
               <Button 
                 variant="ghost" 
                 size="sm"
-                onClick={() => window.location.href = '/exampapers'}
+                onClick={() => window.location.href = '/pastpapers'}
                 className="text-foreground hover:bg-accent/20"
               >
                 <FileText className="w-4 h-4 mr-2" />

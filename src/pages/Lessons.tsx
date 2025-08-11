@@ -186,7 +186,7 @@ const Lessons = () => {
               {!user && (
                 <Link to="/#subjects" className="text-foreground hover:text-primary transition-colors">Subjects</Link>
               )}
-              <Link to="/exampapers" className="text-foreground hover:text-primary transition-colors">Past Papers</Link>
+              <Link to="/pastpapers" className="text-foreground hover:text-primary transition-colors">Past Papers</Link>
               <Link to="/quizzes" className="text-foreground hover:text-primary transition-colors">Quizzes</Link>
               <Link to="/lessons" className="text-foreground hover:text-primary transition-colors">Lessons</Link>
               <Link to="/faq" className="text-foreground hover:text-primary transition-colors">FAQ</Link>
