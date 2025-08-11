@@ -67,6 +67,7 @@ const Quizzes = () => {
     timer: 0,
     isQuizActive: false
   });
+  const [questionOrder, setQuestionOrder] = useState<number[]>([]);
   const { user, signOut, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const { openAuth } = useAuthDialog();
@@ -409,6 +410,7 @@ const Quizzes = () => {
     setSelectedTopic('');
     setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
     setShortAnswers({});
+    setQuestionOrder([]);
   };
 
   const handleSubjectChange = (subject: string) => {
@@ -416,16 +418,28 @@ const Quizzes = () => {
     setSelectedTopic('');
     setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
     setShortAnswers({});
+    setQuestionOrder([]);
   };
 
   const handleTopicChange = (topicName: string) => {
     setSelectedTopic(topicName);
     setQuizState({ currentQuestion: 0, answers: [], showResults: false, timer: 0, isQuizActive: false });
     setShortAnswers({});
+    setQuestionOrder([]);
+  };
+
+  const shuffleArray = (arr: number[]) => {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
   };
 
   const startQuiz = () => {
     const questions = getCurrentQuestions();
+    const order = shuffleArray(Array.from({ length: questions.length }, (_, i) => i));
+    setQuestionOrder(order);
     setShortAnswers({});
     setQuizState({
       currentQuestion: 0,
@@ -461,6 +475,14 @@ const Quizzes = () => {
     }));
   };
 
+  const getOrderedQuestions = (): Question[] => {
+    const qs = getCurrentQuestions();
+    if (questionOrder.length === qs.length) {
+      return questionOrder.map((i) => qs[i]);
+    }
+    return qs;
+  };
+
   const handleAnswerSelect = (answerIndex: number) => {
     const newAnswers = [...quizState.answers];
     newAnswers[quizState.currentQuestion] = answerIndex;
@@ -484,6 +506,8 @@ const Quizzes = () => {
 
   const resetQuiz = () => {
     const questions = getCurrentQuestions();
+    const order = shuffleArray(Array.from({ length: questions.length }, (_, i) => i));
+    setQuestionOrder(order);
     setShortAnswers({});
     setQuizState({
       currentQuestion: 0,
@@ -505,7 +529,8 @@ const Quizzes = () => {
   const mapIndexToLetter = (idx: number) => ['a', 'b', 'c', 'd'][idx] ?? '';
 
   const isAnswerCorrect = (index: number) => {
-    const currentQ = getCurrentQuestions()[index];
+    const questions = getOrderedQuestions();
+    const currentQ = questions[index];
     if (!currentQ) return false;
 
     // When logged out, compare against local questions
@@ -516,12 +541,12 @@ const Quizzes = () => {
         return ansIdx === currentQ.correctAnswer;
       }
       // No short-answer local questions for now
-      const userText = (shortAnswers[index] ?? '').trim();
-      return userText.length > 0 && false;
+      return false;
     }
 
-    // Logged-in: use DB source of truth
-    const dbQ = dbQuestions[index];
+    // Logged-in: use DB source of truth with ordered index mapping
+    const orderedIndex = questionOrder.length === questions.length ? questionOrder[index] : index;
+    const dbQ = dbQuestions[orderedIndex];
     if (!dbQ) return false;
 
     if (dbQ.question_type === 'mcq') {
@@ -615,7 +640,7 @@ const Quizzes = () => {
             {!quizState.showResults ? (
               <Card className="border-border">
                 <CardContent className="p-12">
-                  {getCurrentQuestions()[quizState.currentQuestion] && (
+                  {getOrderedQuestions()[quizState.currentQuestion] && (
                     <div>
                       <div className="mb-8">
                         <div className="flex justify-between items-center mb-6">
@@ -626,11 +651,11 @@ const Quizzes = () => {
                             {getCurrentQuestions().length} questions total
                           </Badge>
                         </div>
-                        {getCurrentQuestions()[quizState.currentQuestion].imageUrl && (
+                        {getOrderedQuestions()[quizState.currentQuestion].imageUrl && (
                           <div className="mb-6">
                             <AspectRatio ratio={16 / 9}>
                               <img
-                                src={getCurrentQuestions()[quizState.currentQuestion].imageUrl as string}
+                                src={getOrderedQuestions()[quizState.currentQuestion].imageUrl as string}
                                 alt={`Question ${quizState.currentQuestion + 1} image`}
                                 loading="lazy"
                                 className="w-full h-full object-contain rounded-md border border-border bg-muted"
@@ -639,12 +664,12 @@ const Quizzes = () => {
                           </div>
                         )}
                         <p className="text-xl text-foreground leading-relaxed">
-                          {getCurrentQuestions()[quizState.currentQuestion].question}
+                          {getOrderedQuestions()[quizState.currentQuestion].question}
                         </p>
                       </div>
                       
                       <div className="space-y-4 mb-12">
-                        {getCurrentQuestions()[quizState.currentQuestion].options.map((option, index) => (
+                        {getOrderedQuestions()[quizState.currentQuestion].options.map((option, index) => (
                           <Button
                             key={index}
                             variant={quizState.answers[quizState.currentQuestion] === index ? "default" : "outline"}
@@ -657,7 +682,7 @@ const Quizzes = () => {
                         ))}
                       </div>
                       
-                      {getCurrentQuestions()[quizState.currentQuestion].options.length === 0 && (
+                      {getOrderedQuestions()[quizState.currentQuestion].options.length === 0 && (
                         <div className="mb-12">
                           <label className="block text-sm font-medium text-foreground mb-2">Your Answer</label>
                           <Textarea
@@ -686,7 +711,7 @@ const Quizzes = () => {
                         <Button
                           onClick={nextQuestion}
                           disabled={
-                            getCurrentQuestions()[quizState.currentQuestion].options.length === 0
+                            getOrderedQuestions()[quizState.currentQuestion].options.length === 0
                               ? !(shortAnswers[quizState.currentQuestion]?.trim())
                               : quizState.answers[quizState.currentQuestion] === null
                           }
@@ -719,7 +744,7 @@ const Quizzes = () => {
                   </p>
                   
                   <div className="space-y-6 mb-12 text-left">
-                    {getCurrentQuestions().map((question, index) => (
+                    {getOrderedQuestions().map((question, index) => (
                       <div key={index} className="border border-border rounded-lg p-6">
                         <p className="font-semibold text-foreground mb-3 text-lg">{question.question}</p>
                         <p
@@ -743,9 +768,9 @@ const Quizzes = () => {
                             Correct answer: {question.options[question.correctAnswer]}
                           </p>
                         )}
-                        {question.options.length === 0 && (
+                        {question.options.length === 0 && !isAnswerCorrect(index) && (
                           <p className="text-base text-green-600 mb-2">
-                            Correct answer: {dbQuestions[index]?.correct_answer}
+                            Correct answer: {dbQuestions[(questionOrder.length === getOrderedQuestions().length ? questionOrder[index] : index)]?.correct_answer}
                           </p>
                         )}
                         <p className="text-sm text-foreground/60">{question.explanation}</p>
