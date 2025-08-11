@@ -18,7 +18,6 @@ export type Database = {
         Row: {
           course_id: string
           created_at: string
-          description: string | null
           id: string
           thumbnail_url: string | null
           title: string
@@ -27,7 +26,6 @@ export type Database = {
         Insert: {
           course_id: string
           created_at?: string
-          description?: string | null
           id?: string
           thumbnail_url?: string | null
           title: string
@@ -36,7 +34,6 @@ export type Database = {
         Update: {
           course_id?: string
           created_at?: string
-          description?: string | null
           id?: string
           thumbnail_url?: string | null
           title?: string
@@ -124,6 +121,7 @@ export type Database = {
           created_at: string
           explanation: string | null
           id: string
+          image_url: string | null
           option_a: string | null
           option_b: string | null
           option_c: string | null
@@ -139,6 +137,7 @@ export type Database = {
           created_at?: string
           explanation?: string | null
           id?: string
+          image_url?: string | null
           option_a?: string | null
           option_b?: string | null
           option_c?: string | null
@@ -154,6 +153,7 @@ export type Database = {
           created_at?: string
           explanation?: string | null
           id?: string
+          image_url?: string | null
           option_a?: string | null
           option_b?: string | null
           option_c?: string | null
