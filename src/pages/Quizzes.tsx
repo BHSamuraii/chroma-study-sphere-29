@@ -6,6 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
+import { AspectRatio } from '@/components/ui/aspect-ratio';
 import { ChevronDown, LogOut, User, LayoutDashboard, Lock, ArrowLeft, Clock, ChevronUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
@@ -35,6 +36,7 @@ interface Topic {
 interface Question {
   id: number;
   question: string;
+  imageUrl?: string | null;
   options: string[];
   correctAnswer: number;
   explanation: string;
@@ -449,6 +451,7 @@ const Quizzes = () => {
     return dbQuestions.map((q) => ({
       id: typeof q.id === 'number' ? q.id : 0,
       question: q.question_text,
+      imageUrl: q.image_url || null,
       options: q.question_type === 'mcq'
         ? [q.option_a, q.option_b, q.option_c, q.option_d].filter(Boolean)
         : [],
@@ -623,7 +626,18 @@ const Quizzes = () => {
                             {getCurrentQuestions().length} questions total
                           </Badge>
                         </div>
-                        
+                        {getCurrentQuestions()[quizState.currentQuestion].imageUrl && (
+                          <div className="mb-6">
+                            <AspectRatio ratio={16 / 9}>
+                              <img
+                                src={getCurrentQuestions()[quizState.currentQuestion].imageUrl as string}
+                                alt={`Question ${quizState.currentQuestion + 1} image`}
+                                loading="lazy"
+                                className="w-full h-full object-contain rounded-md border border-border bg-muted"
+                              />
+                            </AspectRatio>
+                          </div>
+                        )}
                         <p className="text-xl text-foreground leading-relaxed">
                           {getCurrentQuestions()[quizState.currentQuestion].question}
                         </p>
