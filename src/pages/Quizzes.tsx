@@ -256,6 +256,19 @@ const Quizzes = () => {
     return () => clearInterval(interval);
   }, [quizState.isQuizActive, quizState.showResults]);
 
+  // Warn user on tab close/reload while a quiz is active
+  useEffect(() => {
+    if (!quizState.isQuizActive || quizState.showResults) return;
+
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = 'You have an active quiz. Are you sure you want to leave? Your progress will be lost.';
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    return () => window.removeEventListener('beforeunload', handleBeforeUnload);
+  }, [quizState.isQuizActive, quizState.showResults]);
+
   const fetchCourses = async () => {
     try {
       const { data, error } = await supabase
