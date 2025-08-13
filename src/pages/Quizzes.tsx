@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
-import { AspectRatio } from '@/components/ui/aspect-ratio';
+import { QuestionImage } from '@/components/QuestionImage';
 import { ChevronDown, LogOut, User, LayoutDashboard, Lock, ArrowLeft, Clock, ChevronUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import { useNavigate, Link } from 'react-router-dom';
@@ -666,14 +666,10 @@ const Quizzes = () => {
                         </div>
                         {getOrderedQuestions()[quizState.currentQuestion].imageUrl && (
                           <div className="mb-6">
-                            <AspectRatio ratio={16 / 9}>
-                              <img
-                                src={getOrderedQuestions()[quizState.currentQuestion].imageUrl as string}
-                                alt={`Question ${quizState.currentQuestion + 1} image`}
-                                loading="lazy"
-                                className="w-full h-full object-contain rounded-md border border-border bg-muted"
-                              />
-                            </AspectRatio>
+                            <QuestionImage
+                              src={getOrderedQuestions()[quizState.currentQuestion].imageUrl as string}
+                              alt={`Question ${quizState.currentQuestion + 1} image`}
+                            />
                           </div>
                         )}
                         <p className="text-xl text-foreground leading-relaxed">
