@@ -37,7 +37,9 @@ export const EnrolledCourses = () => {
   ];
 
   const isScienceCourse = (courseTitle: string) => {
-    return SCIENCE_COURSES.some(science => courseTitle.includes(science));
+    return SCIENCE_COURSES.some(science => 
+      courseTitle.toLowerCase().includes(science.toLowerCase())
+    );
   };
 
   const handleContinueLearning = (course: EnrolledCourse['courses']) => {
