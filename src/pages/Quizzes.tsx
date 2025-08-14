@@ -238,9 +238,12 @@ const Quizzes = () => {
     }
     
     if (subjectParam) {
-      setSelectedSubject(decodeURIComponent(subjectParam));
+      const decodedSubject = decodeURIComponent(subjectParam);
+      // Capitalize first letter to match database format
+      const capitalizedSubject = decodedSubject.charAt(0).toUpperCase() + decodedSubject.slice(1).toLowerCase();
+      setSelectedSubject(capitalizedSubject);
     }
-  }, [searchParams]);
+  }, [searchParams, topics]);
 
   useEffect(() => {
     if (user) {
