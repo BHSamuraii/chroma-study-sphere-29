@@ -241,7 +241,14 @@ const Quizzes = () => {
   useEffect(() => {
     const subjectParam = searchParams.get('subject');
     
-    if (subjectParam && topics.length > 0 && selectedCourse && !selectedSubject) {
+    console.log('Subject effect running:', {
+      subjectParam,
+      topicsLength: topics.length,
+      selectedCourse,
+      selectedSubject
+    });
+    
+    if (subjectParam && topics.length > 0 && selectedCourse) {
       const decodedSubject = decodeURIComponent(subjectParam);
       console.log('URL subject param:', decodedSubject);
       
@@ -255,12 +262,12 @@ const Quizzes = () => {
       
       console.log('Matching subject found:', matchingSubject);
       
-      if (matchingSubject) {
+      if (matchingSubject && selectedSubject !== matchingSubject) {
         setSelectedSubject(matchingSubject);
         console.log('Subject set to:', matchingSubject);
       }
     }
-  }, [topics, selectedCourse, selectedSubject, searchParams]);
+  }, [topics, selectedCourse, searchParams]);
 
   useEffect(() => {
     if (user) {
