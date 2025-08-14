@@ -237,8 +237,8 @@ const Quizzes = () => {
       setSelectedCourse(decodeURIComponent(courseParam));
     }
     
-    // Only set subject after topics are loaded
-    if (subjectParam && topics.length > 0) {
+    // Set subject after topics are loaded and course is selected
+    if (subjectParam && topics.length > 0 && selectedCourse) {
       const decodedSubject = decodeURIComponent(subjectParam);
       // Find the actual subject from topics to ensure exact match
       const availableSubjects = [...new Set(topics.filter(t => t.subject).map(t => t.subject!))];
@@ -250,7 +250,7 @@ const Quizzes = () => {
         setSelectedSubject(matchingSubject);
       }
     }
-  }, [searchParams, topics]);
+  }, [searchParams, topics, selectedCourse]);
 
   useEffect(() => {
     if (user) {
