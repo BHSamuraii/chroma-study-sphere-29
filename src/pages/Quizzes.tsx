@@ -228,19 +228,52 @@ const Quizzes = () => {
     fetchCourses();
   }, []);
 
-  // Handle URL parameters for pre-selecting course and subject
+  // Step 1: Set course from URL parameters
   useEffect(() => {
     const courseParam = searchParams.get('course');
+    if (courseParam && courses.length > 0) {
+      const decodedCourse = decodeURIComponent(courseParam);
+      if (courses.some(c => c.title === decodedCourse)) {
+        setSelectedCourse(decodedCourse);
+      }
+    }
+  }, [searchParams, courses]);
+
+  // Step 2: Set subject from URL parameters after topics are loaded
+  useEffect(() => {
     const subjectParam = searchParams.get('subject');
-    
-    if (courseParam) {
-      setSelectedCourse(decodeURIComponent(courseParam));
+    if (subjectParam && selectedCourse && topics.length > 0 && isScienceCourse(selectedCourse)) {
+      const decodedSubject = decodeURIComponent(subjectParam);
+      const availableSubjects = getAvailableSubjects();
+      if (availableSubjects.includes(decodedSubject)) {
+        setSelectedSubject(decodedSubject);
+      }
     }
-    
-    if (subjectParam) {
-      setSelectedSubject(decodeURIComponent(subjectParam));
+  }, [searchParams, selectedCourse, topics]);
+
+  // Step 3: Set topic from URL parameters after subject is set (for science courses) or topics are loaded (for other courses)
+  useEffect(() => {
+    const topicParam = searchParams.get('topic');
+    if (topicParam && selectedCourse && topics.length > 0) {
+      const decodedTopic = decodeURIComponent(topicParam);
+      
+      // For science courses, wait until subject is selected
+      if (isScienceCourse(selectedCourse)) {
+        if (selectedSubject) {
+          const availableTopics = getAvailableTopics();
+          if (availableTopics.some(t => t.topic_name === decodedTopic)) {
+            setSelectedTopic(decodedTopic);
+          }
+        }
+      } else {
+        // For non-science courses, set topic directly
+        const availableTopics = getAvailableTopics();
+        if (availableTopics.some(t => t.topic_name === decodedTopic)) {
+          setSelectedTopic(decodedTopic);
+        }
+      }
     }
-  }, [searchParams]);
+  }, [searchParams, selectedCourse, selectedSubject, topics]);
 
   useEffect(() => {
     if (user) {
