@@ -249,10 +249,10 @@ const Quizzes = () => {
   }, [user]);
 
   useEffect(() => {
-    if (selectedCourse) {
+    if (selectedCourse && courses.length > 0) {
       fetchTopics();
     }
-  }, [selectedCourse]);
+  }, [selectedCourse, courses]);
 
   useEffect(() => {
     if (selectedCourse && selectedTopic) {
