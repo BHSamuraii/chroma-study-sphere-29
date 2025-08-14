@@ -228,17 +228,20 @@ const Quizzes = () => {
     fetchCourses();
   }, []);
 
-  // Handle URL parameters for pre-selecting course and subject
+  // Handle URL parameters for pre-selecting course
   useEffect(() => {
     const courseParam = searchParams.get('course');
-    const subjectParam = searchParams.get('subject');
     
     if (courseParam) {
       setSelectedCourse(decodeURIComponent(courseParam));
     }
+  }, [searchParams]);
+
+  // Handle URL parameters for pre-selecting subject (after topics are loaded)
+  useEffect(() => {
+    const subjectParam = searchParams.get('subject');
     
-    // Set subject after topics are loaded and course is selected
-    if (subjectParam && topics.length > 0 && selectedCourse) {
+    if (subjectParam && topics.length > 0 && selectedCourse && !selectedSubject) {
       const decodedSubject = decodeURIComponent(subjectParam);
       // Find the actual subject from topics to ensure exact match
       const availableSubjects = [...new Set(topics.filter(t => t.subject).map(t => t.subject!))];
@@ -250,7 +253,7 @@ const Quizzes = () => {
         setSelectedSubject(matchingSubject);
       }
     }
-  }, [searchParams, topics, selectedCourse]);
+  }, [topics, selectedCourse, selectedSubject, searchParams]);
 
   useEffect(() => {
     if (user) {
