@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { QuestionImage } from '@/components/QuestionImage';
 import { ChevronDown, LogOut, User, LayoutDashboard, Lock, ArrowLeft, Clock, ChevronUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate, Link, useSearchParams } from 'react-router-dom';
 import { useAuthDialog } from '@/components/AuthDialogProvider';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -51,6 +51,7 @@ interface QuizState {
 }
 
 const Quizzes = () => {
+  const [searchParams] = useSearchParams();
   const [selectedCourse, setSelectedCourse] = useState<string>('');
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [selectedTopic, setSelectedTopic] = useState<string>('');
@@ -226,6 +227,20 @@ const Quizzes = () => {
   useEffect(() => {
     fetchCourses();
   }, []);
+
+  // Handle URL parameters for pre-selecting course and subject
+  useEffect(() => {
+    const courseParam = searchParams.get('course');
+    const subjectParam = searchParams.get('subject');
+    
+    if (courseParam) {
+      setSelectedCourse(decodeURIComponent(courseParam));
+    }
+    
+    if (subjectParam) {
+      setSelectedSubject(decodeURIComponent(subjectParam));
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (user) {

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { BookOpen, FlaskConical, Atom, Dna } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface ScienceCoursePopupProps {
   isOpen: boolean;
@@ -35,9 +36,27 @@ export const ScienceCoursePopup: React.FC<ScienceCoursePopupProps> = ({
     setStep('study-type');
   };
 
+  const navigate = useNavigate();
+
   const handleStudyTypeSelect = (studyType: StudyType) => {
-    // TODO: Handle the study type selection
-    console.log('Selected:', selectedSubject, studyType);
+    const courseParam = encodeURIComponent(courseTitle);
+    const subjectParam = selectedSubject ? encodeURIComponent(selectedSubject) : '';
+    
+    let url = '';
+    switch (studyType) {
+      case 'quizzes':
+        url = `/quizzes?course=${courseParam}${subjectParam ? `&subject=${subjectParam}` : ''}`;
+        break;
+      case 'flashcards':
+        // TODO: Navigate to flashcards page when created
+        url = `/flashcards?course=${courseParam}${subjectParam ? `&subject=${subjectParam}` : ''}`;
+        break;
+      case 'lessons':
+        url = `/lessons?course=${courseParam}${subjectParam ? `&subject=${subjectParam}` : ''}`;
+        break;
+    }
+    
+    navigate(url);
     onClose();
     resetPopup();
   };
