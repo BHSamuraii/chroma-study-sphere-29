@@ -509,26 +509,24 @@ const Quizzes = () => {
   const getCurrentQuestions = (): Question[] => {
     if (!selectedCourse || !selectedTopic) return [];
 
-    // If user is logged out, use built-in questions and avoid Supabase
-    if (!user) {
-      const key = isScienceCourse(selectedCourse) && selectedSubject
-        ? `${selectedCourse}-${selectedSubject}-${selectedTopic}`
-        : `${selectedCourse}-${selectedTopic}`;
-      return quizQuestions[key] || [];
+    // Try database questions first if user is logged in
+    if (user && dbQuestions.length > 0) {
+      return dbQuestions.map(q => ({
+        id: q.id,
+        question: q.question_text,
+        imageUrl: q.image_url,
+        options: [q.option_a, q.option_b, q.option_c, q.option_d].filter(Boolean),
+        correctAnswer: ['A', 'B', 'C', 'D'].indexOf(q.correct_answer),
+        explanation: q.explanation || "No explanation provided"
+      }));
     }
 
-    // Logged-in: convert database questions to the expected format
-    return dbQuestions.map((q) => ({
-      id: typeof q.id === 'number' ? q.id : 0,
-      question: q.question_text,
-      imageUrl: q.image_url || null,
-      options: q.question_type === 'mcq'
-        ? [q.option_a, q.option_b, q.option_c, q.option_d].filter(Boolean)
-        : [],
-      correctAnswer:
-        q.question_type === 'mcq' ? ['a', 'b', 'c', 'd'].indexOf(q.correct_answer) : 0,
-      explanation: q.explanation || ''
-    }));
+    // Fall back to hardcoded questions (for both logged out users and when no DB questions exist)
+    const key = isScienceCourse(selectedCourse) && selectedSubject
+      ? `${selectedCourse}-${selectedSubject}-${selectedTopic}`
+      : `${selectedCourse}-${selectedTopic}`;
+    return quizQuestions[key] || [];
+
   };
 
   const getOrderedQuestions = (): Question[] => {
