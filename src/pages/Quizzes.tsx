@@ -243,14 +243,21 @@ const Quizzes = () => {
     
     if (subjectParam && topics.length > 0 && selectedCourse && !selectedSubject) {
       const decodedSubject = decodeURIComponent(subjectParam);
+      console.log('URL subject param:', decodedSubject);
+      
       // Find the actual subject from topics to ensure exact match
       const availableSubjects = [...new Set(topics.filter(t => t.subject).map(t => t.subject!))];
+      console.log('Available subjects from DB:', availableSubjects);
+      
       const matchingSubject = availableSubjects.find(subject => 
         subject.toLowerCase() === decodedSubject.toLowerCase()
       );
       
+      console.log('Matching subject found:', matchingSubject);
+      
       if (matchingSubject) {
         setSelectedSubject(matchingSubject);
+        console.log('Subject set to:', matchingSubject);
       }
     }
   }, [topics, selectedCourse, selectedSubject, searchParams]);
