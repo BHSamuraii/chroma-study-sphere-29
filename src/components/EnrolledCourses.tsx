@@ -43,12 +43,8 @@ export const EnrolledCourses = () => {
   };
 
   const handleContinueLearning = (course: EnrolledCourse['courses']) => {
-    if (isScienceCourse(course.title)) {
-      setSelectedScienceCourse(course.title);
-      setSciencePopupOpen(true);
-    } else if (course.course_url) {
-      window.open(course.course_url, '_blank');
-    }
+    setSelectedScienceCourse(course.title);
+    setSciencePopupOpen(true);
   };
 
   const { data: enrolledCourses, isLoading, error } = useQuery({
@@ -165,7 +161,6 @@ export const EnrolledCourses = () => {
                   size="sm" 
                   className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-medium"
                   onClick={() => handleContinueLearning(enrollment.courses)}
-                  disabled={!isScienceCourse(enrollment.courses.title) && !enrollment.courses.course_url}
                 >
                   Continue Learning
                 </Button>
@@ -179,6 +174,7 @@ export const EnrolledCourses = () => {
         isOpen={sciencePopupOpen}
         onClose={() => setSciencePopupOpen(false)}
         courseTitle={selectedScienceCourse}
+        isScienceCourse={isScienceCourse(selectedScienceCourse)}
       />
     </Card>
   );

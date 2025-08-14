@@ -7,6 +7,7 @@ interface ScienceCoursePopupProps {
   isOpen: boolean;
   onClose: () => void;
   courseTitle: string;
+  isScienceCourse: boolean;
 }
 
 type Subject = 'biology' | 'chemistry' | 'physics';
@@ -16,9 +17,10 @@ export const ScienceCoursePopup: React.FC<ScienceCoursePopupProps> = ({
   isOpen,
   onClose,
   courseTitle,
+  isScienceCourse,
 }) => {
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
-  const [step, setStep] = useState<'subject' | 'study-type'>('subject');
+  const [step, setStep] = useState<'subject' | 'study-type'>(isScienceCourse ? 'subject' : 'study-type');
 
   const handleSubjectSelect = (subject: Subject) => {
     setSelectedSubject(subject);
@@ -34,7 +36,7 @@ export const ScienceCoursePopup: React.FC<ScienceCoursePopupProps> = ({
 
   const resetPopup = () => {
     setSelectedSubject(null);
-    setStep('subject');
+    setStep(isScienceCourse ? 'subject' : 'study-type');
   };
 
   const handleClose = () => {
@@ -43,8 +45,10 @@ export const ScienceCoursePopup: React.FC<ScienceCoursePopupProps> = ({
   };
 
   const handleBack = () => {
-    setStep('subject');
-    setSelectedSubject(null);
+    if (isScienceCourse) {
+      setStep('subject');
+      setSelectedSubject(null);
+    }
   };
 
   return (
@@ -52,7 +56,7 @@ export const ScienceCoursePopup: React.FC<ScienceCoursePopupProps> = ({
       <DialogContent className="bg-gradient-to-br from-purple-900/95 to-purple-950/95 border-white/20 backdrop-blur-sm max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center text-yellow-400 text-xl font-bold">
-            {step === 'subject' ? 'Choose Your Science Subject' : `Study ${selectedSubject?.charAt(0).toUpperCase()}${selectedSubject?.slice(1)}`}
+            {step === 'subject' ? 'Choose Your Science Subject' : isScienceCourse ? `Study ${selectedSubject?.charAt(0).toUpperCase()}${selectedSubject?.slice(1)}` : 'Choose Study Method'}
           </DialogTitle>
           <p className="text-center text-white/70 text-sm mt-2">
             {step === 'subject' ? courseTitle : 'How would you like to study?'}
@@ -129,13 +133,15 @@ export const ScienceCoursePopup: React.FC<ScienceCoursePopupProps> = ({
                 <span className="text-lg font-semibold">Lessons</span>
               </Button>
 
-              <Button
-                onClick={handleBack}
-                className="w-full h-12 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white/80 hover:text-white transition-all duration-200"
-                variant="outline"
-              >
-                ← Back to Subjects
-              </Button>
+              {isScienceCourse && (
+                <Button
+                  onClick={handleBack}
+                  className="w-full h-12 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-white/30 text-white/80 hover:text-white transition-all duration-200"
+                  variant="outline"
+                >
+                  ← Back to Subjects
+                </Button>
+              )}
             </>
           )}
         </div>
