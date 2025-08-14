@@ -237,11 +237,18 @@ const Quizzes = () => {
       setSelectedCourse(decodeURIComponent(courseParam));
     }
     
-    if (subjectParam) {
+    // Only set subject after topics are loaded
+    if (subjectParam && topics.length > 0) {
       const decodedSubject = decodeURIComponent(subjectParam);
-      // Capitalize first letter to match database format
-      const capitalizedSubject = decodedSubject.charAt(0).toUpperCase() + decodedSubject.slice(1).toLowerCase();
-      setSelectedSubject(capitalizedSubject);
+      // Find the actual subject from topics to ensure exact match
+      const availableSubjects = [...new Set(topics.filter(t => t.subject).map(t => t.subject!))];
+      const matchingSubject = availableSubjects.find(subject => 
+        subject.toLowerCase() === decodedSubject.toLowerCase()
+      );
+      
+      if (matchingSubject) {
+        setSelectedSubject(matchingSubject);
+      }
     }
   }, [searchParams, topics]);
 
