@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -7,6 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { BookOpen, Calendar } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { ScienceCoursePopup } from '@/components/ScienceCoursePopup';
 
 interface EnrolledCourse {
   id: string;
@@ -25,6 +26,28 @@ interface EnrolledCourse {
 
 export const EnrolledCourses = () => {
   const { toast } = useToast();
+  const [sciencePopupOpen, setSciencePopupOpen] = useState(false);
+  const [selectedScienceCourse, setSelectedScienceCourse] = useState<string>('');
+
+  const SCIENCE_COURSES = [
+    'AQA Triple Science',
+    'AQA Combined Science', 
+    'Edexcel Triple Science',
+    'Edexcel Combined Science'
+  ];
+
+  const isScienceCourse = (courseTitle: string) => {
+    return SCIENCE_COURSES.some(science => courseTitle.includes(science));
+  };
+
+  const handleContinueLearning = (course: EnrolledCourse['courses']) => {
+    if (isScienceCourse(course.title)) {
+      setSelectedScienceCourse(course.title);
+      setSciencePopupOpen(true);
+    } else if (course.course_url) {
+      window.open(course.course_url, '_blank');
+    }
+  };
 
   const { data: enrolledCourses, isLoading, error } = useQuery({
     queryKey: ['enrolled-courses'],
@@ -139,12 +162,8 @@ export const EnrolledCourses = () => {
                 <Button 
                   size="sm" 
                   className="bg-gradient-to-r from-yellow-500 to-yellow-600 hover:from-yellow-600 hover:to-yellow-700 text-black font-medium"
-                  onClick={() => {
-                    if (enrollment.courses.course_url) {
-                      window.open(enrollment.courses.course_url, '_blank');
-                    }
-                  }}
-                  disabled={!enrollment.courses.course_url}
+                  onClick={() => handleContinueLearning(enrollment.courses)}
+                  disabled={!isScienceCourse(enrollment.courses.title) && !enrollment.courses.course_url}
                 >
                   Continue Learning
                 </Button>
@@ -153,6 +172,12 @@ export const EnrolledCourses = () => {
           </div>
         )}
       </CardContent>
+      
+      <ScienceCoursePopup 
+        isOpen={sciencePopupOpen}
+        onClose={() => setSciencePopupOpen(false)}
+        courseTitle={selectedScienceCourse}
+      />
     </Card>
   );
 };
