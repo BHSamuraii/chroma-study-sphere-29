@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { BookOpen, FlaskConical, Atom, Dna } from 'lucide-react';
@@ -21,6 +21,14 @@ export const ScienceCoursePopup: React.FC<ScienceCoursePopupProps> = ({
 }) => {
   const [selectedSubject, setSelectedSubject] = useState<Subject | null>(null);
   const [step, setStep] = useState<'subject' | 'study-type'>(isScienceCourse ? 'subject' : 'study-type');
+
+  // Reset step when course type changes
+  useEffect(() => {
+    if (isOpen) {
+      setStep(isScienceCourse ? 'subject' : 'study-type');
+      setSelectedSubject(null);
+    }
+  }, [isOpen, isScienceCourse]);
 
   const handleSubjectSelect = (subject: Subject) => {
     setSelectedSubject(subject);
