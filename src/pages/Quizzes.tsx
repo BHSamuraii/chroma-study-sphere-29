@@ -9,7 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { QuestionImage } from '@/components/QuestionImage';
 import { ChevronDown, LogOut, User, LayoutDashboard, Lock, ArrowLeft, Clock, ChevronUp } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
-import { useNavigate, Link, useSearchParams } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useAuthDialog } from '@/components/AuthDialogProvider';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -51,7 +51,6 @@ interface QuizState {
 }
 
 const Quizzes = () => {
-  const [searchParams] = useSearchParams();
   const [selectedCourse, setSelectedCourse] = useState<string>('');
   const [selectedSubject, setSelectedSubject] = useState<string>('');
   const [selectedTopic, setSelectedTopic] = useState<string>('');
@@ -227,48 +226,6 @@ const Quizzes = () => {
   useEffect(() => {
     fetchCourses();
   }, []);
-
-  // Handle URL parameters for pre-selecting course
-  useEffect(() => {
-    const courseParam = searchParams.get('course');
-    
-    if (courseParam) {
-      setSelectedCourse(decodeURIComponent(courseParam));
-    }
-  }, [searchParams]);
-
-  // Handle URL parameters for pre-selecting subject (after topics are loaded)
-  useEffect(() => {
-    const subjectParam = searchParams.get('subject');
-    
-    console.log('Subject effect running:', {
-      subjectParam,
-      topicsLength: topics.length,
-      selectedCourse,
-      selectedSubject
-    });
-    
-    // Only proceed if we have a subject param, topics are loaded, and course is selected
-    if (subjectParam && topics.length > 0 && selectedCourse) {
-      const decodedSubject = decodeURIComponent(subjectParam);
-      console.log('URL subject param:', decodedSubject);
-      
-      // Find the actual subject from topics to ensure exact match
-      const availableSubjects = [...new Set(topics.filter(t => t.subject).map(t => t.subject!))];
-      console.log('Available subjects from DB:', availableSubjects);
-      
-      const matchingSubject = availableSubjects.find(subject => 
-        subject.toLowerCase() === decodedSubject.toLowerCase()
-      );
-      
-      console.log('Matching subject found:', matchingSubject);
-      
-      if (matchingSubject && selectedSubject !== matchingSubject) {
-        setSelectedSubject(matchingSubject);
-        console.log('Subject set to:', matchingSubject);
-      }
-    }
-  }, [topics, selectedCourse, searchParams]); // Removed selectedSubject from dependencies to avoid infinite loop
 
   useEffect(() => {
     if (user) {
@@ -509,24 +466,26 @@ const Quizzes = () => {
   const getCurrentQuestions = (): Question[] => {
     if (!selectedCourse || !selectedTopic) return [];
 
-    // Try database questions first if user is logged in
-    if (user && dbQuestions.length > 0) {
-      return dbQuestions.map(q => ({
-        id: q.id,
-        question: q.question_text,
-        imageUrl: q.image_url,
-        options: [q.option_a, q.option_b, q.option_c, q.option_d].filter(Boolean),
-        correctAnswer: ['A', 'B', 'C', 'D'].indexOf(q.correct_answer),
-        explanation: q.explanation || "No explanation provided"
-      }));
+    // If user is logged out, use built-in questions and avoid Supabase
+    if (!user) {
+      const key = isScienceCourse(selectedCourse) && selectedSubject
+        ? `${selectedCourse}-${selectedSubject}-${selectedTopic}`
+        : `${selectedCourse}-${selectedTopic}`;
+      return quizQuestions[key] || [];
     }
 
-    // Fall back to hardcoded questions (for both logged out users and when no DB questions exist)
-    const key = isScienceCourse(selectedCourse) && selectedSubject
-      ? `${selectedCourse}-${selectedSubject}-${selectedTopic}`
-      : `${selectedCourse}-${selectedTopic}`;
-    return quizQuestions[key] || [];
-
+    // Logged-in: convert database questions to the expected format
+    return dbQuestions.map((q) => ({
+      id: typeof q.id === 'number' ? q.id : 0,
+      question: q.question_text,
+      imageUrl: q.image_url || null,
+      options: q.question_type === 'mcq'
+        ? [q.option_a, q.option_b, q.option_c, q.option_d].filter(Boolean)
+        : [],
+      correctAnswer:
+        q.question_type === 'mcq' ? ['a', 'b', 'c', 'd'].indexOf(q.correct_answer) : 0,
+      explanation: q.explanation || ''
+    }));
   };
 
   const getOrderedQuestions = (): Question[] => {
