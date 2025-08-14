@@ -248,6 +248,7 @@ const Quizzes = () => {
       selectedSubject
     });
     
+    // Only proceed if we have a subject param, topics are loaded, and course is selected
     if (subjectParam && topics.length > 0 && selectedCourse) {
       const decodedSubject = decodeURIComponent(subjectParam);
       console.log('URL subject param:', decodedSubject);
@@ -267,7 +268,7 @@ const Quizzes = () => {
         console.log('Subject set to:', matchingSubject);
       }
     }
-  }, [topics, selectedCourse, searchParams]);
+  }, [topics, selectedCourse, searchParams]); // Removed selectedSubject from dependencies to avoid infinite loop
 
   useEffect(() => {
     if (user) {
