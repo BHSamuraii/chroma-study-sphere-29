@@ -237,11 +237,19 @@ const Quizzes = () => {
     if (courseParam) {
       setSelectedCourse(decodeURIComponent(courseParam));
     }
-    
-    if (subjectParam) {
-      setSelectedSubject(decodeURIComponent(subjectParam));
-    }
   }, [searchParams]);
+
+  // Handle subject selection from URL after topics are loaded
+  useEffect(() => {
+    const subjectParam = searchParams.get('subject');
+    if (subjectParam && topics.length > 0 && !selectedSubject) {
+      const decodedSubject = decodeURIComponent(subjectParam);
+      const availableSubjects = getAvailableSubjects();
+      if (availableSubjects.includes(decodedSubject)) {
+        setSelectedSubject(decodedSubject);
+      }
+    }
+  }, [searchParams, topics, selectedSubject]);
 
   useEffect(() => {
     if (user) {
