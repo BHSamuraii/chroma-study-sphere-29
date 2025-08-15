@@ -244,9 +244,11 @@ const Quizzes = () => {
     const subjectParam = searchParams.get('subject');
     if (subjectParam && topics.length > 0 && !selectedSubject) {
       const decodedSubject = decodeURIComponent(subjectParam);
+      // Capitalize science subjects properly
+      const capitalizedSubject = decodedSubject.charAt(0).toUpperCase() + decodedSubject.slice(1).toLowerCase();
       const availableSubjects = getAvailableSubjects();
-      if (availableSubjects.includes(decodedSubject)) {
-        setSelectedSubject(decodedSubject);
+      if (availableSubjects.includes(capitalizedSubject)) {
+        setSelectedSubject(capitalizedSubject);
       }
     }
   }, [searchParams, topics, selectedSubject]);
