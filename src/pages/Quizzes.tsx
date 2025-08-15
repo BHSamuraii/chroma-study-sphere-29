@@ -59,6 +59,7 @@ const Quizzes = () => {
   const [topics, setTopics] = useState<Topic[]>([]);
   const [enrollments, setEnrollments] = useState<Enrollment[]>([]);
   const [dbQuestions, setDbQuestions] = useState<any[]>([]);
+  const [dbAnswers, setDbAnswers] = useState<any[]>([]);
   const [shortAnswers, setShortAnswers] = useState<Record<number, string>>({});
   const [loading, setLoading] = useState(true);
   const [quizState, setQuizState] = useState<QuizState>({
@@ -348,15 +349,30 @@ const Quizzes = () => {
       const course = courses.find(c => c.title === selectedCourse);
       const topic = topics.find(t => t.topic_name === selectedTopic);
       if (!course || !topic) return;
+      // Only fetch question data without answers and explanations
       const { data, error } = await supabase
         .from('quiz_questions')
-        .select('*')
+        .select('id, question_text, option_a, option_b, option_c, option_d, image_url, question_type, course_id, topic_id')
         .eq('course_id', course.id)
         .eq('topic_id', topic.id);
       if (error) throw error;
       setDbQuestions(data || []);
     } catch (error) {
       console.error('Error fetching questions:', error);
+    }
+  };
+
+  const fetchQuizAnswers = async (questionIds: string[]) => {
+    try {
+      const { data, error } = await supabase
+        .from('quiz_questions')
+        .select('id, correct_answer, explanation')
+        .in('id', questionIds);
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error fetching answers:', error);
+      return [];
     }
   };
 
@@ -517,11 +533,17 @@ const Quizzes = () => {
     setQuizState(prev => ({ ...prev, answers: newAnswers }));
   };
 
-  const nextQuestion = () => {
+  const nextQuestion = async () => {
     const questions = getCurrentQuestions();
     if (quizState.currentQuestion < questions.length - 1) {
       setQuizState(prev => ({ ...prev, currentQuestion: prev.currentQuestion + 1 }));
     } else {
+      // Quiz completed - now fetch answers for logged-in users
+      if (user && dbQuestions.length > 0) {
+        const questionIds = dbQuestions.map(q => q.id);
+        const answers = await fetchQuizAnswers(questionIds);
+        setDbAnswers(answers);
+      }
       setQuizState(prev => ({ ...prev, showResults: true, isQuizActive: false }));
     }
   };
@@ -575,18 +597,19 @@ const Quizzes = () => {
     // Logged-in: use DB source of truth with ordered index mapping
     const orderedIndex = questionOrder.length === questions.length ? questionOrder[index] : index;
     const dbQ = dbQuestions[orderedIndex];
-    if (!dbQ) return false;
+    const dbAnswer = dbAnswers.find(a => a.id === dbQ?.id);
+    if (!dbQ || !dbAnswer) return false;
 
     if (dbQ.question_type === 'mcq') {
       const ansIdx = quizState.answers[index];
       if (ansIdx === null || ansIdx === undefined) return false;
       const letter = mapIndexToLetter(ansIdx);
-      return letter === dbQ.correct_answer;
+      return letter === dbAnswer.correct_answer;
     }
 
     // Short answer: direct text match with DB's correct_answer
     const userText = (shortAnswers[index] ?? '').trim();
-    const correctText = (dbQ.correct_answer ?? '');
+    const correctText = (dbAnswer.correct_answer ?? '');
     return userText === correctText;
   };
 
@@ -787,17 +810,38 @@ const Quizzes = () => {
                             ? (question.options[quizState.answers[index] ?? -1] || 'Not answered')
                             : (shortAnswers[index]?.trim() || 'Not answered')}
                         </p>
-                        {question.options.length > 0 && quizState.answers[index] !== question.correctAnswer && (
-                          <p className="text-base text-green-600 mb-2">
-                            Correct answer: {question.options[question.correctAnswer]}
-                          </p>
+                        {user && dbAnswers.length > 0 && (() => {
+                          const orderedIndex = questionOrder.length === getOrderedQuestions().length ? questionOrder[index] : index;
+                          const dbQ = dbQuestions[orderedIndex];
+                          const dbAnswer = dbAnswers.find(a => a.id === dbQ?.id);
+                          
+                          return (
+                            <>
+                              {question.options.length > 0 && !isAnswerCorrect(index) && (
+                                <p className="text-base text-green-600 mb-2">
+                                  Correct answer: {dbAnswer?.correct_answer && 
+                                    question.options[['a', 'b', 'c', 'd'].indexOf(dbAnswer.correct_answer)]}
+                                </p>
+                              )}
+                              {question.options.length === 0 && !isAnswerCorrect(index) && (
+                                <p className="text-base text-green-600 mb-2">
+                                  Correct answer: {dbAnswer?.correct_answer}
+                                </p>
+                              )}
+                              <p className="text-sm text-foreground/60">{dbAnswer?.explanation}</p>
+                            </>
+                          );
+                        })()}
+                        {!user && (
+                          <>
+                            {question.options.length > 0 && quizState.answers[index] !== question.correctAnswer && (
+                              <p className="text-base text-green-600 mb-2">
+                                Correct answer: {question.options[question.correctAnswer]}
+                              </p>
+                            )}
+                            <p className="text-sm text-foreground/60">{question.explanation}</p>
+                          </>
                         )}
-                        {question.options.length === 0 && !isAnswerCorrect(index) && (
-                          <p className="text-base text-green-600 mb-2">
-                            Correct answer: {dbQuestions[(questionOrder.length === getOrderedQuestions().length ? questionOrder[index] : index)]?.correct_answer}
-                          </p>
-                        )}
-                        <p className="text-sm text-foreground/60">{question.explanation}</p>
                       </div>
                     ))}
                   </div>
