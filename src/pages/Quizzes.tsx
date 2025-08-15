@@ -1077,7 +1077,7 @@ const Quizzes = () => {
                   <div className="text-center animate-fade-in">
                     <Button 
                       onClick={startQuiz}
-                      className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-white px-8 py-3"
+                      className="bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 text-black px-8 py-3"
                     >
                       Start Quiz <ChevronDown className="ml-2 h-4 w-4 rotate-90" />
                     </Button>
