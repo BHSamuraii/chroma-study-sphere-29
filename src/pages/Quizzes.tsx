@@ -253,6 +253,13 @@ const Quizzes = () => {
     }
   }, [searchParams, topics, selectedSubject]);
 
+  // Check if course and subject are locked from URL parameters
+  const isLockedFromUrl = () => {
+    const courseParam = searchParams.get('course');
+    const subjectParam = searchParams.get('subject');
+    return !!(courseParam && subjectParam);
+  };
+
   useEffect(() => {
     if (user) {
       fetchEnrollments();
@@ -980,7 +987,7 @@ const Quizzes = () => {
                 {/* Course Selection */}
                 <div>
                   <label className="block text-sm font-medium text-foreground mb-2">Course</label>
-                  <Select value={selectedCourse} onValueChange={handleCourseChange}>
+                  <Select value={selectedCourse} onValueChange={handleCourseChange} disabled={isLockedFromUrl()}>
                     <SelectTrigger className="w-full bg-background border-border">
                       <SelectValue placeholder="Choose a course" />
                     </SelectTrigger>
@@ -1007,7 +1014,7 @@ const Quizzes = () => {
                 {selectedCourse && isScienceCourse(selectedCourse) && (
                   <div className="animate-fade-in">
                     <label className="block text-sm font-medium text-foreground mb-2">Subject</label>
-                    <Select value={selectedSubject} onValueChange={handleSubjectChange}>
+                    <Select value={selectedSubject} onValueChange={handleSubjectChange} disabled={isLockedFromUrl()}>
                       <SelectTrigger className="w-full bg-background border-border">
                         <SelectValue placeholder="Choose a subject" />
                       </SelectTrigger>
