@@ -256,6 +256,12 @@ const Quizzes = () => {
   // Check if course and subject are locked from URL parameters
   const isLockedFromUrl = () => {
     const courseParam = searchParams.get('course');
+    return !!courseParam;
+  };
+
+  // Check if subject is locked from URL parameters (only for science courses)
+  const isSubjectLockedFromUrl = () => {
+    const courseParam = searchParams.get('course');
     const subjectParam = searchParams.get('subject');
     return !!(courseParam && subjectParam);
   };
@@ -1014,7 +1020,7 @@ const Quizzes = () => {
                 {selectedCourse && isScienceCourse(selectedCourse) && (
                   <div className="animate-fade-in">
                     <label className="block text-sm font-medium text-foreground mb-2">Subject</label>
-                    <Select value={selectedSubject} onValueChange={handleSubjectChange} disabled={isLockedFromUrl()}>
+                    <Select value={selectedSubject} onValueChange={handleSubjectChange} disabled={isSubjectLockedFromUrl()}>
                       <SelectTrigger className="w-full bg-background border-border">
                         <SelectValue placeholder="Choose a subject" />
                       </SelectTrigger>
